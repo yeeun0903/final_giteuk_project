@@ -143,6 +143,14 @@ const privacySections = [
   { title: "부칙", body: ["본 개인정보 처리방침은 서비스 오픈일부터 시행합니다."] }
 ];
 
+function CustomerHeaderAction({ src, label, action, onClick }) {
+  return (
+    <button id={`btn-customer-header-${action}`} type="button" aria-label={label} data-event="click_login" data-page="customer" data-section="header" data-action={action} data-label={action} onClick={onClick}>
+      <img src={src} alt="" />
+    </button>
+  );
+}
+
 function CustomerRow({ icon, title, copy, onClick }) {
   return (
     <button type="button" className="customer-row" onClick={onClick}>
@@ -377,7 +385,7 @@ function PrivacyPage({ onBack, onOpenMap, onOpenCommunity, onOpenGroupbuy, onOpe
   );
 }
 
-export default function CustomerCenter({ onBack, onOpenMap, onOpenCommunity, onOpenGroupbuy }) {
+export default function CustomerCenter({ onBack, onOpenMap, onOpenCommunity, onOpenGroupbuy, onOpenAuth }) {
   const [view, setView] = useState("home");
 
   if (view === "inquiry") {
@@ -424,7 +432,10 @@ export default function CustomerCenter({ onBack, onOpenMap, onOpenCommunity, onO
             <img src={figmaAssets.customerBack} alt="" />
           </button>
           <h1>고객센터</h1>
-          <span className="terms-header-spacer" aria-hidden="true" />
+          <div className="customer-actions">
+            <CustomerHeaderAction src={figmaAssets.signUpIcon} label="소셜 로그인" action="login_social" onClick={() => onOpenAuth?.("login")} />
+            <CustomerHeaderAction src={figmaAssets.loginIcon} label="아이디 로그인" action="login_email" onClick={() => onOpenAuth?.("id-login")} />
+          </div>
         </div>
         <div className="customer-title">
           <strong>궁금한 점이 있으신가요?</strong>

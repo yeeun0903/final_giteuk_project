@@ -127,15 +127,51 @@ const CATEGORY_Q3_PRICE = {
   기타: 90000
 };
 
-function getPlaceSavingAmount(place) {
-  const basePrice = CATEGORY_Q3_PRICE[place.category] ?? 0;
-  return Math.max(0, basePrice - (Number(place.price1) || 0));
+function getStoredPriceNumber(place, key) {
+  const value = place?.[key];
+  return Number.isFinite(value) ? value : null;
 }
 
-function comparePlacesBySaving(anchor) {
+function isPubPlace(place) {
+  const category = String(place?.category || "");
+  return category.includes("주점") || category.includes("술집");
+}
+
+function getPlaceValuePrice(place) {
+  const price1 = getStoredPriceNumber(place, "price1_num");
+  const price2 = getStoredPriceNumber(place, "price2_num");
+
+  if (isPubPlace(place) && price2 !== null) return price2;
+  if (price1 !== null) return price1;
+  if (price2 !== null) return price2;
+  return null;
+}
+
+function getPlaceSavingAmount(place) {
+  const basePrice = CATEGORY_Q3_PRICE[place.category] ?? 0;
+  const valuePrice = getPlaceValuePrice(place);
+  return valuePrice === null ? 0 : Math.max(0, basePrice - valuePrice);
+}
+
+function formatValuePriceLabel(place) {
+  const valuePrice = getPlaceValuePrice(place);
+  return valuePrice === null ? "가격 확인" : `${formatWon(valuePrice)} 기준`;
+}
+
+function comparePlacesByValuePrice(anchor) {
   return (a, b) => {
-    const savingDiff = getPlaceSavingAmount(b) - getPlaceSavingAmount(a);
-    if (savingDiff !== 0) return savingDiff;
+    const aPrice = getPlaceValuePrice(a);
+    const bPrice = getPlaceValuePrice(b);
+
+    if (aPrice === null && bPrice === null) {
+      if (anchor) return distanceKm(anchor, a) - distanceKm(anchor, b);
+      return String(a.place_name || "").localeCompare(String(b.place_name || ""), "ko-KR");
+    }
+    if (aPrice === null) return 1;
+    if (bPrice === null) return -1;
+
+    const priceDiff = aPrice - bPrice;
+    if (priceDiff !== 0) return priceDiff;
 
     if (anchor) {
       return distanceKm(anchor, a) - distanceKm(anchor, b);
@@ -691,7 +727,7 @@ export default function MapMainPage({
     const sortable = [...filteredPlaces];
 
     if (searchSort === "value") {
-      return sortable.sort(comparePlacesBySaving(distanceSortAnchor));
+      return sortable.sort(comparePlacesByValuePrice(distanceSortAnchor));
     }
 
     const distanceAnchor = distanceSortAnchor || sortable.find((place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
@@ -960,7 +996,7 @@ export default function MapMainPage({
                   <small>{place.category} · {place.district}</small>
                   <em className="figma-search-result-metrics">
                     <b>{formatDistanceLabel(distanceSortAnchor, place)}</b>
-                    <b>{formatWon(getPlaceSavingAmount(place))} 절약</b>
+                    <b>{formatValuePriceLabel(place)}</b>
                   </em>
                 </button>
               ))

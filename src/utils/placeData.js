@@ -47,10 +47,22 @@ export function parseCsv(text) {
   );
 }
 
-function toNumber(value) {
-  if (value === null || value === undefined || value === "") return null;
-  const number = Number(String(value).replace(/[^\d.-]/g, ""));
+export function parsePriceNumber(value) {
+  if (value === null || value === undefined) return null;
+  const raw = String(value).trim();
+  if (!raw || raw === "-" || raw === "--") return null;
+  if (/무료|free/i.test(raw)) return 0;
+
+  const number = Number(raw.replace(/[^\d.-]/g, ""));
   return Number.isFinite(number) ? number : null;
+}
+
+function firstPriceNumber(...values) {
+  for (const value of values) {
+    const parsed = parsePriceNumber(value);
+    if (parsed !== null) return parsed;
+  }
+  return null;
 }
 
 export function getDistrict(address = "") {
@@ -76,10 +88,10 @@ export function getMapLink(place) {
 }
 
 export function normalizePlace(row, index) {
-  const latitude = toNumber(row.latitude);
-  const longitude = toNumber(row.longitude);
-  const price1 = toNumber(row.price1_num || row.price_num || row.price1);
-  const price2 = toNumber(row.price2_num || row.price2);
+  const latitude = parsePriceNumber(row.latitude);
+  const longitude = parsePriceNumber(row.longitude);
+  const price1 = firstPriceNumber(row.price1_num, row.price_num, row.price1);
+  const price2 = firstPriceNumber(row.price2_num, row.price2);
   const placeId = row.place_id || `place-${index}`;
 
   return {
@@ -95,10 +107,12 @@ export function normalizePlace(row, index) {
     phone: row.phone || "",
     menu1: row.menu1 || row.menu_name || "",
     price1: price1 ?? 0,
-    price1Text: row.price1 || row.price_text || (price1 ? formatWon(price1) : ""),
+    price1_num: price1,
+    price1Text: row.price1 || row.price_text || (price1 !== null ? formatWon(price1) : ""),
     menu2: row.menu2 || "",
     price2: price2 ?? 0,
-    price2Text: row.price2 || (price2 ? formatWon(price2) : ""),
+    price2_num: price2,
+    price2Text: row.price2 || (price2 !== null ? formatWon(price2) : ""),
     description: row.description || "",
     district: getDistrict(row.address || ""),
     images: []

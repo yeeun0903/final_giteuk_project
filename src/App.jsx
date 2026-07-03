@@ -897,6 +897,7 @@ export default function App() {
           onOpenMap={openMapPage}
           onOpenCommunity={openCommunityPage}
           onOpenGroupbuy={openGroupbuyPage}
+          onOpenAuth={openAuth}
         />
       )}
       {page === "customize" && (

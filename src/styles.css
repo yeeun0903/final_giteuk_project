@@ -8177,3 +8177,88 @@ body,
   overflow-x: hidden !important;
 }
 
+
+
+/* mobile search/input stability: prevent iOS browser auto-zoom from shrinking/breaking frames */
+.figma-search input,
+.groupbuy-search input,
+.convenience-search input,
+.pdp-comment-input input,
+.posting-title-input,
+.posting-body-input,
+.auth-fields input,
+.inquiry-form-card input,
+.inquiry-form-card textarea,
+.inform-field > input,
+.inform-address-input input,
+.inform-menu-row input,
+.course-search-row input,
+input[type="search"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  font-size: 16px !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
+.phone-page *,
+.community-frame *,
+.groupbuy-frame *,
+.pdp-frame *,
+.posting-frame *,
+.convenience-frame *,
+.groupbuy-detail-frame * {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* keep bottom navigation pinned inside mypage/customer flows above page scroll content */
+.figma-mypage.phone-page,
+.customer-page.phone-page,
+.customize-page.phone-page {
+  padding-bottom: 108px !important;
+}
+
+.figma-mypage .figma-bottom-nav,
+.figma-mypage .mypage-bottom-nav,
+.customer-page .figma-bottom-nav,
+.customer-page .mypage-bottom-nav,
+.customize-page .figma-bottom-nav,
+.customize-page .character-bottom-nav {
+  position: sticky !important;
+  left: 12px !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 26px !important;
+  width: 378px !important;
+  max-width: 378px !important;
+  min-height: 60px !important;
+  margin: 24px 0 0 12px !important;
+  z-index: 7000 !important;
+}
+
+.customer-page .customer-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+  height: 24px !important;
+}
+
+.customer-page .customer-actions button {
+  display: grid !important;
+  place-items: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.customer-page .customer-actions img {
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain !important;
+  filter: none !important;
+}
