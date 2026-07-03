@@ -2363,3 +2363,47 @@
 .figma-mypage.orders-page .mypage-like-tabs {
   margin-top: 12px !important;
 }
+
+/* Customer center card flow and 20px title lock. */
+.customer-page .customer-gnb h1,
+.customer-page.terms-page .customer-gnb h1,
+.customer-page.inquiry-page .customer-gnb h1 {
+  font-size: 20px !important;
+  line-height: 1.24 !important;
+  letter-spacing: 0 !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title strong {
+  font-size: 20px !important;
+  line-height: 1.24 !important;
+  letter-spacing: 0 !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
+  height: auto !important;
+  min-height: 118px !important;
+  padding-bottom: 10px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
+  margin-top: 38px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card,
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-hours-card,
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
+  position: relative !important;
+  top: auto !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  overflow: visible !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card {
+  margin-top: 12px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-hours-card,
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
+  margin-top: 10px !important;
+}
