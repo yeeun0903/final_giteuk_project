@@ -1309,3 +1309,155 @@
 .figma-map-page .figma-map-header {
   position: absolute !important;
 }
+
+/* Final header-band and scroll corrections */
+:root {
+  --fixed-header-band: 92px;
+}
+
+.community-header::before,
+.groupbuy-header::before,
+.customer-page .customer-header::before,
+.figma-mypage:not(.mypage-detail-page) .mypage-header::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: max(0px, calc((100vw - var(--prototype-width)) / 2));
+  z-index: 7280;
+  width: min(var(--prototype-width), 100vw);
+  height: var(--fixed-header-band);
+  background: rgba(248, 248, 248, 0.98);
+  pointer-events: none;
+}
+
+.community-frame .community-gnb,
+.community-frame .gnb,
+.groupbuy-frame .groupbuy-gnb,
+.customer-page .customer-gnb,
+.figma-mypage:not(.mypage-detail-page) .mypage-gnb {
+  top: var(--mobile-top-pad) !important;
+  z-index: 7290 !important;
+  background: transparent !important;
+}
+
+/* Main mypage: keep only the logo/action row fixed, not the title. */
+.figma-mypage:not(.mypage-detail-page) .mypage-header {
+  position: relative !important;
+  top: auto !important;
+  z-index: 100 !important;
+  height: 148px !important;
+  padding: var(--mobile-top-pad) 16px 0 !important;
+  background: #f8f8f8 !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-gnb {
+  position: fixed !important;
+  left: max(16px, calc((100vw - var(--prototype-width)) / 2 + 16px)) !important;
+  width: min(372px, calc(100vw - 32px)) !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-title {
+  margin-top: 50px !important;
+}
+
+/* Customer home needs real scroll height because its cards are absolutely positioned. */
+.customer-page.phone-page:not(.terms-page)::after {
+  content: "" !important;
+  display: block !important;
+  height: calc(760px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.customer-page.phone-page:not(.terms-page) {
+  overflow-y: auto !important;
+  padding-bottom: calc(var(--mobile-nav-gap) + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.customer-page.phone-page:not(.terms-page) .customer-version-card {
+  top: 549px !important;
+}
+
+/* Inquiry/terms back row: keep the top background band with the fixed row. */
+.customer-page.terms-page .customer-header::before,
+.customer-page.inquiry-page .customer-header::before {
+  height: 78px;
+}
+
+.customer-page.terms-page .terms-summary-card,
+.customer-page.inquiry-page .terms-summary-card {
+  margin-top: 10px !important;
+}
+
+/* Floating write button must sit above bottom nav. */
+.community-frame .write-button {
+  bottom: calc(var(--mobile-nav-bottom) + 88px) !important;
+  z-index: 7100 !important;
+}
+
+/* Character customize: fix back/title row and remove the menu icon. */
+.customize-page .customize-top {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 7300 !important;
+  width: min(var(--prototype-width), 100vw) !important;
+  height: 78px !important;
+  padding: var(--mobile-top-pad) 16px 14px !important;
+  background: rgba(248, 248, 248, 0.98) !important;
+  box-sizing: border-box !important;
+}
+
+.customize-page .customize-menu-button {
+  display: none !important;
+}
+
+.customize-page .customize-header-actions {
+  gap: 0 !important;
+}
+
+.customize-page {
+  overflow-y: auto !important;
+  padding-bottom: calc(var(--mobile-nav-gap) + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Groupbuy detail: bottom nav is fixed, action buttons scroll with content. */
+.groupbuy-detail-frame {
+  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.groupbuy-detail-action-bar {
+  position: static !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: min(var(--prototype-width), 100vw) !important;
+  max-width: min(var(--prototype-width), 100vw) !important;
+  margin: 32px 0 0 !important;
+  padding-bottom: 24px !important;
+  z-index: auto !important;
+}
+
+.groupbuy-detail-frame + .figma-bottom-nav,
+.groupbuy-page-shell + .figma-bottom-nav {
+  position: fixed !important;
+  left: max(8px, calc((100vw - var(--prototype-width)) / 2 + 12px)) !important;
+  bottom: var(--mobile-nav-bottom) !important;
+  width: var(--prototype-nav-width) !important;
+  max-width: var(--prototype-nav-width) !important;
+  z-index: 7000 !important;
+}
+
+/* Songpa member popup must sit above map header/category and hide floating course entry. */
+.figma-map-page .map-member-popup-layer {
+  z-index: 9000 !important;
+  pointer-events: auto !important;
+}
+
+.figma-map-page .map-member-popup-layer .map-member-popup {
+  z-index: 9010 !important;
+}
+
+.figma-map-page:has(.map-member-popup-layer) .lightning-course-button {
+  display: none !important;
+}

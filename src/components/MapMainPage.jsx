@@ -1059,7 +1059,7 @@ export default function MapMainPage({
 
       <div className="figma-map-status">{status}</div>
 
-      {!selectedPlace && !showSongpaPopup && !showLightningCourse && (
+      {!selectedPlace && !showSongpaPopup && !showMemberPopup && !showLightningCourse && (
         <button
           id="btn-map-floating-lightning_course"
           className="lightning-course-button"

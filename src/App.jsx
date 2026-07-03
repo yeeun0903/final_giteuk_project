@@ -7,6 +7,7 @@ import CommunityPosting from "./components/CommunityPosting.jsx";
 import CommunityPostDetailLayout from "./components/community/CommunityPostDetailLayout.jsx";
 import CustomerCenter from "./components/CustomerCenter.jsx";
 import GroupBuyMain from "./pages/GroupBuy_Main.jsx";
+import GroupBuyBottomNav from "./components/groupbuy/GroupBuyBottomNav.jsx";
 import GroupBuyProductDetail01 from "./pages/GroupBuy_Product_Detail_01.jsx";
 import GroupBuyProductDetail02 from "./pages/GroupBuy_Product_Detail_02.jsx";
 import GroupBuyProductDetail03 from "./pages/GroupBuy_Product_Detail_03.jsx";
@@ -754,9 +755,12 @@ export default function App() {
       );
     }
 
+    const isGroupbuyDetailPage = groupbuyPage !== "main";
+
     return (
       <>
         {pageContent}
+        {isGroupbuyDetailPage && <GroupBuyBottomNav {...commonNavigationProps} />}
         <PaymentCompleted
           isOpen={isPaymentCompletedOpen}
           productName={paymentProduct?.title ?? "상품"}
