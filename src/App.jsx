@@ -197,6 +197,26 @@ export default function App() {
   }, [groupbuyPurchaseRecords]);
 
   useEffect(() => {
+    const updatePrototypeScale = () => {
+      const viewportWidth = window.visualViewport?.width || window.innerWidth;
+      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const nextScale = Math.min(viewportWidth / 402, viewportHeight / 874, 1);
+      document.documentElement.style.setProperty("--prototype-scale", String(Math.max(0.1, nextScale)));
+    };
+
+    updatePrototypeScale();
+    window.addEventListener("resize", updatePrototypeScale);
+    window.addEventListener("orientationchange", updatePrototypeScale);
+    window.visualViewport?.addEventListener("resize", updatePrototypeScale);
+
+    return () => {
+      window.removeEventListener("resize", updatePrototypeScale);
+      window.removeEventListener("orientationchange", updatePrototypeScale);
+      window.visualViewport?.removeEventListener("resize", updatePrototypeScale);
+    };
+  }, []);
+
+  useEffect(() => {
     if (page !== "splash") return undefined;
     const timer = window.setTimeout(() => setPage("course"), 3200);
     return () => window.clearTimeout(timer);

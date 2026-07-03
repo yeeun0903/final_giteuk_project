@@ -8013,3 +8013,89 @@ button {
   bottom: 174px !important;
   z-index: 95 !important;
 }
+
+/* prototype-scale device fit: keep 402x874 design intact */
+:root {
+  --prototype-scale: 1;
+}
+
+.app-shell,
+.app-shell:has(.figma-map-page),
+.app-shell:has(.figma-mypage),
+.app-shell:has(.customer-page),
+.app-shell:has(.customize-page),
+.app-shell:has(.community-frame),
+.app-shell:has(.groupbuy-frame),
+.app-shell:has(.pdp-frame),
+.app-shell:has(.posting-frame),
+.app-shell:has(.convenience-frame),
+.app-shell:has(.groupbuy-detail-frame),
+.page-shell,
+.groupbuy-page-shell {
+  width: 100vw !important;
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: grid !important;
+  place-items: center !important;
+  background: #f4efff !important;
+}
+
+.phone-page,
+.figma-map-page.phone-page,
+.figma-mypage.phone-page,
+.customer-page.phone-page,
+.customize-page.phone-page,
+.terms-page.phone-page,
+.inquiry-page.phone-page,
+.figma-splash.phone-page,
+.auth-login-page.phone-page,
+.auth-form-page.phone-page,
+.community-frame,
+.groupbuy-frame,
+.pdp-frame,
+.posting-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  width: 402px !important;
+  min-width: 402px !important;
+  max-width: 402px !important;
+  height: 874px !important;
+  min-height: 874px !important;
+  max-height: 874px !important;
+  margin: 0 !important;
+  zoom: 1 !important;
+  transform: scale(var(--prototype-scale)) !important;
+  transform-origin: center center !important;
+}
+
+.figma-bottom-nav,
+.figma-map-page .figma-bottom-nav,
+.figma-mypage .figma-bottom-nav,
+.customer-page .figma-bottom-nav,
+.customize-page .figma-bottom-nav,
+.community-frame .figma-bottom-nav,
+.groupbuy-frame .figma-bottom-nav,
+.pdp-frame .figma-bottom-nav,
+.posting-frame .figma-bottom-nav,
+.convenience-frame .figma-bottom-nav {
+  position: absolute !important;
+  left: 12px !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 26px !important;
+  width: 378px !important;
+  max-width: 378px !important;
+  height: 60px !important;
+  z-index: 5000 !important;
+}
+
+.community-frame .write-button {
+  position: absolute !important;
+  left: auto !important;
+  right: 24px !important;
+  top: auto !important;
+  bottom: 92px !important;
+  z-index: 5010 !important;
+}
