@@ -40,12 +40,10 @@ export default function CommunityPostCard({ post, onClick }) {
           </span>
         </div>
       </div>
-      {(post.photoUrl || post.photoVariant) && (
-        <CommunityPhotoSection
-          variant={post.photoVariant}
-          src={post.photoUrl}
-        />
-      )}
+      <CommunityPhotoSection
+        variant={post.photoVariant || "placeholder"}
+        src={post.photoUrl}
+      />
     </button>
   );
 }

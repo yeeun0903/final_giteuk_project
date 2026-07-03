@@ -153,17 +153,22 @@ export default function CommunityPostDetailLayout({
             <img src={post.header.backIcon} alt="" />
           </button>
           <h1>{post.header.title}</h1>
-          {canManagePost && (
-            <div className="pdp-post-manage">
-              <button type="button" onClick={handleEditPost}>수정</button>
-              <button type="button" onClick={handleDeletePost}>삭제</button>
-            </div>
-          )}
         </header>
 
         <span className="pdp-category">{post.category}</span>
 
-        <CommunityPostContent post={post} onAddressClick={onOpenMapPlace} />
+        <CommunityPostContent
+          post={post}
+          onAddressClick={onOpenMapPlace}
+          manageActions={
+            canManagePost ? (
+              <div className="pdp-post-manage">
+                <button type="button" onClick={handleEditPost}>수정</button>
+                <button type="button" onClick={handleDeletePost}>삭제</button>
+              </div>
+            ) : null
+          }
+        />
 
         <section className="pdp-actions" aria-label="게시글 액션">
           {actions.map((action) => {

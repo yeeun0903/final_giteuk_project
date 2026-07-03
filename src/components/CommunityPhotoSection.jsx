@@ -13,11 +13,9 @@ const images = {
 export default function CommunityPhotoSection({ variant, src }) {
   const imageSrc = src || images[variant];
 
-  if (!imageSrc) return null;
-
   return (
-    <div className="post-photo" aria-hidden="true">
-      <img src={imageSrc} alt="" />
+    <div className={imageSrc ? "post-photo" : "post-photo is-placeholder"} aria-hidden="true">
+      {imageSrc && <img src={imageSrc} alt="" />}
     </div>
   );
 }

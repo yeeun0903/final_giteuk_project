@@ -677,8 +677,15 @@ export default function MapMainPage({
 
     if (searchSort === "value") {
       return sortable.sort((a, b) => {
-        const savingDiff = getPlaceSavingAmount(b) - getPlaceSavingAmount(a);
-        if (savingDiff) return savingDiff;
+        const aSaving = getPlaceSavingAmount(a);
+        const bSaving = getPlaceSavingAmount(b);
+        const savingDiff = bSaving - aSaving;
+        if (savingDiff !== 0) return savingDiff;
+
+        if (distanceSortAnchor) {
+          return distanceKm(distanceSortAnchor, a) - distanceKm(distanceSortAnchor, b);
+        }
+
         return (Number(a.price1) || 0) - (Number(b.price1) || 0);
       });
     }
@@ -693,14 +700,19 @@ export default function MapMainPage({
   const showSearchPanel = hasSearchQuery || showSortOptions;
   const searchResults = orderedFilteredPlaces;
   const lightningCourse = useMemo(() => buildLightningCourse(places), [places]);
+  const activeSearchPlaces = hasSearchQuery ? orderedFilteredPlaces : [];
   const mapPlaces = selectedPlace
     ? orderedFilteredPlaces.some((place) => getPlaceKey(place) === getPlaceKey(selectedPlace))
       ? orderedFilteredPlaces
       : [...orderedFilteredPlaces, selectedPlace]
     : searchSelectedPlace
-      ? [searchSelectedPlace]
+      ? activeSearchPlaces.some((place) => getPlaceKey(place) === getPlaceKey(searchSelectedPlace))
+        ? activeSearchPlaces
+        : [searchSelectedPlace, ...activeSearchPlaces]
     : focusedPlace
-      ? [focusedPlace]
+      ? activeSearchPlaces.length
+        ? activeSearchPlaces
+        : [focusedPlace]
       : showLightningCourse && lightningCourse.places.length
       ? lightningCourse.places
       : orderedFilteredPlaces;
@@ -740,7 +752,6 @@ export default function MapMainPage({
     setShowLightningCourse(false);
     setShowLightningList(false);
     setShowSortOptions(false);
-    setSearchText("");
   }, []);
 
   const handleMapPlaceSelect = useCallback((place) => {
@@ -812,24 +823,6 @@ export default function MapMainPage({
         searchFocus={hasSearchQuery ? searchAnchor : null}
         onLocationChange={setUserLocation}
       />
-
-      {showSearchPanel && (
-        <button
-          id="btn-map-search-dismiss"
-          type="button"
-          className="figma-search-dismiss"
-          aria-label="검색 닫기"
-          data-event="click_search_close"
-          data-page="map"
-          data-section="search"
-          data-action="close"
-          data-label="search_close"
-          onClick={() => {
-            setSearchText("");
-            setShowSortOptions(false);
-          }}
-        />
-      )}
 
       <header className={showSearchPanel ? "figma-map-header search-open" : "figma-map-header"}>
         <div className="figma-gnb">
@@ -998,7 +991,6 @@ export default function MapMainPage({
           setSelectedPlace(null);
           setFocusedPlace(null);
           setSearchSelectedPlace(null);
-          setSearchText("");
           setShowSortOptions(false);
           setSelectedCategory("전체");
           setShowLightningCourse(false);

@@ -7909,3 +7909,48 @@ button {
   font-weight: 800;
   line-height: 1;
 }
+
+/* search overlay control placement */
+.figma-map-page .figma-current-location.search-active {
+  top: 360px !important;
+  right: 16px !important;
+  z-index: 92 !important;
+}
+
+.figma-map-page:has(.figma-map-header.search-open) .figma-map-zoom-controls {
+  top: 416px !important;
+  right: 16px !important;
+  z-index: 92 !important;
+}
+
+/* search result distance/value chips */
+.figma-search-results .figma-search-result-metrics b:first-child {
+  background: #f1eaff;
+  color: #5d2df5;
+}
+
+.figma-search-results .figma-search-result-metrics b:last-child {
+  background: #85f0d0;
+  color: #141126;
+}
+
+/* user post cards keep a stable image slot even without an uploaded photo */
+.post-photo.is-placeholder {
+  background: #f5f2ff;
+  box-shadow: none;
+}
+
+.post-photo.is-placeholder::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(133, 240, 208, 0.22), rgba(91, 37, 235, 0.08));
+}
+
+/* move post edit actions into the author/content area */
+.pdp-content .pdp-post-manage {
+  justify-content: flex-start;
+  margin: 8px 0 10px 68px;
+}

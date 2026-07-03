@@ -179,7 +179,7 @@ export async function updateComment({ userId, commentId, content }) {
 
   const { data, error } = await supabase
     .from("comments")
-    .update({ content, updated_at: new Date().toISOString() })
+    .update({ content })
     .eq("id", commentId)
     .eq("user_id", userId)
     .select()
@@ -207,7 +207,7 @@ export async function updateCommunityPost({ userId, postId, title, content }) {
 
   const { data, error } = await supabase
     .from("community_posts")
-    .update({ title, content, updated_at: new Date().toISOString() })
+    .update({ title, content })
     .eq("id", postId)
     .eq("user_id", userId)
     .select()

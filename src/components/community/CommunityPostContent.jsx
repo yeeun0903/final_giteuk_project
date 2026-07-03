@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CommunityPostAuthorMeta from "./CommunityPostAuthorMeta.jsx";
 
-export default function CommunityPostContent({ post, onAddressClick }) {
+export default function CommunityPostContent({ post, onAddressClick, manageActions = null }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const images = post.images ?? [];
   const hasLargePhoto = images.some((image) => image.variant === "large");
@@ -11,6 +11,7 @@ export default function CommunityPostContent({ post, onAddressClick }) {
       <h2>{post.title}</h2>
 
       <CommunityPostAuthorMeta author={post.author} />
+      {manageActions}
 
       <p className="pdp-body-text">{renderTextLines(post.body)}</p>
 
