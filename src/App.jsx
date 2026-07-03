@@ -197,9 +197,19 @@ export default function App() {
   }, [groupbuyPurchaseRecords]);
 
   useEffect(() => {
+    let lastLayoutHeight = window.innerHeight || window.visualViewport?.height || 874;
+
     const updatePrototypeScale = () => {
-      const viewportWidth = window.visualViewport?.width || window.innerWidth;
-      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const viewportWidth = window.innerWidth || window.visualViewport?.width || 402;
+      const layoutHeight = window.innerHeight || lastLayoutHeight;
+      const visualHeight = window.visualViewport?.height || layoutHeight;
+      const keyboardLikelyOpen = visualHeight < layoutHeight * 0.82;
+      const viewportHeight = keyboardLikelyOpen ? lastLayoutHeight : layoutHeight;
+
+      if (!keyboardLikelyOpen) {
+        lastLayoutHeight = viewportHeight;
+      }
+
       const availableHeight = Math.max(1, viewportHeight - 6);
       const nextScale = Math.max(0.1, Math.min(viewportWidth / 402, availableHeight / 874, 1));
       const scaledWidth = 402 * nextScale;
@@ -214,14 +224,10 @@ export default function App() {
     updatePrototypeScale();
     window.addEventListener("resize", updatePrototypeScale);
     window.addEventListener("orientationchange", updatePrototypeScale);
-    window.visualViewport?.addEventListener("resize", updatePrototypeScale);
-    window.visualViewport?.addEventListener("scroll", updatePrototypeScale);
 
     return () => {
       window.removeEventListener("resize", updatePrototypeScale);
       window.removeEventListener("orientationchange", updatePrototypeScale);
-      window.visualViewport?.removeEventListener("resize", updatePrototypeScale);
-      window.visualViewport?.removeEventListener("scroll", updatePrototypeScale);
     };
   }, []);
 
