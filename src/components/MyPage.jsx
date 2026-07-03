@@ -286,8 +286,8 @@ function SettingsDetail({ onBack, navigationProps }) {
         </SettingsGroup>
 
         <SettingsGroup title="계정">
-          <SettingsRow title="로그인 상태" copy="배포 전에는 로그인 연결을 잠시 막아뒀어요">
-            <span className="settings-status">준비중</span>
+          <SettingsRow title="로그인 상태" copy="구글, 카카오, 이메일 로그인을 사용할 수 있어요">
+            <span className="settings-status">활성화</span>
           </SettingsRow>
           <button type="button" className="settings-logout-button">로그아웃</button>
         </SettingsGroup>
