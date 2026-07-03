@@ -7818,7 +7818,7 @@ button {
   width: 46px !important;
   height: 46px !important;
   display: grid !important;
-  place-items: center !important;
+  place-items: start center !important;
   overflow: visible !important;
 }
 
@@ -8000,7 +8000,7 @@ button {
 .figma-map-page .figma-current-location.search-active {
   top: auto !important;
   right: 16px !important;
-  bottom: 118px !important;
+  bottom: 276px !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   z-index: 95 !important;
@@ -8017,6 +8017,8 @@ button {
 /* prototype-scale device fit: keep 402x874 design intact */
 :root {
   --prototype-scale: 1;
+  --prototype-viewport-width: 100vw;
+  --prototype-viewport-height: 100dvh;
 }
 
 .app-shell,
@@ -8032,13 +8034,13 @@ button {
 .app-shell:has(.groupbuy-detail-frame),
 .page-shell,
 .groupbuy-page-shell {
-  width: 100vw !important;
-  min-height: 100dvh !important;
-  height: 100dvh !important;
+  width: var(--prototype-viewport-width) !important;
+  min-height: var(--prototype-viewport-height) !important;
+  height: var(--prototype-viewport-height) !important;
   padding: 0 !important;
   overflow: hidden !important;
   display: grid !important;
-  place-items: center !important;
+  place-items: start center !important;
   background: #f4efff !important;
 }
 
@@ -8067,7 +8069,7 @@ button {
   margin: 0 !important;
   zoom: 1 !important;
   transform: scale(var(--prototype-scale)) !important;
-  transform-origin: center center !important;
+  transform-origin: top center !important;
 }
 
 .figma-bottom-nav,

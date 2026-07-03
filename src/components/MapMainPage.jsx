@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { figmaAssets } from "../data/figmaAssets.js";
 import { formatWon, getMapLink, loadPlaces, loadSongpaPubs, placeImagePlaceholder } from "../utils/placeData.js";
 import KakaoPlacesMap from "./KakaoPlacesMap.jsx";
-import sortOrderIcon from "../assets/Community_convenience_pdp_all/Sort order icon.svg";
+import searchToggleIcon from "../assets/common/more.png";
 import MapPdpSheet from "./MapPdpSheet.jsx";
 
 const categories = [
@@ -130,6 +130,19 @@ const CATEGORY_Q3_PRICE = {
 function getPlaceSavingAmount(place) {
   const basePrice = CATEGORY_Q3_PRICE[place.category] ?? 0;
   return Math.max(0, basePrice - (Number(place.price1) || 0));
+}
+
+function comparePlacesBySaving(anchor) {
+  return (a, b) => {
+    const savingDiff = getPlaceSavingAmount(b) - getPlaceSavingAmount(a);
+    if (savingDiff !== 0) return savingDiff;
+
+    if (anchor) {
+      return distanceKm(anchor, a) - distanceKm(anchor, b);
+    }
+
+    return String(a.place_name || "").localeCompare(String(b.place_name || ""), "ko-KR");
+  };
 }
 
 function formatDistanceLabel(anchor, place) {
@@ -678,18 +691,7 @@ export default function MapMainPage({
     const sortable = [...filteredPlaces];
 
     if (searchSort === "value") {
-      return sortable.sort((a, b) => {
-        const aSaving = getPlaceSavingAmount(a);
-        const bSaving = getPlaceSavingAmount(b);
-        const savingDiff = bSaving - aSaving;
-        if (savingDiff !== 0) return savingDiff;
-
-        if (distanceSortAnchor) {
-          return distanceKm(distanceSortAnchor, a) - distanceKm(distanceSortAnchor, b);
-        }
-
-        return (Number(a.price1) || 0) - (Number(b.price1) || 0);
-      });
+      return sortable.sort(comparePlacesBySaving(distanceSortAnchor));
     }
 
     const distanceAnchor = distanceSortAnchor || sortable.find((place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
@@ -897,7 +899,7 @@ export default function MapMainPage({
                 onClick={() => setIsSearchResultsCollapsed((collapsed) => !collapsed)}
               >
                 <strong>검색 결과 {orderedFilteredPlaces.length.toLocaleString("ko-KR")}개</strong>
-                <span>{isSearchResultsCollapsed ? "펼치기" : "접기"}<img src={sortOrderIcon} alt="" /></span>
+                <span>{isSearchResultsCollapsed ? "펼치기" : "접기"}<img src={searchToggleIcon} alt="" /></span>
               </button>
               {!isSearchResultsCollapsed && <div className="figma-search-sort-options" aria-label="검색 결과 정렬">
                 <button

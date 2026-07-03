@@ -200,7 +200,10 @@ export default function App() {
     const updatePrototypeScale = () => {
       const viewportWidth = window.visualViewport?.width || window.innerWidth;
       const viewportHeight = window.visualViewport?.height || window.innerHeight;
-      const nextScale = Math.min(viewportWidth / 402, viewportHeight / 874, 1);
+      const availableHeight = Math.max(1, viewportHeight - 6);
+      const nextScale = Math.min(viewportWidth / 402, availableHeight / 874, 1);
+      document.documentElement.style.setProperty("--prototype-viewport-width", String(viewportWidth) + "px");
+      document.documentElement.style.setProperty("--prototype-viewport-height", String(viewportHeight) + "px");
       document.documentElement.style.setProperty("--prototype-scale", String(Math.max(0.1, nextScale)));
     };
 
