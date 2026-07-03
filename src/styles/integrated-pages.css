@@ -570,3 +570,48 @@
     border-radius: 0;
   }
 }
+
+/* Responsive detail-page scrolling */
+.pdp-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  width: min(402px, 100vw) !important;
+  min-width: 0 !important;
+  max-width: 402px !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-height: 100dvh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border-radius: 0 !important;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pdp-frame {
+  padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.pdp-frame .pdp-comments {
+  padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.convenience-frame {
+  padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.convenience-content {
+  padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.groupbuy-detail-frame {
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+}
+
+.groupbuy-detail-action-bar {
+  width: min(402px, 100vw) !important;
+  max-width: 402px !important;
+}
