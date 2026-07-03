@@ -18,4 +18,4 @@ export const supabase = createClient(
   supabaseAnonKey || "placeholder-anon-key"
 );
 
-export const supabaseWritesEnabled = supabaseEnabled && import.meta.env.VITE_SUPABASE_WRITE_ENABLED === "true";
+export const supabaseWritesEnabled = supabaseEnabled && import.meta.env.VITE_SUPABASE_WRITE_ENABLED !== "false";
