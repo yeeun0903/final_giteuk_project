@@ -1726,3 +1726,108 @@
 .customer-page.inquiry-page .inquiry-form-card {
   margin-top: 12px !important;
 }
+
+/* Customer home: tighten the gap between the intro copy and the first menu card. */
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
+  height: 112px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
+  margin-top: 42px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card {
+  top: 124px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-hours-card {
+  top: 370px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
+  top: 516px !important;
+}
+
+/* MyPage small inner pages: keep back/title rows compact and pull content up. */
+.figma-mypage.mypage-detail-page .mypage-detail-header,
+.figma-mypage.mypage-inner-page .mypage-detail-header,
+.figma-mypage.likes-page .mypage-detail-header,
+.figma-mypage.orders-page .mypage-detail-header,
+.figma-mypage.savings-page .mypage-detail-header,
+.figma-mypage.settings-page .mypage-detail-header {
+  height: 58px !important;
+  min-height: 58px !important;
+  padding-top: var(--mobile-top-pad) !important;
+}
+
+.figma-mypage.mypage-detail-page .settings-profile-card,
+.figma-mypage.settings-page .settings-profile-card,
+.figma-mypage.mypage-detail-page .mypage-detail-summary-card,
+.figma-mypage.mypage-detail-page .mypage-detail-empty-card,
+.figma-mypage.mypage-detail-page .mypage-like-tabs {
+  margin-top: 4px !important;
+}
+
+.figma-mypage.mypage-detail-page .settings-content,
+.figma-mypage.mypage-detail-page .mypage-visit-list {
+  margin-top: 8px !important;
+}
+
+/* Community detail: prevent badge/title overlap and remove the large dead space before actions/comments. */
+.pdp-frame .pdp-category {
+  top: 92px !important;
+  margin-top: 0 !important;
+  z-index: 3 !important;
+}
+
+.pdp-frame .pdp-content {
+  top: 130px !important;
+  height: auto !important;
+  min-height: 210px !important;
+}
+
+.pdp-frame .pdp-content h2 {
+  top: 0 !important;
+  width: calc(100% - 40px) !important;
+  line-height: 22px !important;
+  word-break: keep-all !important;
+  z-index: 2 !important;
+}
+
+.pdp-frame .pdp-author {
+  top: 38px !important;
+}
+
+.pdp-frame .pdp-body-text {
+  top: 100px !important;
+}
+
+.pdp-frame .pdp-photo-row {
+  top: 184px !important;
+}
+
+.pdp-frame .pdp-address {
+  top: 304px !important;
+}
+
+.pdp-frame:not(:has(.pdp-photo-row)):not(:has(.pdp-address)) .pdp-actions {
+  top: 318px !important;
+}
+
+.pdp-frame:not(:has(.pdp-photo-row)):not(:has(.pdp-address)) .pdp-comments {
+  margin-top: 372px !important;
+}
+
+.pdp-frame:has(.pdp-photo-row) .pdp-actions,
+.pdp-frame:has(.pdp-address) .pdp-actions {
+  top: 440px !important;
+}
+
+.pdp-frame:has(.pdp-photo-row) .pdp-comments,
+.pdp-frame:has(.pdp-address) .pdp-comments {
+  margin-top: 494px !important;
+}
+
+.pdp-frame .pdp-comments {
+  padding-top: 12px !important;
+}
