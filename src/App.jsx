@@ -197,6 +197,25 @@ export default function App() {
   }, [groupbuyPurchaseRecords]);
 
   useEffect(() => {
+    const updatePhoneScale = () => {
+      const widthScale = window.innerWidth / 402;
+      const heightScale = window.innerHeight / 874;
+      const nextScale = Math.max(0.1, Math.min(widthScale, heightScale, 1));
+      document.documentElement.style.setProperty("--phone-scale", String(nextScale));
+      document.documentElement.style.setProperty("--phone-scaled-height", String(874 * nextScale) + "px");
+    };
+
+    updatePhoneScale();
+    window.addEventListener("resize", updatePhoneScale);
+    window.addEventListener("orientationchange", updatePhoneScale);
+
+    return () => {
+      window.removeEventListener("resize", updatePhoneScale);
+      window.removeEventListener("orientationchange", updatePhoneScale);
+    };
+  }, []);
+
+  useEffect(() => {
     if (page !== "splash") return undefined;
     const timer = window.setTimeout(() => setPage("course"), 3200);
     return () => window.clearTimeout(timer);

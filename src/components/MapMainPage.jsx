@@ -581,6 +581,7 @@ export default function MapMainPage({
   const [searchText, setSearchText] = useState("");
   const [searchSort, setSearchSort] = useState("distance");
   const [showSortOptions, setShowSortOptions] = useState(false);
+  const [isSearchResultsCollapsed, setIsSearchResultsCollapsed] = useState(false);
   const [showLightningCourse, setShowLightningCourse] = useState(false);
   const [showLightningList, setShowLightningList] = useState(false);
   const [status, setStatus] = useState("통합 DB 불러오는 중");
@@ -855,6 +856,7 @@ export default function MapMainPage({
               setShowLightningCourse(false);
               setShowLightningList(false);
               setShowSortOptions(false);
+              setIsSearchResultsCollapsed(false);
             }}
             placeholder="지역, 매장, 메뉴를 검색해보세요"
           />
@@ -872,6 +874,7 @@ export default function MapMainPage({
               event.preventDefault();
               event.stopPropagation();
               setShowSortOptions((open) => !open);
+              setIsSearchResultsCollapsed(false);
             }}
           >
             <img src={figmaAssets.filterIcon} alt="" />
@@ -879,10 +882,23 @@ export default function MapMainPage({
         </div>
 
         {showSearchPanel && (
-          <section className="figma-search-results" onMouseDown={(event) => event.stopPropagation()} onClick={(event) => event.stopPropagation()}>
+          <section className={isSearchResultsCollapsed ? "figma-search-results is-collapsed" : "figma-search-results"} onMouseDown={(event) => event.stopPropagation()} onClick={(event) => event.stopPropagation()}>
             <div className="figma-search-results-head">
-              <strong>검색 결과 {orderedFilteredPlaces.length.toLocaleString("ko-KR")}개</strong>
-              <div className="figma-search-sort-options" aria-label="검색 결과 정렬">
+              <button
+                id="btn-map-search-results-toggle"
+                type="button"
+                className="figma-search-results-toggle"
+                data-event="click_search_results_toggle"
+                data-page="map"
+                data-section="search_results"
+                data-action={isSearchResultsCollapsed ? "expand" : "collapse"}
+                data-label="search_results_toggle"
+                onClick={() => setIsSearchResultsCollapsed((collapsed) => !collapsed)}
+              >
+                <strong>검색 결과 {orderedFilteredPlaces.length.toLocaleString("ko-KR")}개</strong>
+                <span>{isSearchResultsCollapsed ? "펼치기" : "접기"}</span>
+              </button>
+              {!isSearchResultsCollapsed && <div className="figma-search-sort-options" aria-label="검색 결과 정렬">
                 <button
                   id="btn-map-search-sort_distance"
                   type="button"
@@ -915,9 +931,9 @@ export default function MapMainPage({
                   <img className="figma-search-sort-icon" src={figmaAssets.sortValueIcon[searchSort === "value" ? "white" : "purple"]} alt="" />
                   <span>가성비순</span>
                 </button>
-              </div>
+              </div>}
             </div>
-            {searchResults.length ? (
+            {!isSearchResultsCollapsed && (searchResults.length ? (
               searchResults.map((place) => (
                 <button
                   key={place.id}
@@ -947,7 +963,7 @@ export default function MapMainPage({
               ))
             ) : (
               <p>검색 결과가 없어요</p>
-            )}
+            ))}
           </section>
         )}
 
@@ -992,6 +1008,7 @@ export default function MapMainPage({
           setFocusedPlace(null);
           setSearchSelectedPlace(null);
           setShowSortOptions(false);
+          setIsSearchResultsCollapsed(true);
           setSelectedCategory("전체");
           setShowLightningCourse(false);
           setShowLightningList(false);

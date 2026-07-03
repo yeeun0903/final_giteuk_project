@@ -7954,3 +7954,107 @@ button {
   justify-content: flex-start;
   margin: 8px 0 10px 68px;
 }
+
+/* final device-fit scaling: keep the whole 402x874 app visible */
+:root {
+  --phone-scale: 1;
+  --phone-frame-width: 402px;
+  --phone-frame-height: 874px;
+  --phone-scaled-height: 874px;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.app-shell,
+.page-shell,
+.groupbuy-page-shell {
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  place-items: start center !important;
+  align-items: start !important;
+  justify-items: center !important;
+  overflow: hidden !important;
+  padding-top: max(0px, calc((100dvh - var(--phone-scaled-height)) / 2)) !important;
+  box-sizing: border-box !important;
+}
+
+.phone-page,
+.figma-map-page.phone-page,
+.figma-mypage.phone-page,
+.customer-page.phone-page,
+.customize-page.phone-page,
+.terms-page.phone-page,
+.inquiry-page.phone-page,
+.figma-splash.phone-page,
+.community-frame,
+.groupbuy-frame,
+.pdp-frame,
+.posting-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  width: var(--phone-frame-width) !important;
+  min-width: var(--phone-frame-width) !important;
+  max-width: var(--phone-frame-width) !important;
+  height: var(--phone-frame-height) !important;
+  min-height: var(--phone-frame-height) !important;
+  max-height: var(--phone-frame-height) !important;
+  transform: scale(var(--phone-scale)) !important;
+  transform-origin: top center !important;
+  border-radius: 34px !important;
+}
+
+/* map search list collapse/expand */
+.figma-map-page .figma-search-results-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-height: 28px !important;
+  padding: 0 2px 6px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #5b25eb !important;
+  text-align: left !important;
+}
+
+.figma-map-page .figma-search-results-toggle strong {
+  color: #5b25eb !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+}
+
+.figma-map-page .figma-search-results-toggle span {
+  color: #777 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.figma-map-page .figma-search-results.is-collapsed {
+  max-height: 44px !important;
+  overflow: hidden !important;
+}
+
+/* map controls pinned near bottom above bottom navigation */
+.figma-map-page .figma-current-location,
+.figma-map-page .figma-current-location.search-active {
+  top: auto !important;
+  right: 16px !important;
+  bottom: 118px !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 95 !important;
+}
+
+.figma-map-page .figma-map-zoom-controls,
+.figma-map-page:has(.figma-map-header.search-open) .figma-map-zoom-controls {
+  top: auto !important;
+  right: 16px !important;
+  bottom: 174px !important;
+  z-index: 95 !important;
+}
