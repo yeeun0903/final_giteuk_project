@@ -570,3 +570,90 @@
     border-radius: 0;
   }
 }
+
+/* Fixed mobile chrome controls */
+html,
+body,
+#root {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font-size: inherit;
+  -webkit-text-size-adjust: 100%;
+}
+
+.figma-bottom-nav,
+.figma-map-page .figma-bottom-nav,
+.figma-mypage .figma-bottom-nav,
+.customer-page .figma-bottom-nav,
+.customize-page .figma-bottom-nav,
+.community-frame .figma-bottom-nav,
+.groupbuy-frame .figma-bottom-nav,
+.pdp-frame .figma-bottom-nav,
+.posting-frame .figma-bottom-nav,
+.convenience-frame .figma-bottom-nav,
+.figma-mypage .mypage-bottom-nav,
+.customer-page .mypage-bottom-nav {
+  position: fixed !important;
+  left: max(12px, calc((100vw - 402px) / 2 + 12px)) !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 26px) !important;
+  width: min(378px, calc(100vw - 24px)) !important;
+  max-width: min(378px, calc(100vw - 24px)) !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  margin: 0 !important;
+  z-index: 7000 !important;
+  transform: translateZ(0) !important;
+}
+
+.terms-confirm-bar {
+  position: fixed !important;
+  left: max(12px, calc((100vw - 402px) / 2 + 12px)) !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 94px) !important;
+  width: min(378px, calc(100vw - 24px)) !important;
+  min-height: 72px !important;
+  border-radius: 18px !important;
+  z-index: 6990 !important;
+  box-sizing: border-box !important;
+}
+
+.terms-page.phone-page {
+  padding-bottom: 176px !important;
+}
+
+.community-frame .write-button {
+  position: fixed !important;
+  left: auto !important;
+  right: max(24px, calc((100vw - 402px) / 2 + 24px)) !important;
+  top: auto !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 94px) !important;
+  z-index: 7010 !important;
+}
+
+@media (max-width: 402px) {
+  .figma-bottom-nav,
+  .figma-map-page .figma-bottom-nav,
+  .figma-mypage .figma-bottom-nav,
+  .customer-page .figma-bottom-nav,
+  .customize-page .figma-bottom-nav,
+  .community-frame .figma-bottom-nav,
+  .groupbuy-frame .figma-bottom-nav,
+  .pdp-frame .figma-bottom-nav,
+  .posting-frame .figma-bottom-nav,
+  .convenience-frame .figma-bottom-nav,
+  .figma-mypage .mypage-bottom-nav,
+  .customer-page .mypage-bottom-nav,
+  .terms-confirm-bar {
+    left: 12px !important;
+  }
+}
+
