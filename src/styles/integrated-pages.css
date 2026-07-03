@@ -2209,3 +2209,105 @@
   object-fit: cover !important;
   object-position: center 48% !important;
 }
+
+/* Final correction requested: page titles use 20px, not 22px. */
+.community-frame .page-title h1,
+.groupbuy-frame .groupbuy-page-title h1,
+.figma-mypage .mypage-title h1,
+.customer-page .customer-title strong,
+.customize-page .customize-top h1,
+.pdp-frame .pdp-header h1,
+.pdp-header h1,
+.posting-frame .posting-header h1,
+.posting-header h1,
+.convenience-frame .convenience-header h1,
+.convenience-header h1,
+.groupbuy-detail-frame .groupbuy-detail-header h1,
+.groupbuy-detail-header h1,
+.inform-page .inform-header h1,
+.inform-header h1,
+.auth-form-page .auth-header h1,
+.auth-header h1,
+.figma-mypage .mypage-detail-header h1,
+.mypage-detail-header h1,
+.page-title-block h1 {
+  font-size: 20px !important;
+  line-height: 1.24 !important;
+}
+
+/* Post detail: remove the excessive blank space between header and content. */
+.pdp-frame .pdp-category {
+  margin-top: 28px !important;
+}
+
+.pdp-frame .pdp-content {
+  margin-top: 12px !important;
+  gap: 12px !important;
+}
+
+.pdp-frame .pdp-author {
+  margin-top: 0 !important;
+}
+
+.pdp-frame .pdp-body-text {
+  margin-top: 2px !important;
+}
+
+.pdp-frame .pdp-actions,
+.pdp-frame-sale .pdp-actions,
+.pdp-frame-sale2 .pdp-actions,
+.pdp-frame-report .pdp-actions {
+  margin-top: 12px !important;
+}
+
+.pdp-frame .pdp-comments,
+.pdp-frame-sale .pdp-comments,
+.pdp-frame-sale2 .pdp-comments,
+.pdp-frame-report .pdp-comments {
+  margin-top: 10px !important;
+}
+
+/* Customer center home: keep the first card visible and restore comfortable card spacing. */
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
+  height: 138px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
+  margin-top: 44px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card {
+  top: 150px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-hours-card {
+  top: 404px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
+  top: 558px !important;
+}
+
+/* Settings page: center cards to the same 368px rail and give the banner breathing room. */
+.figma-mypage.settings-page .settings-profile-card,
+.figma-mypage.mypage-detail-page.settings-page .settings-profile-card {
+  width: 368px !important;
+  margin-top: 12px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.figma-mypage.settings-page .settings-content,
+.figma-mypage.mypage-detail-page.settings-page .settings-content {
+  width: 368px !important;
+  margin-top: 12px !important;
+  padding: 0 0 calc(var(--mobile-nav-height) + var(--mobile-nav-bottom) + 24px) !important;
+  gap: 12px !important;
+}
+
+.figma-mypage.settings-page .settings-content .settings-group,
+.figma-mypage.mypage-detail-page.settings-page .settings-content .settings-group {
+  width: 368px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

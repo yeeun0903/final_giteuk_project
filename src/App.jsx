@@ -422,16 +422,25 @@ export default function App() {
       return;
     }
 
-    try {
-      const savedVisit = supabaseEnabled
-        ? await createVisit({ userId: user.id, place, savingAmount: nextSaving })
-        : null;
-      addLocalVisitRecord({ savingAmount: savedVisit?.saving_amount ?? nextSaving, place });
-      if (supabaseEnabled) await refreshSavingStats(user.id);
-      setPage("mypage");
-    } catch (error) {
-      console.error("방문 기록 저장 실패", error);
+    let savedVisit = null;
+
+    if (supabaseEnabled) {
+      try {
+        savedVisit = await createVisit({ userId: user.id, place, savingAmount: nextSaving });
+      } catch (error) {
+        console.error("방문 기록 저장 실패", error);
+      }
     }
+
+    addLocalVisitRecord({ savingAmount: savedVisit?.saving_amount ?? nextSaving, place });
+
+    if (supabaseEnabled) {
+      refreshSavingStats(user.id).catch((error) => {
+        console.error("절약 금액 조회 실패", error);
+      });
+    }
+
+    setPage("mypage");
   };
 
   const handleShareGroupbuyProduct = async (product) => {
