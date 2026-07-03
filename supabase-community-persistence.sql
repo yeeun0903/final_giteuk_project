@@ -3,7 +3,10 @@
 alter table public.community_posts
   add column if not exists category text not null default '이용후기',
   add column if not exists author_name text,
-  add column if not exists photo_url text;
+  add column if not exists photo_url text,
+  add column if not exists location_label text,
+  add column if not exists location_lat double precision,
+  add column if not exists location_lng double precision;
 
 alter table public.comments
   alter column user_id drop not null,

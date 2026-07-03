@@ -569,7 +569,7 @@ export default function App() {
     action.catch((error) => console.error("공동구매 찜 이벤트 저장 실패", error));
   };
 
-  const handleCreateCommunityPost = async ({ category, title, body, photoUrl }) => {
+  const handleCreateCommunityPost = async ({ category, title, body, photoUrl, location }) => {
     const nextCategory = category?.trim();
     const nextTitle = title.trim();
     const nextBody = body.trim();
@@ -577,6 +577,7 @@ export default function App() {
 
     if (!meta || !nextTitle || !nextBody) return;
 
+    const locationLabel = location?.label || meta.location;
     const optimisticId = `local-user-${Date.now()}`;
     const optimisticPost = {
       id: optimisticId,
@@ -587,7 +588,8 @@ export default function App() {
       title: nextTitle,
       body: nextBody,
       authorName: nickname,
-      location: meta.location,
+      location: locationLabel,
+      locationData: location || null,
       time: "방금 전",
       likes: 0,
       photoUrl,
@@ -605,6 +607,9 @@ export default function App() {
           category: nextCategory,
           authorName: nickname,
           photoUrl,
+          locationLabel,
+          locationLat: location?.latitude ?? null,
+          locationLng: location?.longitude ?? null,
         });
 
         if (savedPost) {
@@ -978,7 +983,10 @@ function mapDatabaseCommunityPost(row, fallbackNickname = "기특한진희", cur
     body: row.content,
     authorName: row.author_name || fallbackNickname,
     authorLevel: "LV.1",
-    location: meta.location,
+    location: row.location_label || meta.location,
+    locationData: row.location_lat && row.location_lng
+      ? { label: row.location_label || "추가 위치", latitude: row.location_lat, longitude: row.location_lng }
+      : null,
     time: formatRelativeTime(row.created_at),
     likes: 0,
     photoUrl: row.photo_url || "",

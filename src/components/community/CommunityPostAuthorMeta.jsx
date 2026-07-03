@@ -5,10 +5,10 @@ export default function CommunityPostAuthorMeta({ author, manageActions = null }
       <div className="pdp-author-copy">
         <div className="pdp-author-line">
           <span>{author.name}</span>
-          {manageActions}
           <button className="pdp-level-badge" type="button">
             {author.level}
           </button>
+          {manageActions}
         </div>
         <div className="pdp-author-meta">
           <span>{author.time}</span>

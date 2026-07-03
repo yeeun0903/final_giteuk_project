@@ -56,7 +56,7 @@ export async function createPlaceRequest({ userId, category, placeName, address,
   return data;
 }
 
-export async function createCommunityPost({ userId, title, content, category, authorName, photoUrl }) {
+export async function createCommunityPost({ userId, title, content, category, authorName, photoUrl, locationLabel, locationLat, locationLng }) {
   if (!supabaseWritesEnabled) return null;
 
   const payload = {
@@ -66,6 +66,9 @@ export async function createCommunityPost({ userId, title, content, category, au
     category: category || "이용후기",
     author_name: authorName || null,
     photo_url: photoUrl || null,
+    location_label: locationLabel || null,
+    location_lat: Number.isFinite(locationLat) ? locationLat : null,
+    location_lng: Number.isFinite(locationLng) ? locationLng : null,
   };
 
   const { data, error } = await supabase
@@ -91,7 +94,7 @@ export async function listCommunityPosts() {
 
   const { data, error } = await supabase
     .from("community_posts")
-    .select("id,user_id,title,content,created_at,category,author_name,photo_url")
+    .select("id,user_id,title,content,created_at,category,author_name,photo_url,location_label,location_lat,location_lng")
     .order("created_at", { ascending: false })
     .limit(100);
 
