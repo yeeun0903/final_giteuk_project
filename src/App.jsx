@@ -323,6 +323,17 @@ export default function App() {
     isAuthenticated,
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    setTotalSaving(0);
+    setMonthlySaving(0);
+    setVisitRecords([]);
+    setLikedPlaces([]);
+    setGroupbuyFavoriteIds([]);
+    setGroupbuyPurchaseRecords([]);
+    setPage("mypage");
+  };
+
   const refreshSavingStats = async (userId) => {
     const stats = await getSavingStats(userId);
     setTotalSaving(stats.totalSaving);
