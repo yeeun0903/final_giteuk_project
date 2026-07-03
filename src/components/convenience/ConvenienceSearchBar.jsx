@@ -1,4 +1,4 @@
-import searchIcon from "../../../assets/Community_convenience_pdp_all/Button_Search.png";
+import searchIcon from "../../assets/Community_convenience_pdp_all/Button_Search.png";
 
 export default function ConvenienceSearchBar({ value, onChange }) {
   return (

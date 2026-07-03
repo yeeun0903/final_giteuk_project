@@ -1,4 +1,4 @@
-import sortIcon from "../../../assets/GroupBuy_Main/Sort order icon.png";
+import sortIcon from "../../assets/GroupBuy_Main/Sort order icon.png";
 
 const tabs = [
   { label: "전체", trackingLabel: "all" },

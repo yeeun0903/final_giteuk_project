@@ -1,4 +1,4 @@
-import backIcon from "../../../assets/Community_convenience_pdp_all/Back icon.png";
+import backIcon from "../../assets/Community_convenience_pdp_all/Back icon.png";
 import { figmaAssets } from "../../data/figmaAssets.js";
 
 export default function ConvenienceHeader({ onBack, onOpenAuth }) {

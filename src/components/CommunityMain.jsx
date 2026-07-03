@@ -2,12 +2,12 @@ import CommunityHeader from "./CommunityHeader.jsx";
 import CommunityTabs from "./CommunityTabs.jsx";
 import CommunityPostCard from "./CommunityPostCard.jsx";
 import BottomNavigation from "./BottomNavigation.jsx";
-import chevronRight from "../../assets/Community_main/chevron-right.png";
-import mascotImage from "../../assets/Community_main/image 37.png";
-import polygonImage from "../../assets/Community_main/Polygon 2.png";
-import postingIcon from "../../assets/Community_main/Button_Posting.png";
-import sortIcon from "../../assets/Community_main/Sort order icon.png";
-import storeImage from "../../assets/Community_main/Image_store.png";
+import chevronRight from "../assets/Community_main/chevron-right.png";
+import mascotImage from "../assets/Community_main/image 37.png";
+import polygonImage from "../assets/Community_main/Polygon 2.png";
+import postingIcon from "../assets/Community_main/Button_Posting.png";
+import sortIcon from "../assets/Community_main/Sort order icon.png";
+import storeImage from "../assets/Community_main/Image_store.png";
 
 export default function CommunityMain({
   posts,

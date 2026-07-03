@@ -1,7 +1,7 @@
-import reportImage from "../../assets/Community_main/posting_image01.png";
-import reviewImage from "../../assets/Community_main/posting_image02.png";
-import discountImage from "../../assets/Community_main/posting_image03.png";
-import sojuImage from "../../assets/Community_main/posting_image06.png";
+import reportImage from "../assets/Community_main/posting_image01.png";
+import reviewImage from "../assets/Community_main/posting_image02.png";
+import discountImage from "../assets/Community_main/posting_image03.png";
+import sojuImage from "../assets/Community_main/posting_image06.png";
 
 const images = {
   bottle: reportImage, // 제보하기

@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
-import backIcon from "../../assets/Community_posting/Back icon.png";
-import imageAddIcon from "../../assets/Community_posting/image-add.png";
-import addressIcon from "../../assets/Community_posting/Button_Address.png";
-import editIcon from "../../assets/Community_posting/edit-contained.png";
-import chevronDownIcon from "../../assets/Community_posting/chevron-down.png";
+import backIcon from "../assets/Community_posting/Back icon.png";
+import imageAddIcon from "../assets/Community_posting/image-add.png";
+import addressIcon from "../assets/Community_posting/Button_Address.png";
+import editIcon from "../assets/Community_posting/edit-contained.png";
+import chevronDownIcon from "../assets/Community_posting/chevron-down.png";
 import BottomNavigation from "./BottomNavigation.jsx";
 
 const categories = ["이용후기", "할인정보", "제보하기"];

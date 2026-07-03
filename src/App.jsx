@@ -45,14 +45,14 @@ import {
   upsertPlaceFavorite,
 } from "./lib/database.js";
 import { supabaseEnabled } from "./lib/supabaseClient.js";
-import pdpBackIcon from "../assets/Community_post_pdp/Back icon.png";
-import pdpWriterCharacter from "../assets/Community_post_pdp/006_giteuk_clothes2_hat_none_none.png";
-import pdpThumbUpIcon from "../assets/Community_post_pdp/Button_ThumbUp.png";
-import pdpCommentThumbIcon from "../assets/Community_post_pdp/Button_ThumbUp-1.png";
-import pdpFavouriteIcon from "../assets/Community_post_pdp/favourite.png";
-import pdpShareIcon from "../assets/Community_post_pdp/Button_Share.png";
-import pdpCommentIcon from "../assets/Community_post_pdp/Button_WriteComment.png";
-import pdpSortIcon from "../assets/Community_post_pdp/chevron-down.png";
+import pdpBackIcon from "./assets/Community_post_pdp/Back icon.png";
+import pdpWriterCharacter from "./assets/Community_post_pdp/006_giteuk_clothes2_hat_none_none.png";
+import pdpThumbUpIcon from "./assets/Community_post_pdp/Button_ThumbUp.png";
+import pdpCommentThumbIcon from "./assets/Community_post_pdp/Button_ThumbUp-1.png";
+import pdpFavouriteIcon from "./assets/Community_post_pdp/favourite.png";
+import pdpShareIcon from "./assets/Community_post_pdp/Button_Share.png";
+import pdpCommentIcon from "./assets/Community_post_pdp/Button_WriteComment.png";
+import pdpSortIcon from "./assets/Community_post_pdp/chevron-down.png";
 
 const communityCategoryMeta = {
   이용후기: {

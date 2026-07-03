@@ -1,4 +1,4 @@
-import searchIcon from "../../../assets/GroupBuy_Main/Search Icon.png";
+import searchIcon from "../../assets/GroupBuy_Main/Search Icon.png";
 
 export default function GroupBuySearchBar({ value, onChange }) {
   const handleSubmit = (event) => {

@@ -1,5 +1,5 @@
-import alertIcon from "../../assets/Payment_completed/alert-circle.png";
-import closeIcon from "../../assets/Payment_completed/Button_close.png";
+import alertIcon from "../assets/Payment_completed/alert-circle.png";
+import closeIcon from "../assets/Payment_completed/Button_close.png";
 
 export default function PaymentCompleted({
   isOpen,

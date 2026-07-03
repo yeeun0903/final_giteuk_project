@@ -1,9 +1,9 @@
 import { useState } from "react";
-import logo7eleven from "../../../assets/Community_convenience_pdp_all/Logo_7eleven.png";
-import logoCu from "../../../assets/Community_convenience_pdp_all/Logo_CU.png";
-import logoEmart24 from "../../../assets/Community_convenience_pdp_all/Logo_emart24.png";
-import logoGs25 from "../../../assets/Community_convenience_pdp_all/Logo_GS25.png";
-import placeholderImage from "../../../assets/Community_convenience_pdp_all/source/image.png";
+import logo7eleven from "../../assets/Community_convenience_pdp_all/Logo_7eleven.png";
+import logoCu from "../../assets/Community_convenience_pdp_all/Logo_CU.png";
+import logoEmart24 from "../../assets/Community_convenience_pdp_all/Logo_emart24.png";
+import logoGs25 from "../../assets/Community_convenience_pdp_all/Logo_GS25.png";
+import placeholderImage from "../../assets/Community_convenience_pdp_all/source/image.png";
 
 const brandLogos = [
   { keyword: "gs25", image: logoGs25, label: "GS25", className: "gs25" },

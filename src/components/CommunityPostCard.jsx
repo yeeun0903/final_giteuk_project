@@ -1,4 +1,4 @@
-import thumbUpIcon from "../../assets/Community_main/Button_ThumbUp.png";
+import thumbUpIcon from "../assets/Community_main/Button_ThumbUp.png";
 import CommunityPhotoSection from "./CommunityPhotoSection.jsx";
 
 export default function CommunityPostCard({ post, onClick }) {

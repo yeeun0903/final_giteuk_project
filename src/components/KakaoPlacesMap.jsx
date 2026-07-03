@@ -4,15 +4,28 @@ import { figmaAssets } from "../data/figmaAssets.js";
 let kakaoLoader;
 
 function loadKakaoMap(appKey) {
+  if (!appKey) {
+    return Promise.reject(new Error("VITE_KAKAO_MAP_KEY is missing"));
+  }
   if (window.kakao?.maps) return Promise.resolve(window.kakao);
 
   if (!kakaoLoader) {
     kakaoLoader = new Promise((resolve, reject) => {
       const script = document.createElement("script");
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${appKey}&autoload=false`;
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(appKey)}&autoload=false`;
       script.async = true;
-      script.onload = () => window.kakao.maps.load(() => resolve(window.kakao));
-      script.onerror = () => reject(new Error("카카오맵 SDK를 불러오지 못했어요"));
+      script.onload = () => {
+        if (!window.kakao?.maps?.load) {
+          kakaoLoader = null;
+          reject(new Error("Kakao Maps SDK loaded without maps object. Check JavaScript key and allowed web domains."));
+          return;
+        }
+        window.kakao.maps.load(() => resolve(window.kakao));
+      };
+      script.onerror = () => {
+        kakaoLoader = null;
+        reject(new Error("Failed to load Kakao Maps SDK. Check VITE_KAKAO_MAP_KEY and Kakao allowed web domains."));
+      };
       document.head.appendChild(script);
     });
   }
@@ -177,7 +190,11 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
   }, [requestCurrentLocation]);
 
   useEffect(() => {
-    if (!appKey || !mapRef.current || (!visiblePlaces.length && !searchFocus)) return undefined;
+    if (!mapRef.current || (!visiblePlaces.length && !searchFocus)) return undefined;
+    if (!appKey) {
+      setError("카카오맵 환경변수 VITE_KAKAO_MAP_KEY를 설정해주세요.");
+      return undefined;
+    }
 
     let cancelled = false;
 

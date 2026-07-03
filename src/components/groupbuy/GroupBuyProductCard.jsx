@@ -1,7 +1,7 @@
-import usersCheckIcon from "../../../assets/GroupBuy_Main/users-check.png";
-import ratingIcon from "../../../assets/GroupBuy_Main/Button_Rating.png";
-import heartIcon from "../../../assets/GroupBuy_Main/heart.png";
-import activeHeartIcon from "../../../assets/GroupBuy_Main/heart2.png";
+import usersCheckIcon from "../../assets/GroupBuy_Main/users-check.png";
+import ratingIcon from "../../assets/GroupBuy_Main/Button_Rating.png";
+import heartIcon from "../../assets/GroupBuy_Main/heart.png";
+import activeHeartIcon from "../../assets/GroupBuy_Main/heart2.png";
 
 function toTrackingSlug(value) {
   return String(value || "item")

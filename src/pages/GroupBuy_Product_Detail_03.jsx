@@ -1,11 +1,11 @@
 import { useState } from "react";
-import detailImage from "../../assets/GroupBuy_Product_detail/아이스크림.png";
-import backIcon from "../../assets/GroupBuy_Product_detail/Back icon.png";
-import ratingIcon from "../../assets/GroupBuy_Product_detail/Button_Rating.png";
-import shareIcon from "../../assets/GroupBuy_Product_detail/Button_Share.png";
-import detailHeartIcon from "../../assets/GroupBuy_Product_detail/heart.png";
-import activeHeartIcon from "../../assets/GroupBuy_Main/heart2.png";
-import saleIcon from "../../assets/GroupBuy_Product_detail/sale-02.png";
+import detailImage from "../assets/GroupBuy_Product_detail/아이스크림.png";
+import backIcon from "../assets/GroupBuy_Product_detail/Back icon.png";
+import ratingIcon from "../assets/GroupBuy_Product_detail/Button_Rating.png";
+import shareIcon from "../assets/GroupBuy_Product_detail/Button_Share.png";
+import detailHeartIcon from "../assets/GroupBuy_Product_detail/heart.png";
+import activeHeartIcon from "../assets/GroupBuy_Main/heart2.png";
+import saleIcon from "../assets/GroupBuy_Product_detail/sale-02.png";
 import { groupbuyProducts } from "../data/groupbuyMainData.js";
 import {
   isFavoriteProduct,
