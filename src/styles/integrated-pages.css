@@ -2200,3 +2200,12 @@
   font-size: 22px !important;
   line-height: 1.22 !important;
 }
+
+/* Splash: keep the enlarged full-bleed artwork, without the awkward background extension. */
+.figma-splash.phone-page .splash-frame-image {
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  object-fit: cover !important;
+  object-position: center 48% !important;
+}
