@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { figmaAssets } from "../data/figmaAssets.js";
 import { formatWon, getMapLink, loadPlaces, loadSongpaPubs, placeImagePlaceholder } from "../utils/placeData.js";
 import KakaoPlacesMap from "./KakaoPlacesMap.jsx";
+import sortOrderIcon from "../assets/Community_convenience_pdp_all/Sort order icon.svg";
 import MapPdpSheet from "./MapPdpSheet.jsx";
 
 const categories = [
@@ -896,7 +897,7 @@ export default function MapMainPage({
                 onClick={() => setIsSearchResultsCollapsed((collapsed) => !collapsed)}
               >
                 <strong>검색 결과 {orderedFilteredPlaces.length.toLocaleString("ko-KR")}개</strong>
-                <span>{isSearchResultsCollapsed ? "펼치기" : "접기"}</span>
+                <span>{isSearchResultsCollapsed ? "펼치기" : "접기"}<img src={sortOrderIcon} alt="" /></span>
               </button>
               {!isSearchResultsCollapsed && <div className="figma-search-sort-options" aria-label="검색 결과 정렬">
                 <button

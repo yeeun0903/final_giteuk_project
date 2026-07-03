@@ -7,10 +7,10 @@ export default function BottomNavigation({
   onOpenMyPage,
 }) {
   const navItems = [
-    { label: '지도', trackingLabel: 'map', icon: figmaAssets.myNavMap, onClick: onOpenMap },
-    { label: '커뮤니티', trackingLabel: 'community', icon: figmaAssets.myNavCommunity, active: true, onClick: onOpenCommunity },
-    { label: '공동구매', trackingLabel: 'groupbuy', icon: figmaAssets.myNavBuy, onClick: onOpenGroupbuy },
-    { label: '마이페이지', trackingLabel: 'mypage', icon: figmaAssets.myNavMy, onClick: onOpenMyPage },
+    { label: '지도', trackingLabel: 'map', icon: figmaAssets.myNavMap, activeIcon: figmaAssets.navMap, onClick: onOpenMap },
+    { label: '커뮤니티', trackingLabel: 'community', icon: figmaAssets.myNavCommunity, activeIcon: figmaAssets.navCommunity, active: true, onClick: onOpenCommunity },
+    { label: '공동구매', trackingLabel: 'groupbuy', icon: figmaAssets.myNavBuy, activeIcon: figmaAssets.navBuy, onClick: onOpenGroupbuy },
+    { label: '마이페이지', trackingLabel: 'mypage', icon: figmaAssets.myNavMy, activeIcon: figmaAssets.navMy, onClick: onOpenMyPage },
   ];
 
   return (
@@ -28,7 +28,7 @@ export default function BottomNavigation({
           data-label={item.trackingLabel}
           onClick={item.onClick}
         >
-          <img src={item.icon} alt="" />
+          <img src={item.active && item.activeIcon ? item.activeIcon : item.icon} alt="" />
           <span>{item.label}</span>
         </button>
       ))}
