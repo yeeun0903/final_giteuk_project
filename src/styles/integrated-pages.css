@@ -2311,3 +2311,55 @@
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+/* MyPage guest locks: keep only the white LOCK pill inside the profile card. */
+.figma-mypage .mypage-level-card.locked::after,
+.figma-mypage .mypage-custom-card.locked::after {
+  display: none !important;
+  content: none !important;
+}
+
+.figma-mypage .mypage-level-card.locked .mypage-level-copy em {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 46px !important;
+  height: 24px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #8f62ef !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+}
+
+/* Customer center: reduce the large gap above the inquiry card without clipping it. */
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
+  height: 118px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
+  margin-top: 38px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card {
+  top: 124px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-hours-card {
+  top: 378px !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
+  top: 532px !important;
+}
+
+/* MyPage monthly detail pages: match Settings spacing below the back/title row. */
+.figma-mypage.savings-page .mypage-detail-summary-card,
+.figma-mypage.orders-page .mypage-detail-summary-card,
+.figma-mypage.savings-page .mypage-detail-empty-card,
+.figma-mypage.orders-page .mypage-detail-empty-card,
+.figma-mypage.savings-page .mypage-like-tabs,
+.figma-mypage.orders-page .mypage-like-tabs {
+  margin-top: 12px !important;
+}
