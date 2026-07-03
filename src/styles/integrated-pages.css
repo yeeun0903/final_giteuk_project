@@ -1461,3 +1461,33 @@
 .figma-map-page:has(.map-member-popup-layer) .lightning-course-button {
   display: none !important;
 }
+
+/* Final mobile chrome correction: fixed top band is only the safe area plus logo row. */
+:root {
+  --fixed-header-band: calc(var(--mobile-top-pad) + 36px);
+}
+
+/* Community write button: keep it directly above the fixed bottom navigation. */
+.community-frame .write-button {
+  bottom: calc(var(--mobile-nav-bottom) + 68px) !important;
+  z-index: 7100 !important;
+}
+
+/* Songpa member popup: dim the whole map header, including category chips. */
+.figma-map-page:has(.map-member-popup-layer) .figma-map-header {
+  pointer-events: none !important;
+}
+
+.figma-map-page:has(.map-member-popup-layer) .figma-map-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.58);
+  pointer-events: none;
+}
+
+/* Reduce the shared mobile top breathing room across all fixed/sticky page headers. */
+:root {
+  --mobile-top-pad: 18px;
+}
