@@ -2407,3 +2407,9 @@
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
   margin-top: 10px !important;
 }
+
+/* Customer center intro copy: requested 16px. */
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title strong {
+  font-size: 16px !important;
+  line-height: 1.3 !important;
+}
