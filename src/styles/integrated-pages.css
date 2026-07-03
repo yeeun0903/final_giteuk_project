@@ -1,0 +1,506 @@
+.app-shell:has(.community-frame),
+.app-shell:has(.groupbuy-frame),
+.app-shell:has(.pdp-frame),
+.app-shell:has(.posting-frame),
+.app-shell:has(.convenience-frame),
+.app-shell:has(.groupbuy-detail-frame) {
+  min-height: 100vh;
+  background: #f4efff;
+  place-items: center;
+}
+
+.page-shell,
+.groupbuy-page-shell {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.community-frame,
+.groupbuy-frame,
+.pdp-frame,
+.posting-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  position: relative;
+  width: 402px;
+  min-width: 402px;
+  height: 874px;
+  min-height: 874px;
+  max-height: 874px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 34px;
+  background: #f8f8f8;
+  box-shadow: 0 24px 70px rgba(52, 34, 114, 0.11);
+  scrollbar-width: none;
+}
+
+.community-frame::-webkit-scrollbar,
+.groupbuy-frame::-webkit-scrollbar,
+.pdp-frame::-webkit-scrollbar,
+.posting-frame::-webkit-scrollbar,
+.convenience-frame::-webkit-scrollbar,
+.groupbuy-detail-frame::-webkit-scrollbar {
+  display: none;
+}
+
+.community-frame,
+.groupbuy-frame {
+  padding-bottom: 92px;
+}
+
+.community-header,
+.groupbuy-header {
+  width: 402px;
+  height: 148px;
+  padding: 48px 16px 0;
+  box-sizing: border-box;
+  background: #f8f8f8;
+}
+
+.community-frame .community-gnb,
+.groupbuy-frame .groupbuy-gnb {
+  position: static;
+  width: auto;
+  height: 36px;
+  transform: none;
+}
+
+.community-frame .figma-brand,
+.groupbuy-frame .figma-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+}
+
+.community-frame .figma-logo-mark,
+.groupbuy-frame .figma-logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+}
+
+.community-frame .figma-logo-text,
+.groupbuy-frame .figma-logo-text {
+  width: 66px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.community-frame .mypage-header-actions,
+.groupbuy-frame .mypage-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.community-frame .mypage-header-actions button,
+.groupbuy-frame .mypage-header-actions button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+}
+
+.community-frame .mypage-header-actions img,
+.groupbuy-frame .mypage-header-actions img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.community-frame .page-title,
+.groupbuy-frame .groupbuy-page-title {
+  margin-top: 14px;
+}
+
+.community-frame .page-title h1,
+.groupbuy-frame .groupbuy-page-title h1 {
+  color: #252334;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.4px;
+}
+
+.community-frame .page-title p,
+.groupbuy-frame .groupbuy-page-title p {
+  color: #6f6a7c;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+}
+
+.community-frame .figma-bottom-nav,
+.groupbuy-frame .figma-bottom-nav,
+.pdp-frame .figma-bottom-nav,
+.posting-frame .figma-bottom-nav,
+.convenience-frame .figma-bottom-nav {
+  position: fixed;
+  left: calc(50vw - 201px + 12px);
+  right: auto;
+  top: calc(50vh - 437px + 787px);
+  bottom: auto;
+  z-index: 1000;
+  width: 378px;
+  height: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  padding: 0;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  transform: none;
+}
+
+.pdp-frame .figma-bottom-nav {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.community-frame .figma-bottom-nav button,
+.groupbuy-frame .figma-bottom-nav button,
+.pdp-frame .figma-bottom-nav button,
+.posting-frame .figma-bottom-nav button,
+.convenience-frame .figma-bottom-nav button {
+  width: auto;
+  height: 60px;
+}
+
+.community-frame .figma-bottom-nav button:first-child span,
+.groupbuy-frame .figma-bottom-nav button:first-child span,
+.pdp-frame .figma-bottom-nav button:first-child span,
+.posting-frame .figma-bottom-nav button:first-child span,
+.convenience-frame .figma-bottom-nav button:first-child span {
+  font-size: 10px;
+}
+
+.community-body,
+.groupbuy-content {
+  width: 372px;
+  margin: 6px auto 0;
+}
+
+.post-list {
+  padding-bottom: 150px;
+}
+
+.community-frame .write-button {
+  position: fixed;
+  left: calc(50vw - 201px + 261px);
+  right: auto;
+  top: calc(50vh - 437px + 742px);
+  bottom: auto;
+  z-index: 1100;
+  width: 117px;
+  height: 37px;
+  margin: 0;
+  transform: none;
+}
+
+.groupbuy-feed-section {
+  padding-bottom: 12px;
+}
+
+.pdp-frame,
+.posting-frame {
+  padding-bottom: 92px;
+}
+
+.pdp-frame {
+  background: #ffffff;
+}
+
+.pdp-frame::after {
+  display: none;
+}
+
+.pdp-frame .pdp-header > button:not(.pdp-back-button),
+.pdp-frame .pdp-header > img:not(:first-child),
+.pdp-frame .pdp-header .menu-icon {
+  display: none !important;
+}
+
+.pdp-frame .pdp-actions {
+  left: 0;
+  top: 500px;
+  z-index: 5;
+  width: 402px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 5px 20px;
+  border-width: 0.6px 0;
+  border-style: solid;
+  border-color: #c6c6c6;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.pdp-frame .pdp-actions button {
+  position: relative;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 86px;
+  height: 48px;
+  display: grid;
+  grid-template-columns: 24px max-content;
+  grid-template-rows: 14px 14px;
+  column-gap: 10px;
+  row-gap: 0;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  overflow: visible;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.pdp-frame .pdp-actions button:nth-child(2) {
+  min-width: 96px;
+}
+
+.pdp-frame .pdp-actions button:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -18px;
+  top: 10px;
+  width: 1px;
+  height: 28px;
+  background: #c6c6c6;
+}
+
+.pdp-frame .pdp-actions img {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.pdp-frame .pdp-actions span {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  padding: 0;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.pdp-frame .pdp-actions strong {
+  grid-column: 2;
+  grid-row: 2;
+  color: #727272;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+
+.pdp-frame .pdp-comments {
+  margin-top: 590px;
+  padding: 24px 20px 236px;
+  background: #ffffff;
+}
+
+.pdp-frame .pdp-comment-head {
+  min-height: 28px;
+  padding-top: 0;
+}
+
+.pdp-frame .pdp-comment-list {
+  margin-top: 12px;
+  margin-bottom: 18px;
+}
+
+.pdp-frame .pdp-comment-form {
+  margin-top: 18px;
+  margin-bottom: 84px;
+}
+
+.pdp-frame-sale .pdp-actions {
+  top: 721px;
+}
+
+.pdp-frame-sale .pdp-comments {
+  margin-top: 806px;
+}
+
+.pdp-frame-sale2 .pdp-actions {
+  top: 462px;
+}
+
+.pdp-frame-sale2 .pdp-comments,
+.pdp-frame-report .pdp-comments {
+  margin-top: 548px;
+}
+
+.pdp-frame-report .pdp-actions {
+  top: 472px;
+}
+
+.posting-frame {
+  background: #ffffff;
+  width: 402px !important;
+  min-width: 402px !important;
+  max-width: 402px !important;
+  height: 874px !important;
+  min-height: 874px !important;
+  max-height: 874px !important;
+  flex: 0 0 auto !important;
+  justify-self: center !important;
+}
+
+.convenience-frame {
+  background: #f8f8f8;
+  padding-bottom: 92px;
+}
+
+.groupbuy-detail-frame {
+  background: #ffffff;
+}
+
+.groupbuy-detail-action-bar {
+  width: 100%;
+  border-radius: 0 0 34px 34px;
+}
+
+.map-pdp-sheet .pdp-actions {
+  position: static !important;
+  display: grid !important;
+  gap: 6px !important;
+  width: 355px !important;
+  height: auto !important;
+  margin: 29px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.map-pdp-sheet .pdp-actions button {
+  position: static !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 355px !important;
+  height: 40px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0.5px solid #c6c6c6 !important;
+  border-radius: 12px !important;
+  color: #727272 !important;
+  background: rgba(198, 198, 198, 0.1) !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.4px !important;
+  line-height: 18px !important;
+  box-sizing: border-box !important;
+}
+
+.map-pdp-sheet .pdp-actions button::after {
+  content: none !important;
+}
+
+.map-pdp-sheet .pdp-actions span {
+  display: block !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  padding-left: 20px !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+.map-pdp-sheet .pdp-actions b {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 137px !important;
+  width: 137px !important;
+  height: 40px !important;
+  gap: 8px !important;
+  padding: 0 14px !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  background: rgba(91, 37, 235, 0.8) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 13px !important;
+  box-sizing: border-box !important;
+}
+
+.map-pdp-sheet .pdp-actions b img {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+@media (max-width: 460px) {
+  .community-frame,
+  .groupbuy-frame,
+  .pdp-frame,
+  .posting-frame,
+  .convenience-frame,
+  .groupbuy-detail-frame {
+    width: min(100%, 402px);
+    min-width: 0;
+    height: 874px;
+    min-height: 874px;
+    max-height: 874px;
+    border-radius: 34px;
+  }
+
+  .community-frame .figma-bottom-nav,
+  .groupbuy-frame .figma-bottom-nav,
+  .pdp-frame .figma-bottom-nav,
+  .posting-frame .figma-bottom-nav,
+  .convenience-frame .figma-bottom-nav {
+    left: calc(50vw - 201px + 12px);
+    top: calc(50vh - 437px + 787px);
+    bottom: auto;
+    width: 378px;
+    max-width: none;
+    transform: none;
+  }
+
+  .community-frame .write-button {
+    left: calc(50vw - 201px + 261px);
+    top: calc(50vh - 437px + 742px);
+  }
+}
+
+@media (max-width: 402px) {
+  .community-frame .figma-bottom-nav,
+  .groupbuy-frame .figma-bottom-nav,
+  .pdp-frame .figma-bottom-nav,
+  .posting-frame .figma-bottom-nav,
+  .convenience-frame .figma-bottom-nav {
+    left: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .community-frame .write-button {
+    left: calc(100vw - 141px);
+  }
+}
