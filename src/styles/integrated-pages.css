@@ -2064,3 +2064,139 @@
   object-fit: contain !important;
   object-position: center center !important;
 }
+
+/* Post detail should flow with its real content height, including large images. */
+.pdp-frame {
+  overflow-y: auto !important;
+  padding-bottom: calc(var(--mobile-nav-height) + var(--mobile-nav-bottom) + 28px) !important;
+}
+
+.pdp-frame .pdp-category {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: fit-content !important;
+  min-width: 58px !important;
+  margin: 76px 0 0 20px !important;
+  padding: 0 12px !important;
+  z-index: 1 !important;
+}
+
+.pdp-frame .pdp-content {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 14px 20px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.pdp-frame .pdp-content h2,
+.pdp-frame .pdp-author,
+.pdp-frame .pdp-body-text,
+.pdp-frame .pdp-photo-row,
+.pdp-frame .pdp-address {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+}
+
+.pdp-frame .pdp-content h2 {
+  margin: 0 !important;
+  min-height: 0 !important;
+  line-height: 24px !important;
+}
+
+.pdp-frame .pdp-author {
+  margin-top: 2px !important;
+}
+
+.pdp-frame .pdp-body-text {
+  margin: 4px 0 0 !important;
+}
+
+.pdp-frame .pdp-photo-row {
+  margin-top: 8px !important;
+  display: flex !important;
+  gap: 8px !important;
+}
+
+.pdp-frame .pdp-photo-row-large {
+  justify-content: center !important;
+}
+
+.pdp-frame .pdp-photo-row-large .pdp-photo-button-large,
+.pdp-frame .pdp-photo-row-large .pdp-photo-button-large:first-child {
+  width: 100% !important;
+  max-width: 340px !important;
+  height: auto !important;
+  aspect-ratio: 340 / 250 !important;
+}
+
+.pdp-frame .pdp-photo-row-large .pdp-photo-button-large img {
+  object-fit: contain !important;
+  background: #ffffff !important;
+}
+
+.pdp-frame .pdp-address {
+  margin-top: 10px !important;
+}
+
+.pdp-frame .pdp-actions,
+.pdp-frame:not(:has(.pdp-photo-row)):not(:has(.pdp-address)) .pdp-actions,
+.pdp-frame:has(.pdp-photo-row) .pdp-actions,
+.pdp-frame:has(.pdp-address) .pdp-actions,
+.pdp-frame-sale .pdp-actions,
+.pdp-frame-sale2 .pdp-actions,
+.pdp-frame-report .pdp-actions {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  margin-top: 14px !important;
+}
+
+.pdp-frame .pdp-comments,
+.pdp-frame:not(:has(.pdp-photo-row)):not(:has(.pdp-address)) .pdp-comments,
+.pdp-frame:has(.pdp-photo-row) .pdp-comments,
+.pdp-frame:has(.pdp-address) .pdp-comments,
+.pdp-frame-sale .pdp-comments,
+.pdp-frame-sale2 .pdp-comments,
+.pdp-frame-report .pdp-comments {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  margin-top: 12px !important;
+  padding-top: 8px !important;
+}
+
+/* Reduce page title scale from 24px to 22px across primary and secondary pages. */
+.community-frame .page-title h1,
+.groupbuy-frame .groupbuy-page-title h1,
+.figma-mypage .mypage-title h1,
+.customer-page .customer-title strong,
+.customize-page .customize-top h1,
+.pdp-frame .pdp-header h1,
+.pdp-header h1,
+.posting-frame .posting-header h1,
+.posting-header h1,
+.convenience-frame .convenience-header h1,
+.convenience-header h1,
+.groupbuy-detail-frame .groupbuy-detail-header h1,
+.groupbuy-detail-header h1,
+.inform-page .inform-header h1,
+.inform-header h1,
+.auth-form-page .auth-header h1,
+.auth-header h1,
+.figma-mypage .mypage-detail-header h1,
+.mypage-detail-header h1,
+.page-title-block h1 {
+  font-size: 22px !important;
+  line-height: 1.22 !important;
+}
