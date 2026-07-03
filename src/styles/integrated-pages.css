@@ -1491,3 +1491,238 @@
 :root {
   --mobile-top-pad: 18px;
 }
+
+/* Community post detail: use the same reduced 18px top padding and tighter action/comment spacing. */
+.pdp-frame .pdp-header {
+  height: 68px !important;
+  padding-top: var(--mobile-top-pad) !important;
+}
+
+.pdp-frame .pdp-header h1,
+.pdp-header h1 {
+  top: 30px !important;
+}
+
+.pdp-frame .pdp-back-button,
+.pdp-back-button {
+  top: 31px !important;
+}
+
+.pdp-frame .pdp-category {
+  margin-top: 44px !important;
+}
+
+.pdp-frame .pdp-actions {
+  height: 50px !important;
+  padding: 4px 20px !important;
+  gap: 8px !important;
+}
+
+.pdp-frame .pdp-actions button {
+  min-width: 76px !important;
+  height: 42px !important;
+  column-gap: 7px !important;
+  padding: 7px 6px !important;
+}
+
+.pdp-frame .pdp-actions button:nth-child(2) {
+  min-width: 86px !important;
+}
+
+.pdp-frame .pdp-actions button:not(:last-child)::after {
+  right: -10px !important;
+  top: 7px !important;
+  height: 28px !important;
+}
+
+.pdp-frame .pdp-comments {
+  margin-top: 556px !important;
+  padding-top: 18px !important;
+}
+
+/* Apply the reduced top spacing to auth-only screens that use absolute artwork. */
+.auth-login-page .auth-login-back {
+  top: var(--mobile-top-pad) !important;
+}
+
+.auth-login-page .auth-login-logo-top {
+  top: 104px !important;
+}
+
+.auth-login-page .auth-login-logo-bottom {
+  top: 192px !important;
+}
+
+.auth-login-page .auth-login-slogan {
+  top: 302px !important;
+}
+
+.auth-login-page .auth-login-character {
+  top: 390px !important;
+}
+
+.auth-login-page .auth-login-character-shadow {
+  top: 572px !important;
+}
+
+.auth-login-page .auth-login-ground {
+  top: 535px !important;
+}
+
+.auth-login-page .auth-login-actions {
+  top: 626px !important;
+}
+
+.auth-form-page .auth-header {
+  height: 78px !important;
+  padding-top: var(--mobile-top-pad) !important;
+}
+
+.auth-form-page .auth-header-inner {
+  padding: 0 20px 14px !important;
+}
+
+.auth-form-page .auth-form-panel {
+  margin-top: 28px !important;
+}
+
+/* Give the GNB/logo row a small amount of breathing room below it. */
+.figma-map-page .figma-search {
+  margin-top: 14px !important;
+}
+
+.community-frame .page-title,
+.groupbuy-frame .groupbuy-page-title {
+  margin-top: 54px !important;
+}
+
+.customer-page .customer-title,
+.figma-mypage:not(.mypage-detail-page) .mypage-title {
+  margin-top: 54px !important;
+}
+
+/* MyPage inner pages: likes, groupbuy history, monthly savings, monthly purchases, and settings all use the 18px top header padding. */
+.figma-mypage.mypage-detail-page .mypage-detail-header,
+.figma-mypage.mypage-inner-page .mypage-detail-header,
+.figma-mypage.likes-page .mypage-detail-header,
+.figma-mypage.orders-page .mypage-detail-header,
+.figma-mypage.savings-page .mypage-detail-header,
+.figma-mypage.settings-page .mypage-detail-header {
+  height: 78px !important;
+  padding-top: var(--mobile-top-pad) !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Global top spacing audit: every app page uses the same reduced 18px top baseline. */
+:root {
+  --mobile-top-pad: 18px;
+  --fixed-header-band: calc(var(--mobile-top-pad) + 40px);
+}
+
+.figma-map-page .figma-map-header,
+.community-frame .community-header,
+.groupbuy-frame .groupbuy-header,
+.figma-mypage .mypage-header,
+.customer-page .customer-header,
+.customize-page .customize-top,
+.posting-frame .posting-header,
+.pdp-frame .pdp-header,
+.groupbuy-detail-frame .groupbuy-detail-header,
+.convenience-frame .convenience-header,
+.inform-page .inform-header,
+.auth-form-page .auth-header,
+.figma-mypage.mypage-detail-page .mypage-detail-header {
+  padding-top: var(--mobile-top-pad) !important;
+  box-sizing: border-box !important;
+}
+
+.community-frame .community-gnb,
+.community-frame .gnb,
+.groupbuy-frame .groupbuy-gnb,
+.figma-mypage:not(.mypage-detail-page) .mypage-gnb,
+.customer-page .customer-gnb {
+  top: var(--mobile-top-pad) !important;
+}
+
+/* Splash is a full-frame image, so match the reduced top spacing by shifting the artwork upward. */
+.figma-splash.phone-page .splash-frame-image {
+  height: calc(100% + 10px) !important;
+  transform: translateY(-10px) !important;
+  transform-origin: top center !important;
+  object-position: top center !important;
+}
+
+/* MyPage home: tighten the gap between the page title and the purple profile banner. */
+.figma-mypage:not(.mypage-detail-page) .mypage-header {
+  height: 126px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-title {
+  margin-top: 48px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-level-card {
+  top: 135px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-custom-card {
+  top: 252px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-saving-card {
+  top: 345px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-list-card {
+  top: 563px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-shortcuts {
+  top: 733px !important;
+}
+
+/* Map floating course controls are positioned inside the map frame, not the viewport. */
+.figma-map-page .lightning-course-button {
+  left: 16px !important;
+  right: auto !important;
+  bottom: calc(var(--mobile-nav-bottom) + 76px) !important;
+  width: auto !important;
+  min-width: 188px !important;
+  max-width: calc(100% - 32px) !important;
+  transform: none !important;
+}
+
+.figma-map-page .lightning-course-sheet {
+  left: 16px !important;
+  right: 16px !important;
+  bottom: calc(var(--mobile-nav-bottom) + 76px) !important;
+  transform: none !important;
+}
+
+/* Customer subpages: reduce the gap below the back/title row. */
+.customer-page.terms-page .customer-header,
+.customer-page.inquiry-page .customer-header {
+  height: 58px !important;
+  min-height: 58px !important;
+  padding: var(--mobile-top-pad) 16px 0 !important;
+}
+
+.customer-page.terms-page .customer-header::before,
+.customer-page.inquiry-page .customer-header::before {
+  height: 58px !important;
+}
+
+.customer-page.terms-page .terms-summary-card,
+.customer-page.inquiry-page .terms-summary-card {
+  margin-top: 4px !important;
+}
+
+.customer-page.terms-page .terms-lead {
+  margin-top: 12px !important;
+}
+
+.customer-page.inquiry-page .inquiry-guide-card,
+.customer-page.inquiry-page .inquiry-form-card {
+  margin-top: 12px !important;
+}
