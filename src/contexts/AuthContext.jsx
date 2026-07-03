@@ -167,7 +167,7 @@ export function AuthProvider({ children }) {
 
   const signInWithOAuthProvider = async (provider) => {
     if (!supabaseEnabled) {
-      throw new Error("Supabase 로그인이 배포 전까지 비활성화되어 있어요.");
+      throw new Error("Supabase 설정을 확인해주세요. 로그인 연결을 시작하지 못했어요.");
     }
 
     window.localStorage.setItem("gtgt-oauth-pending", "1");
@@ -198,7 +198,7 @@ export function AuthProvider({ children }) {
 
   const signInWithEmail = async ({ email, password }) => {
     if (!supabaseEnabled) {
-      throw new Error("Supabase 로그인이 비활성화되어 있어요.");
+      throw new Error("Supabase 설정을 확인해주세요. 로그인 연결을 시작하지 못했어요.");
     }
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -225,7 +225,7 @@ export function AuthProvider({ children }) {
 
   const signUpWithEmail = async ({ email, password }) => {
     if (!supabaseEnabled) {
-      throw new Error("Supabase 회원가입이 비활성화되어 있어요.");
+      throw new Error("Supabase 설정을 확인해주세요. 회원가입을 시작하지 못했어요.");
     }
 
     const nickname = createRandomNickname();

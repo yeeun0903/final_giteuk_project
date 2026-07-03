@@ -1,10 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const fallbackSupabaseUrl = "https://dytncztivagnpxgelqxm.supabase.co";
+const fallbackSupabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5dG5jenRpdmFnbnB4Z2VscXhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDA3MTUsImV4cCI6MjA5ODM3NjcxNX0.pxs9purMF9UvpWg7yNFFs1S5mdRFmBzOrGAckox_rpw";
 
-export const supabaseEnabled =
-  Boolean(supabaseUrl && supabaseAnonKey) && import.meta.env.VITE_SUPABASE_ENABLED !== "false";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || fallbackSupabaseUrl;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || fallbackSupabaseAnonKey;
+
+export const supabaseEnabled = Boolean(supabaseUrl && supabaseAnonKey);
 
 if (!supabaseUrl || !supabaseAnonKey) {
   // eslint-disable-next-line no-console
