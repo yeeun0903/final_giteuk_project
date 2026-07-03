@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { figmaAssets } from "../data/figmaAssets.js";
 import backIcon from "../assets/Community_posting/Back icon.png";
 import imageAddIcon from "../assets/Community_posting/image-add.png";
 import addressIcon from "../assets/Community_posting/Button_Address.png";
@@ -21,6 +22,8 @@ export default function CommunityPosting({
   const [body, setBody] = useState("");
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
+  const [location, setLocation] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
   const photoInputRef = useRef(null);
 
   const handleSubmit = (event) => {
@@ -37,7 +40,29 @@ export default function CommunityPosting({
       title: nextTitle,
       body: nextBody,
       photoUrl,
+      location,
     });
+  };
+
+  const handleLocationClick = () => {
+    if (!navigator.geolocation || isLocating) return;
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          label: "현재 위치",
+        });
+        setIsLocating(false);
+      },
+      () => {
+        setIsLocating(false);
+        window.alert("위치 권한을 허용하면 현재 위치를 추가할 수 있어요.");
+      },
+      { enableHighAccuracy: true, maximumAge: 30000, timeout: 8000 },
+    );
   };
 
   const handlePhotoChange = (event) => {
@@ -159,15 +184,27 @@ export default function CommunityPosting({
               <img src={imageAddIcon} alt="" />
               사진
             </button>
-            <button className="posting-secondary-button" type="button">
+            <button
+              className={location ? "posting-secondary-button active" : "posting-secondary-button"}
+              type="button"
+              onClick={handleLocationClick}
+              disabled={isLocating}
+            >
               <img src={addressIcon} alt="" />
-              위치
+              {isLocating ? "확인중" : location ? "추가됨" : "위치"}
             </button>
             <button className="posting-submit-button" type="submit">
               <img src={editIcon} alt="" />
               게시
             </button>
           </div>
+
+          {location && (
+            <div className="posting-location-preview">
+              <img src={figmaAssets.pdpAddress} alt="" />
+              <span>{location.label} 추가됨</span>
+            </div>
+          )}
         </form>
 
         <BottomNavigation

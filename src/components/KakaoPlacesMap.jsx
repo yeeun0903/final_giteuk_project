@@ -212,6 +212,8 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
         const isNewMap = !mapInstanceRef.current;
         mapInstanceRef.current = map;
 
+        map.relayout();
+
         if (isNewMap && !zoomChangedHandlerRef.current) {
           zoomChangedHandlerRef.current = () => {
             window.requestAnimationFrame(() => {
@@ -382,6 +384,32 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
   useEffect(() => {
     if (searchFocus) setIsLocating(false);
   }, [searchFocus]);
+
+  useEffect(() => {
+    if (!mapRef.current || !mapInstanceRef.current || !window.kakao?.maps) return undefined;
+
+    let frame = 0;
+    const relayout = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        mapInstanceRef.current?.relayout();
+      });
+    };
+
+    relayout();
+    window.addEventListener("resize", relayout);
+    window.visualViewport?.addEventListener("resize", relayout);
+
+    const observer = new ResizeObserver(relayout);
+    observer.observe(mapRef.current);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", relayout);
+      window.visualViewport?.removeEventListener("resize", relayout);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!selectedPlace || !mapInstanceRef.current || !window.kakao?.maps) return;

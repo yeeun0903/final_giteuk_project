@@ -10,8 +10,7 @@ export default function CommunityPostContent({ post, onAddressClick, manageActio
     <section className="pdp-content">
       <h2>{post.title}</h2>
 
-      <CommunityPostAuthorMeta author={post.author} />
-      {manageActions}
+      <CommunityPostAuthorMeta author={post.author} manageActions={manageActions} />
 
       <p className="pdp-body-text">{renderTextLines(post.body)}</p>
 
