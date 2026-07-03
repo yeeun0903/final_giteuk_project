@@ -7955,61 +7955,6 @@ button {
   margin: 8px 0 10px 68px;
 }
 
-/* final device-fit scaling: keep the whole 402x874 app visible */
-:root {
-  --phone-scale: 1;
-  --phone-frame-width: 402px;
-  --phone-frame-height: 874px;
-  --phone-scaled-height: 874px;
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100dvh;
-  overflow-x: hidden;
-}
-
-.app-shell,
-.page-shell,
-.groupbuy-page-shell {
-  min-height: 100dvh !important;
-  height: 100dvh !important;
-  place-items: start center !important;
-  align-items: start !important;
-  justify-items: center !important;
-  overflow: hidden !important;
-  padding-top: max(0px, calc((100dvh - var(--phone-scaled-height)) / 2)) !important;
-  box-sizing: border-box !important;
-}
-
-.phone-page,
-.figma-map-page.phone-page,
-.figma-mypage.phone-page,
-.customer-page.phone-page,
-.customize-page.phone-page,
-.terms-page.phone-page,
-.inquiry-page.phone-page,
-.figma-splash.phone-page,
-.community-frame,
-.groupbuy-frame,
-.pdp-frame,
-.posting-frame,
-.convenience-frame,
-.groupbuy-detail-frame {
-  width: var(--phone-frame-width) !important;
-  min-width: var(--phone-frame-width) !important;
-  max-width: var(--phone-frame-width) !important;
-  height: var(--phone-frame-height) !important;
-  min-height: var(--phone-frame-height) !important;
-  max-height: var(--phone-frame-height) !important;
-  zoom: var(--phone-scale) !important;
-  transform: none !important;
-  transform-origin: top center !important;
-  border-radius: 34px !important;
-}
-
 /* map search list collapse/expand */
 .figma-map-page .figma-search-results-toggle {
   display: flex !important;
