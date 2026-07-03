@@ -8009,13 +8009,11 @@ button {
   z-index: 95 !important;
 }
 
-/* prototype-scale device fit: keep 402x874 design intact */
+/* fixed prototype viewport: keep CSS pixels stable across webviews */
 :root {
-  --prototype-scale: 1;
-  --prototype-viewport-width: 100vw;
-  --prototype-viewport-height: 100dvh;
-  --prototype-scaled-width: 402px;
-  --prototype-scaled-height: 874px;
+  --prototype-width: 402px;
+  --prototype-height: 874px;
+  --prototype-nav-width: 378px;
 }
 
 html,
@@ -8023,11 +8021,21 @@ body,
 #root {
   width: 100% !important;
   min-width: 0 !important;
-  min-height: var(--prototype-viewport-height) !important;
+  min-height: 100dvh !important;
   margin: 0 !important;
   overflow: hidden !important;
   background: #f4efff !important;
   touch-action: manipulation;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  -webkit-text-size-adjust: 100%;
 }
 
 .app-shell,
@@ -8043,11 +8051,11 @@ body,
 .app-shell:has(.groupbuy-detail-frame),
 .page-shell,
 .groupbuy-page-shell {
-  width: var(--prototype-viewport-width) !important;
+  width: 100vw !important;
   min-width: 0 !important;
   max-width: 100vw !important;
-  min-height: var(--prototype-viewport-height) !important;
-  height: var(--prototype-viewport-height) !important;
+  min-height: 100dvh !important;
+  height: 100dvh !important;
   padding: 0 !important;
   overflow: hidden !important;
   display: grid !important;
@@ -8071,34 +8079,25 @@ body,
 .posting-frame,
 .convenience-frame,
 .groupbuy-detail-frame {
-  width: 402px !important;
-  min-width: 402px !important;
-  max-width: 402px !important;
-  height: 874px !important;
-  min-height: 874px !important;
-  max-height: 874px !important;
+  width: min(var(--prototype-width), 100vw) !important;
+  min-width: 0 !important;
+  max-width: var(--prototype-width) !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-height: 100dvh !important;
   margin: 0 auto !important;
-  zoom: var(--prototype-scale) !important;
+  zoom: 1 !important;
   transform: none !important;
   transform-origin: top center !important;
   box-sizing: border-box !important;
   overflow-x: hidden !important;
+  overflow-y: auto !important;
   border-radius: 34px !important;
+  -webkit-overflow-scrolling: touch;
 }
 
-.figma-map-page.phone-page,
-.figma-mypage.phone-page,
-.customer-page.phone-page,
-.customize-page.phone-page,
-.terms-page.phone-page,
-.inquiry-page.phone-page,
-.community-frame,
-.groupbuy-frame,
-.pdp-frame,
-.posting-frame,
-.convenience-frame,
-.groupbuy-detail-frame {
-  border-radius: 34px !important;
+.figma-map-page.phone-page {
+  overflow: hidden !important;
 }
 
 .figma-bottom-nav,
@@ -8110,25 +8109,51 @@ body,
 .groupbuy-frame .figma-bottom-nav,
 .pdp-frame .figma-bottom-nav,
 .posting-frame .figma-bottom-nav,
-.convenience-frame .figma-bottom-nav {
-  position: absolute !important;
-  left: 12px !important;
+.convenience-frame .figma-bottom-nav,
+.figma-mypage .mypage-bottom-nav,
+.customer-page .mypage-bottom-nav {
+  position: fixed !important;
+  left: max(12px, calc((100vw - 402px) / 2 + 12px)) !important;
   right: auto !important;
   top: auto !important;
-  bottom: 26px !important;
-  width: 378px !important;
-  max-width: 378px !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 26px) !important;
+  width: min(var(--prototype-nav-width), calc(100vw - 24px)) !important;
+  max-width: min(var(--prototype-nav-width), calc(100vw - 24px)) !important;
   height: 60px !important;
-  z-index: 5000 !important;
+  min-height: 60px !important;
+  margin: 0 !important;
+  z-index: 7000 !important;
+  transform: translateZ(0) !important;
 }
 
 .community-frame .write-button {
-  position: absolute !important;
+  position: fixed !important;
   left: auto !important;
-  right: 24px !important;
+  right: max(24px, calc((100vw - 402px) / 2 + 24px)) !important;
   top: auto !important;
-  bottom: 92px !important;
-  z-index: 5010 !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 94px) !important;
+  z-index: 7010 !important;
+}
+
+.terms-confirm-bar {
+  position: fixed !important;
+  left: max(12px, calc((100vw - 402px) / 2 + 12px)) !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 94px) !important;
+  width: min(var(--prototype-nav-width), calc(100vw - 24px)) !important;
+  max-width: min(var(--prototype-nav-width), calc(100vw - 24px)) !important;
+  min-height: 72px !important;
+  padding: 14px 12px !important;
+  grid-template-columns: minmax(0, 1fr) 118px !important;
+  border-radius: 18px !important;
+  box-sizing: border-box !important;
+  z-index: 6990 !important;
+  transform: translateZ(0) !important;
+}
+
+.terms-page.phone-page {
+  padding-bottom: 176px !important;
 }
 
 /* Prevent iOS/Safari from tinting raster/svg icons pink through inherited filters. */
@@ -8199,16 +8224,16 @@ body,
 }
 
 
-/* mypage bottom nav must match map/community fixed prototype position */
+/* mypage bottom nav must stay viewport-fixed like every other bottom nav */
 .figma-mypage .figma-bottom-nav,
 .figma-mypage .mypage-bottom-nav {
-  position: absolute !important;
-  left: 12px !important;
+  position: fixed !important;
+  left: max(12px, calc((100vw - 402px) / 2 + 12px)) !important;
   right: auto !important;
   top: auto !important;
-  bottom: 26px !important;
-  width: 378px !important;
-  max-width: 378px !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 26px) !important;
+  width: min(var(--prototype-nav-width), calc(100vw - 24px)) !important;
+  max-width: min(var(--prototype-nav-width), calc(100vw - 24px)) !important;
   height: 60px !important;
   min-height: 60px !important;
   margin: 0 !important;

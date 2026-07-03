@@ -197,41 +197,6 @@ export default function App() {
   }, [groupbuyPurchaseRecords]);
 
   useEffect(() => {
-    let lastLayoutHeight = window.innerHeight || window.visualViewport?.height || 874;
-
-    const updatePrototypeScale = () => {
-      const viewportWidth = window.innerWidth || window.visualViewport?.width || 402;
-      const layoutHeight = window.innerHeight || lastLayoutHeight;
-      const visualHeight = window.visualViewport?.height || layoutHeight;
-      const keyboardLikelyOpen = visualHeight < layoutHeight * 0.82;
-      const viewportHeight = keyboardLikelyOpen ? lastLayoutHeight : layoutHeight;
-
-      if (!keyboardLikelyOpen) {
-        lastLayoutHeight = viewportHeight;
-      }
-
-      const availableHeight = Math.max(1, viewportHeight - 6);
-      const nextScale = Math.max(0.1, Math.min(viewportWidth / 402, availableHeight / 874, 1));
-      const scaledWidth = 402 * nextScale;
-      const scaledHeight = 874 * nextScale;
-      document.documentElement.style.setProperty("--prototype-viewport-width", String(viewportWidth) + "px");
-      document.documentElement.style.setProperty("--prototype-viewport-height", String(viewportHeight) + "px");
-      document.documentElement.style.setProperty("--prototype-scale", String(nextScale));
-      document.documentElement.style.setProperty("--prototype-scaled-width", `${scaledWidth}px`);
-      document.documentElement.style.setProperty("--prototype-scaled-height", `${scaledHeight}px`);
-    };
-
-    updatePrototypeScale();
-    window.addEventListener("resize", updatePrototypeScale);
-    window.addEventListener("orientationchange", updatePrototypeScale);
-
-    return () => {
-      window.removeEventListener("resize", updatePrototypeScale);
-      window.removeEventListener("orientationchange", updatePrototypeScale);
-    };
-  }, []);
-
-  useEffect(() => {
     if (page !== "splash") return undefined;
     const timer = window.setTimeout(() => setPage("course"), 3200);
     return () => window.clearTimeout(timer);
