@@ -8,6 +8,9 @@ export default function CommunityCommentSection({
   commentConfig,
   currentNickname = "게스트",
   isAuthenticated = false,
+  onCreateComment,
+  onUpdateComment,
+  onDeleteComment,
 }) {
   const [comments, setComments] = useState(() =>
     createCommentStates(initialComments),
@@ -18,28 +21,71 @@ export default function CommunityCommentSection({
     setComments(createCommentStates(initialComments));
   }, [initialComments]);
 
-  const handleCommentSubmit = (event) => {
+  const handleCommentSubmit = async (event) => {
     event.preventDefault();
 
     const body = commentInput.trim();
     if (!body) return;
 
-    setComments((prevComments) => [
-      {
-        id: Date.now(),
-        avatar: isAuthenticated
-          ? figmaAssets.myLevel01Character
-          : figmaAssets.myGuestCharacter,
-        name: isAuthenticated ? currentNickname : "게스트",
-        time: "방금 전",
-        body,
-        likes: 0,
-        likedUserIds: [],
-      },
-      ...prevComments,
-    ]);
+    const optimisticComment = {
+      id: `local-${Date.now()}`,
+      avatar: isAuthenticated
+        ? figmaAssets.myLevel01Character
+        : figmaAssets.myGuestCharacter,
+      name: isAuthenticated ? currentNickname : "게스트",
+      time: "방금 전",
+      body,
+      likes: 0,
+      likedUserIds: [],
+      canManage: false,
+    };
 
+    setComments((prevComments) => [optimisticComment, ...prevComments]);
     setCommentInput("");
+
+    try {
+      const savedComment = await onCreateComment?.(body);
+      if (!savedComment) return;
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === optimisticComment.id ? savedComment : comment,
+        ),
+      );
+    } catch (error) {
+      console.error("댓글 저장 실패", error);
+    }
+  };
+
+  const handleCommentEditClick = async (comment) => {
+    const nextBody = window.prompt("댓글을 수정해주세요.", comment.body);
+    const trimmedBody = nextBody?.trim();
+    if (!trimmedBody || trimmedBody === comment.body) return;
+
+    setComments((prevComments) =>
+      prevComments.map((item) =>
+        item.id === comment.id ? { ...item, body: trimmedBody } : item,
+      ),
+    );
+
+    try {
+      await onUpdateComment?.(comment.id, trimmedBody);
+    } catch (error) {
+      console.error("댓글 수정 실패", error);
+    }
+  };
+
+  const handleCommentDeleteClick = async (commentId) => {
+    if (!window.confirm("댓글을 삭제할까요?")) return;
+
+    const previousComments = comments;
+    setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+
+    try {
+      await onDeleteComment?.(commentId);
+    } catch (error) {
+      console.error("댓글 삭제 실패", error);
+      setComments(previousComments);
+    }
   };
 
   const handleCommentLikeClick = (commentId) => {
@@ -89,6 +135,12 @@ export default function CommunityCommentSection({
                     <span>{comment.time}</span>
                   </div>
                   <p>{renderTextLines(comment.body)}</p>
+                  {comment.canManage && (
+                    <div className="pdp-comment-manage">
+                      <button type="button" onClick={() => handleCommentEditClick(comment)}>수정</button>
+                      <button type="button" onClick={() => handleCommentDeleteClick(comment.id)}>삭제</button>
+                    </div>
+                  )}
                 </div>
               </div>
               <button

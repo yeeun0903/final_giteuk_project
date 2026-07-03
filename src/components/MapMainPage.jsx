@@ -47,18 +47,42 @@ function normalizeSearch(value) {
   return String(value || "").replace(/\s+/g, "").toLowerCase();
 }
 
-function findSearchAnchor(query) {
+function findStaticSearchAnchor(query) {
   const normalized = normalizeSearch(query);
   if (!normalized) return null;
   return searchAnchors.find((anchor) => anchor.aliases.some((alias) => normalized.includes(normalizeSearch(alias)))) || null;
 }
 
-function sortByDistanceFrom(anchor, places, limit = 36) {
+function buildRegionSearchAnchor(query, places) {
+  const normalized = normalizeSearch(query);
+  if (!normalized || normalized.length < 2) return null;
+
+  const regionMatches = places.filter((place) => {
+    const district = normalizeSearch(place.district);
+    const address = normalizeSearch(place.address);
+    return (district && normalized.includes(district)) || (district && district.includes(normalized)) || address.includes(normalized);
+  });
+
+  if (!regionMatches.length) return null;
+
+  const latitude = regionMatches.reduce((sum, place) => sum + place.latitude, 0) / regionMatches.length;
+  const longitude = regionMatches.reduce((sum, place) => sum + place.longitude, 0) / regionMatches.length;
+  const labelSource = regionMatches.find((place) => normalizeSearch(place.district).includes(normalized))?.district || regionMatches[0].district || query.trim();
+
+  return {
+    name: labelSource,
+    latitude,
+    longitude,
+    matchedPlaceIds: new Set(regionMatches.map((place) => String(place.id))),
+  };
+}
+
+function sortByDistanceFrom(anchor, places, limit = 100) {
   if (!anchor) return places;
   return places
     .filter((place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude))
     .map((place) => ({ place, distance: distanceKm(anchor, place) }))
-    .filter(({ distance }) => distance <= 3.2)
+    .filter(({ distance }) => distance <= 8)
     .sort((a, b) => a.distance - b.distance)
     .slice(0, limit)
     .map(({ place }) => place);
@@ -105,6 +129,12 @@ const CATEGORY_Q3_PRICE = {
 function getPlaceSavingAmount(place) {
   const basePrice = CATEGORY_Q3_PRICE[place.category] ?? 0;
   return Math.max(0, basePrice - (Number(place.price1) || 0));
+}
+
+function formatDistanceLabel(anchor, place) {
+  if (!anchor || !Number.isFinite(place.latitude) || !Number.isFinite(place.longitude)) return "거리 확인";
+  const distance = distanceKm(anchor, place);
+  return distance < 1 ? Math.round(distance * 1000) + "m" : distance.toFixed(1) + "km";
 }
 
 function routeDistance(places) {
@@ -608,7 +638,9 @@ export default function MapMainPage({
     return () => window.clearTimeout(popupTimer);
   }, [onTargetPlaceHandled, places, targetPlace]);
 
-  const searchAnchor = useMemo(() => findSearchAnchor(searchText), [searchText]);
+  const regionSearchAnchor = useMemo(() => buildRegionSearchAnchor(searchText, places), [places, searchText]);
+  const searchAnchor = useMemo(() => regionSearchAnchor || findStaticSearchAnchor(searchText), [regionSearchAnchor, searchText]);
+  const distanceSortAnchor = userLocation || searchAnchor;
 
   const filteredPlaces = useMemo(() => {
     const base =
@@ -617,39 +649,31 @@ export default function MapMainPage({
         : selectedCategory === "전체"
           ? places
           : places.filter((place) => place.category === selectedCategory);
-    const query = showSortOptions ? "" : searchText.trim().toLowerCase();
+    const query = normalizeSearch(searchText);
     const searched = query
-      ? base.filter((place) =>
-          [
+      ? base.filter((place) => {
+          const haystack = normalizeSearch([
             place.place_name,
             place.category,
             place.address,
             place.menu1,
             place.menu2,
             place.district
-          ]
-            .join(" ")
-            .toLowerCase()
-            .includes(query)
-        )
+          ].join(" "));
+          return haystack.includes(query) || searchAnchor?.matchedPlaceIds?.has(String(place.id));
+        })
       : base;
 
-    if (query && searchAnchor && searched.length < 8) {
+    if (query && searchAnchor && searched.length < 12) {
       return sortByDistanceFrom(searchAnchor, base);
     }
 
     return searched;
-  }, [places, searchAnchor, searchText, selectedCategory, showSortOptions, songpaPubs]);
+  }, [places, searchAnchor, searchText, selectedCategory, songpaPubs]);
 
   const orderedFilteredPlaces = useMemo(() => {
     if (!filteredPlaces.length) return filteredPlaces;
     const sortable = [...filteredPlaces];
-
-    if (!searchText.trim() && selectedCategory === "전체" && userLocation) {
-      return sortable
-        .sort((a, b) => distanceKm(userLocation, a) - distanceKm(userLocation, b))
-        .slice(0, 100);
-    }
 
     if (searchSort === "value") {
       return sortable.sort((a, b) => {
@@ -659,15 +683,15 @@ export default function MapMainPage({
       });
     }
 
-    const distanceAnchor = userLocation || (!showSortOptions ? searchAnchor : null) || sortable.find((place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
+    const distanceAnchor = distanceSortAnchor || sortable.find((place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
     if (!distanceAnchor) return sortable;
 
     return sortable.sort((a, b) => distanceKm(distanceAnchor, a) - distanceKm(distanceAnchor, b));
-  }, [filteredPlaces, searchAnchor, searchSort, showSortOptions, userLocation]);
+  }, [distanceSortAnchor, filteredPlaces, searchSort]);
 
   const hasSearchQuery = Boolean(searchText.trim());
   const showSearchPanel = hasSearchQuery || showSortOptions;
-  const searchResults = useMemo(() => orderedFilteredPlaces.slice(0, 8), [orderedFilteredPlaces]);
+  const searchResults = orderedFilteredPlaces;
   const lightningCourse = useMemo(() => buildLightningCourse(places), [places]);
   const mapPlaces = selectedPlace
     ? orderedFilteredPlaces.some((place) => getPlaceKey(place) === getPlaceKey(selectedPlace))
@@ -876,7 +900,6 @@ export default function MapMainPage({
                   data-action="sort_distance"
                   data-label="distance"
                   onClick={() => {
-                    setSearchText("");
                     setSearchSort("distance");
                   }}
                 >
@@ -893,7 +916,6 @@ export default function MapMainPage({
                   data-action="sort_value"
                   data-label="value"
                   onClick={() => {
-                    setSearchText("");
                     setSearchSort("value");
                   }}
                 >
@@ -924,6 +946,10 @@ export default function MapMainPage({
                 >
                   <span>{place.place_name}</span>
                   <small>{place.category} · {place.district}</small>
+                  <em className="figma-search-result-metrics">
+                    <b>{formatDistanceLabel(distanceSortAnchor, place)}</b>
+                    <b>{formatWon(getPlaceSavingAmount(place))} 절약</b>
+                  </em>
                 </button>
               ))
             ) : (

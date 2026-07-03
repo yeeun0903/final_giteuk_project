@@ -504,3 +504,67 @@
     left: calc(100vw - 141px);
   }
 }
+
+/* responsive phone frame normalization */
+.app-shell:has(.community-frame),
+.app-shell:has(.groupbuy-frame),
+.app-shell:has(.pdp-frame),
+.app-shell:has(.posting-frame),
+.app-shell:has(.convenience-frame),
+.app-shell:has(.groupbuy-detail-frame) {
+  min-height: 100dvh;
+}
+
+.page-shell,
+.groupbuy-page-shell {
+  min-height: 100dvh;
+}
+
+.community-frame,
+.groupbuy-frame,
+.pdp-frame,
+.posting-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  width: min(402px, 100vw);
+  min-width: 0;
+  max-width: 402px;
+  height: min(874px, 100dvh);
+  min-height: 0;
+  max-height: min(874px, 100dvh);
+}
+
+.pdp-post-manage {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.pdp-post-manage button,
+.pdp-comment-manage button {
+  border: 0;
+  background: #f1eaff;
+  color: #5d2df5;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.pdp-comment-manage {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+@media (max-width: 402px), (max-height: 874px) {
+  .community-frame,
+  .groupbuy-frame,
+  .pdp-frame,
+  .posting-frame,
+  .convenience-frame,
+  .groupbuy-detail-frame {
+    border-radius: 0;
+  }
+}

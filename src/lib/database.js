@@ -56,12 +56,132 @@ export async function createPlaceRequest({ userId, category, placeName, address,
   return data;
 }
 
-export async function createCommunityPost({ userId, title, content }) {
+export async function createCommunityPost({ userId, title, content, category, authorName, photoUrl }) {
   if (!supabaseWritesEnabled) return null;
+
+  const payload = {
+    user_id: userId,
+    title,
+    content,
+    category: category || "이용후기",
+    author_name: authorName || null,
+    photo_url: photoUrl || null,
+  };
 
   const { data, error } = await supabase
     .from("community_posts")
+    .insert(payload)
+    .select()
+    .single();
+
+  if (!error) return data;
+
+  const { data: fallbackData, error: fallbackError } = await supabase
+    .from("community_posts")
     .insert({ user_id: userId, title, content })
+    .select()
+    .single();
+
+  if (fallbackError) throw error;
+  return fallbackData;
+}
+
+export async function listCommunityPosts() {
+  if (!supabaseWritesEnabled) return [];
+
+  const { data, error } = await supabase
+    .from("community_posts")
+    .select("id,user_id,title,content,created_at,category,author_name,photo_url")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (!error) return data || [];
+
+  const { data: fallbackData, error: fallbackError } = await supabase
+    .from("community_posts")
+    .select("id,user_id,title,content,created_at")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (fallbackError) throw error;
+  return fallbackData || [];
+}
+
+export async function listComments({ postKey, postId } = {}) {
+  if (!supabaseWritesEnabled) return [];
+
+  let query = supabase
+    .from("comments")
+    .select("id,post_id,post_key,user_id,content,created_at,author_name")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (postKey && postId) {
+    query = query.or(`post_key.eq.${postKey},post_id.eq.${postId}`);
+  } else if (postKey) {
+    query = query.eq("post_key", postKey);
+  } else if (postId) {
+    query = query.eq("post_id", postId);
+  } else {
+    return [];
+  }
+
+  const { data, error } = await query;
+
+  if (!error) return data || [];
+
+  if (postId) {
+    const { data: fallbackData, error: fallbackError } = await supabase
+      .from("comments")
+      .select("id,post_id,user_id,content,created_at")
+      .eq("post_id", postId)
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (!fallbackError) return fallbackData || [];
+  }
+
+  throw error;
+}
+
+export async function createComment({ userId, postId, postKey, content, authorName }) {
+  if (!supabaseWritesEnabled) return null;
+
+  const { data, error } = await supabase
+    .from("comments")
+    .insert({
+      user_id: userId || null,
+      post_id: postId || null,
+      post_key: postKey || (postId ? String(postId) : null),
+      content,
+      author_name: authorName || "게스트",
+    })
+    .select()
+    .single();
+
+  if (!error) return data;
+
+  if (userId && postId) {
+    const { data: fallbackData, error: fallbackError } = await supabase
+      .from("comments")
+      .insert({ user_id: userId, post_id: postId, content })
+      .select()
+      .single();
+
+    if (!fallbackError) return fallbackData;
+  }
+
+  throw error;
+}
+
+export async function updateComment({ userId, commentId, content }) {
+  if (!supabaseWritesEnabled || !userId) return null;
+
+  const { data, error } = await supabase
+    .from("comments")
+    .update({ content, updated_at: new Date().toISOString() })
+    .eq("id", commentId)
+    .eq("user_id", userId)
     .select()
     .single();
 
@@ -69,17 +189,45 @@ export async function createCommunityPost({ userId, title, content }) {
   return data;
 }
 
-export async function createComment({ userId, postId, content }) {
-  if (!supabaseWritesEnabled) return null;
+export async function deleteComment({ userId, commentId }) {
+  if (!supabaseWritesEnabled || !userId) return false;
+
+  const { error } = await supabase
+    .from("comments")
+    .delete()
+    .eq("id", commentId)
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  return true;
+}
+
+export async function updateCommunityPost({ userId, postId, title, content }) {
+  if (!supabaseWritesEnabled || !userId) return null;
 
   const { data, error } = await supabase
-    .from("comments")
-    .insert({ user_id: userId, post_id: postId, content })
+    .from("community_posts")
+    .update({ title, content, updated_at: new Date().toISOString() })
+    .eq("id", postId)
+    .eq("user_id", userId)
     .select()
     .single();
 
   if (error) throw error;
   return data;
+}
+
+export async function deleteCommunityPost({ userId, postId }) {
+  if (!supabaseWritesEnabled || !userId) return false;
+
+  const { error } = await supabase
+    .from("community_posts")
+    .delete()
+    .eq("id", postId)
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  return true;
 }
 
 export async function upsertPlaceFavorite({ userId, place }) {

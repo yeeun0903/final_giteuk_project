@@ -7887,3 +7887,25 @@ button {
   font-weight: 700;
   text-align: center;
 }
+
+/* map search result metrics */
+.figma-search-results .figma-search-result-metrics {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-style: normal;
+}
+
+.figma-search-results .figma-search-result-metrics b {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #f1eaff;
+  color: #5d2df5;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}

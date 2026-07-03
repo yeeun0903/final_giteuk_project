@@ -38,9 +38,12 @@ import {
   createCommunityPost as createCommunityPostRecord,
   createGroupbuyEvent,
   createVisit,
+  deleteCommunityPost,
   getSavingStats,
+  listCommunityPosts,
   removeGroupbuyFavorite,
   removePlaceFavorite,
+  updateCommunityPost,
   upsertGroupbuyFavorite,
   upsertPlaceFavorite,
 } from "./lib/database.js";
@@ -241,6 +244,22 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+
+    listCommunityPosts()
+      .then((rows) => {
+        if (cancelled || !rows.length) return;
+        const savedPosts = rows.map((row) => mapDatabaseCommunityPost(row, nickname, user?.id));
+        setCommunityPosts([...savedPosts, ...initialCommunityPosts]);
+      })
+      .catch((error) => console.error("커뮤니티 게시글 목록 불러오기 실패", error));
+
+    return () => {
+      cancelled = true;
+    };
+  }, [nickname, user?.id]);
+
+  useEffect(() => {
     if (loading || !user?.id) return;
     const hasPendingOAuth =
       window.localStorage.getItem("gtgt-oauth-pending") === "1" ||
@@ -320,6 +339,7 @@ export default function App() {
     onOpenMyPage: openMyPage,
     onOpenAuth: (step, returnPage = page, source = "default") => openAuth(step, returnPage, source),
     currentNickname: nickname,
+    currentUserId: user?.id || null,
     isAuthenticated,
   };
 
@@ -514,7 +534,7 @@ export default function App() {
     action.catch((error) => console.error("공동구매 찜 이벤트 저장 실패", error));
   };
 
-  const handleCreateCommunityPost = ({ category, title, body, photoUrl }) => {
+  const handleCreateCommunityPost = async ({ category, title, body, photoUrl }) => {
     const nextCategory = category?.trim();
     const nextTitle = title.trim();
     const nextBody = body.trim();
@@ -522,33 +542,87 @@ export default function App() {
 
     if (!meta || !nextTitle || !nextBody) return;
 
-    setCommunityPosts((currentPosts) => [
-      {
-        id: `user-${Date.now()}`,
-        userPage: true,
-        badge: nextCategory,
-        badgeTone: meta.badgeTone,
-        detailPageClassName: meta.detailPageClassName,
-        title: nextTitle,
-        body: nextBody,
-        authorName: nickname,
-        location: meta.location,
-        time: "방금 전",
-        likes: 0,
-        photoUrl,
-      },
-      ...currentPosts,
-    ]);
+    const optimisticId = `local-user-${Date.now()}`;
+    const optimisticPost = {
+      id: optimisticId,
+      userPage: true,
+      badge: nextCategory,
+      badgeTone: meta.badgeTone,
+      detailPageClassName: meta.detailPageClassName,
+      title: nextTitle,
+      body: nextBody,
+      authorName: nickname,
+      location: meta.location,
+      time: "방금 전",
+      likes: 0,
+      photoUrl,
+      canManage: Boolean(user?.id),
+    };
+
+    setCommunityPosts((currentPosts) => [optimisticPost, ...currentPosts]);
 
     if (user?.id) {
-      createCommunityPostRecord({ userId: user.id, title: nextTitle, content: nextBody })
-        .catch((error) => console.error("커뮤니티 게시글 저장 실패", error));
+      try {
+        const savedPost = await createCommunityPostRecord({
+          userId: user.id,
+          title: nextTitle,
+          content: nextBody,
+          category: nextCategory,
+          authorName: nickname,
+          photoUrl,
+        });
+
+        if (savedPost) {
+          setCommunityPosts((currentPosts) =>
+            currentPosts.map((post) =>
+              post.id === optimisticId ? mapDatabaseCommunityPost(savedPost, nickname, user.id) : post,
+            ),
+          );
+        }
+      } catch (error) {
+        console.error("커뮤니티 게시글 저장 실패", error);
+      }
     }
 
     setCommunityActiveTab(nextCategory);
     setIsCommunityPostingOpen(false);
     setCommunityPage("main");
     setPage("community");
+  };
+
+  const handleUpdateCommunityPost = async (postId, nextPost) => {
+    const targetPost = communityPosts.find((post) => post.id === postId);
+    if (!targetPost) return;
+
+    setCommunityPosts((currentPosts) =>
+      currentPosts.map((post) =>
+        post.id === postId ? { ...post, ...nextPost } : post,
+      ),
+    );
+    setSelectedCommunityUserPost((currentPost) =>
+      currentPost?.id === postId ? { ...currentPost, ...nextPost } : currentPost,
+    );
+
+    if (user?.id && targetPost.dbId) {
+      updateCommunityPost({
+        userId: user.id,
+        postId: targetPost.dbId,
+        title: nextPost.title,
+        content: nextPost.body,
+      }).catch((error) => console.error("커뮤니티 게시글 수정 실패", error));
+    }
+  };
+
+  const handleDeleteCommunityPost = async (postId) => {
+    const targetPost = communityPosts.find((post) => post.id === postId);
+    setCommunityPosts((currentPosts) => currentPosts.filter((post) => post.id !== postId));
+    setSelectedCommunityUserPost(null);
+    setCommunityPage("main");
+
+    if (user?.id && targetPost?.dbId) {
+      deleteCommunityPost({ userId: user.id, postId: targetPost.dbId })
+        .catch((error) => console.error("커뮤니티 게시글 삭제 실패", error));
+    }
   };
 
   const handleOpenCommunityUserPost = (post) => {
@@ -575,6 +649,7 @@ export default function App() {
           onBack={() => setCommunityPage("main")}
           onOpenMapPlace={openMapPlace}
           currentNickname={nickname}
+          currentUserId={user?.id || null}
           isAuthenticated={isAuthenticated}
           {...commonNavigationProps}
         />
@@ -588,7 +663,10 @@ export default function App() {
           onBack={() => setCommunityPage("main")}
           onOpenMapPlace={openMapPlace}
           currentNickname={nickname}
+          currentUserId={user?.id || null}
           isAuthenticated={isAuthenticated}
+          onUpdatePost={handleUpdateCommunityPost}
+          onDeletePost={handleDeleteCommunityPost}
           {...commonNavigationProps}
         />
       );
@@ -810,6 +888,9 @@ export default function App() {
 function createUserPostDetail(post, fallbackNickname = "기특한진희") {
   return {
     id: post.id,
+    dbId: post.dbId,
+    storageKey: post.storageKey,
+    canManage: post.canManage,
     pageClassName: post.detailPageClassName || "",
     header: {
       title: "게시글 상세",
@@ -820,7 +901,7 @@ function createUserPostDetail(post, fallbackNickname = "기특한진희") {
     author: {
       avatar: pdpWriterCharacter,
       name: post.authorName || fallbackNickname,
-      level: "LV.3",
+      level: post.authorLevel || "LV.1",
       time: post.time,
       views: "조회 0",
     },
@@ -844,4 +925,38 @@ function createUserPostDetail(post, fallbackNickname = "기특한진희") {
       },
     },
   };
+}
+
+function mapDatabaseCommunityPost(row, fallbackNickname = "기특한진희", currentUserId = null) {
+  const category = row.category || "이용후기";
+  const meta = communityCategoryMeta[category] || communityCategoryMeta["이용후기"];
+  return {
+    id: `db-user-${row.id}`,
+    dbId: row.id,
+    storageKey: `community-post-${row.id}`,
+    userPage: true,
+    badge: category,
+    badgeTone: meta.badgeTone,
+    detailPageClassName: meta.detailPageClassName,
+    title: row.title,
+    body: row.content,
+    authorName: row.author_name || fallbackNickname,
+    authorLevel: "LV.1",
+    location: meta.location,
+    time: formatRelativeTime(row.created_at),
+    likes: 0,
+    photoUrl: row.photo_url || "",
+    canManage: Boolean(currentUserId && row.user_id === currentUserId),
+  };
+}
+
+function formatRelativeTime(value) {
+  const date = new Date(value);
+  const diffMs = Date.now() - date.getTime();
+  if (Number.isNaN(diffMs) || diffMs < 60_000) return "방금 전";
+  const minutes = Math.floor(diffMs / 60_000);
+  if (minutes < 60) return `${minutes}분 전`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}시간 전`;
+  return `${Math.floor(hours / 24)}일 전`;
 }
