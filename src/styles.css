@@ -7879,3 +7879,11 @@ button {
   max-height: 30px !important;
   object-fit: contain !important;
 }
+
+.settings-logout-error {
+  margin: 8px 0 0;
+  color: #e5484d;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}

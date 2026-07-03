@@ -237,10 +237,22 @@ function SettingsGroup({ title, children }) {
   );
 }
 
-function SettingsDetail({ onBack, navigationProps }) {
+function SettingsDetail({ onBack, navigationProps, onSignOut }) {
   const [savingNotice, setSavingNotice] = useState(true);
   const [groupbuyNotice, setGroupbuyNotice] = useState(false);
   const [locationEnabled, setLocationEnabled] = useState(true);
+  const [logoutError, setLogoutError] = useState("");
+
+  const handleLogout = async () => {
+    setLogoutError("");
+    try {
+      await onSignOut?.();
+      onBack?.();
+    } catch (error) {
+      console.error("로그아웃 실패", error);
+      setLogoutError("로그아웃하지 못했어요. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <section className="phone-page my-page figma-mypage mypage-detail-page mypage-inner-page settings-page">
@@ -289,7 +301,20 @@ function SettingsDetail({ onBack, navigationProps }) {
           <SettingsRow title="로그인 상태" copy="구글, 카카오, 이메일 로그인을 사용할 수 있어요">
             <span className="settings-status">활성화</span>
           </SettingsRow>
-          <button type="button" className="settings-logout-button">로그아웃</button>
+          <button
+            id="btn-mypage-settings-logout"
+            type="button"
+            className="settings-logout-button"
+            data-event="click_logout"
+            data-page="mypage"
+            data-section="settings_account"
+            data-action="logout"
+            data-label="logout"
+            onClick={handleLogout}
+          >
+            로그아웃
+          </button>
+          {logoutError && <p className="settings-logout-error">{logoutError}</p>}
         </SettingsGroup>
       </div>
 
@@ -324,6 +349,7 @@ export default function MyPage({
   groupbuyPurchaseRecords = [],
   likedPlaces = [],
   likedGroupbuyProducts = [],
+  onSignOut,
 }) {
   const [view, setView] = useState("home");
   const [showAuthLock, setShowAuthLock] = useState(true);
@@ -373,7 +399,7 @@ export default function MyPage({
   }
 
   if (view === "settings") {
-    return <SettingsDetail onBack={() => setView("home")} navigationProps={navigationProps} />;
+    return <SettingsDetail onBack={() => setView("home")} navigationProps={navigationProps} onSignOut={onSignOut} />;
   }
 
   return (

@@ -149,7 +149,7 @@ const pageLabels = {
 };
 
 export default function App() {
-  const { user, loading, isAuthenticated, nickname } = useAuth();
+  const { user, loading, isAuthenticated, nickname, signOut } = useAuth();
   const [page, setPage] = useState("splash");
   const [openSongpaAfterAuth, setOpenSongpaAfterAuth] = useState(false);
   const [authInitialStep, setAuthInitialStep] = useState("login");
@@ -770,6 +770,7 @@ export default function App() {
           groupbuyPurchaseRecords={monthlyGroupbuyPurchaseRecords}
           likedPlaces={likedPlaces}
           likedGroupbuyProducts={likedGroupbuyProducts}
+          onSignOut={handleSignOut}
         />
       )}
       {page === "customer" && (
