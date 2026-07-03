@@ -8019,6 +8019,20 @@ button {
   --prototype-scale: 1;
   --prototype-viewport-width: 100vw;
   --prototype-viewport-height: 100dvh;
+  --prototype-scaled-width: 402px;
+  --prototype-scaled-height: 874px;
+}
+
+html,
+body,
+#root {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: var(--prototype-viewport-height) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #f4efff !important;
+  touch-action: manipulation;
 }
 
 .app-shell,
@@ -8035,6 +8049,8 @@ button {
 .page-shell,
 .groupbuy-page-shell {
   width: var(--prototype-viewport-width) !important;
+  min-width: 0 !important;
+  max-width: 100vw !important;
   min-height: var(--prototype-viewport-height) !important;
   height: var(--prototype-viewport-height) !important;
   padding: 0 !important;
@@ -8066,10 +8082,28 @@ button {
   height: 874px !important;
   min-height: 874px !important;
   max-height: 874px !important;
-  margin: 0 !important;
-  zoom: 1 !important;
-  transform: scale(var(--prototype-scale)) !important;
+  margin: 0 auto !important;
+  zoom: var(--prototype-scale) !important;
+  transform: none !important;
   transform-origin: top center !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  border-radius: 34px !important;
+}
+
+.figma-map-page.phone-page,
+.figma-mypage.phone-page,
+.customer-page.phone-page,
+.customize-page.phone-page,
+.terms-page.phone-page,
+.inquiry-page.phone-page,
+.community-frame,
+.groupbuy-frame,
+.pdp-frame,
+.posting-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  border-radius: 34px !important;
 }
 
 .figma-bottom-nav,
@@ -8101,3 +8135,45 @@ button {
   bottom: 92px !important;
   z-index: 5010 !important;
 }
+
+/* Prevent iOS/Safari from tinting raster/svg icons pink through inherited filters. */
+.figma-mypage .row-chevron,
+.customer-page .row-chevron,
+.customize-page .inline-chevron,
+.figma-mypage .mypage-chevron,
+.figma-mypage .mypage-list-row img,
+.figma-mypage .settings-profile-card img,
+.figma-mypage .settings-section img,
+.figma-mypage .settings-row img,
+.settings-profile-card .mypage-list-icon img,
+.settings-page .mypage-list-icon img,
+.figma-mypage .settings-page img,
+.figma-mypage .mypage-list-icon img,
+.customer-page .mypage-list-icon img,
+.customize-page .mypage-list-icon img {
+  filter: none !important;
+}
+
+.figma-bottom-nav button.active img,
+.figma-bottom-nav button:focus-visible img,
+.figma-bottom-nav button:active img {
+  filter: none !important;
+}
+
+/* Keep map detail sheets and search panels inside the 402px prototype frame. */
+.figma-map-page .map-pdp-sheet,
+.figma-map-page .figma-search-results,
+.figma-map-page .figma-search,
+.figma-map-page .figma-map-header {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+}
+
+.figma-map-page .map-pdp-sheet {
+  left: 0 !important;
+  right: 0 !important;
+  width: 402px !important;
+  max-width: 402px !important;
+  overflow-x: hidden !important;
+}
+

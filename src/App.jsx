@@ -201,21 +201,27 @@ export default function App() {
       const viewportWidth = window.visualViewport?.width || window.innerWidth;
       const viewportHeight = window.visualViewport?.height || window.innerHeight;
       const availableHeight = Math.max(1, viewportHeight - 6);
-      const nextScale = Math.min(viewportWidth / 402, availableHeight / 874, 1);
+      const nextScale = Math.max(0.1, Math.min(viewportWidth / 402, availableHeight / 874, 1));
+      const scaledWidth = 402 * nextScale;
+      const scaledHeight = 874 * nextScale;
       document.documentElement.style.setProperty("--prototype-viewport-width", String(viewportWidth) + "px");
       document.documentElement.style.setProperty("--prototype-viewport-height", String(viewportHeight) + "px");
-      document.documentElement.style.setProperty("--prototype-scale", String(Math.max(0.1, nextScale)));
+      document.documentElement.style.setProperty("--prototype-scale", String(nextScale));
+      document.documentElement.style.setProperty("--prototype-scaled-width", `${scaledWidth}px`);
+      document.documentElement.style.setProperty("--prototype-scaled-height", `${scaledHeight}px`);
     };
 
     updatePrototypeScale();
     window.addEventListener("resize", updatePrototypeScale);
     window.addEventListener("orientationchange", updatePrototypeScale);
     window.visualViewport?.addEventListener("resize", updatePrototypeScale);
+    window.visualViewport?.addEventListener("scroll", updatePrototypeScale);
 
     return () => {
       window.removeEventListener("resize", updatePrototypeScale);
       window.removeEventListener("orientationchange", updatePrototypeScale);
       window.visualViewport?.removeEventListener("resize", updatePrototypeScale);
+      window.visualViewport?.removeEventListener("scroll", updatePrototypeScale);
     };
   }, []);
 
