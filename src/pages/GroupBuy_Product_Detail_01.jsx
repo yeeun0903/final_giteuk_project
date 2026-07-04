@@ -1,5 +1,5 @@
 import { useState } from "react";
-import detailImage from "../assets/GroupBuy_Product_detail/세제 3.png";
+import detailImage from "../assets/GroupBuy_Product_detail/detergent.png";
 import backIcon from "../assets/GroupBuy_Product_detail/Back icon.png";
 import ratingIcon from "../assets/GroupBuy_Product_detail/Button_Rating.png";
 import shareIcon from "../assets/GroupBuy_Product_detail/Button_Share.png";
