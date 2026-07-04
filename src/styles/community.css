@@ -215,6 +215,8 @@
   top: 8px;
   width: 193px;
   height: 178px;
+  transform: scale(clamp(0.78, 0.78 + (100vw - 320px) / 84px * 0.22, 1));
+  transform-origin: top right;
 }
 
 .store-image {
@@ -306,7 +308,10 @@
 }
 
 .post-toolbar {
-  height: 30px;
+  height: auto;
+  min-height: 30px;
+  flex-wrap: wrap;
+  row-gap: 8px;
   justify-content: space-between;
 }
 
@@ -353,10 +358,11 @@
 }
 
 .post-card {
-  height: 126px;
+  min-height: 126px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 14px;
   margin-bottom: 6px;
   padding: 13px 14px;
   border-radius: 18px;
@@ -374,7 +380,8 @@
 }
 
 .post-info {
-  width: 240px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .post-badge {
@@ -416,7 +423,8 @@
 }
 
 .post-copy h3 {
-  width: 208px;
+  width: 100%;
+  max-width: 100%;
   color: #000000;
   font-size: 14px;
   line-height: 1.25;
@@ -424,7 +432,8 @@
 }
 
 .post-copy p {
-  width: 220px;
+  width: 100%;
+  max-width: 100%;
   margin-top: 4px;
   color: #000000;
   font-size: 12px;
@@ -1061,9 +1070,8 @@
 }
 
 .pdp-comment-like {
-  position: absolute;
-  right: 0;
-  top: 13px;
+  flex: 0 0 auto;
+  margin-top: 13px;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -1071,6 +1079,7 @@
   color: #727272;
   font-size: 12px;
   line-height: 1;
+  white-space: nowrap;
   background: transparent;
 }
 
@@ -1325,13 +1334,16 @@
 
 .posting-bottom-actions {
   position: absolute;
-  left: 20px;
+  left: 50%;
   top: 710px;
   width: 362px;
   height: 48px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 15px;
+  transform: translateX(-50%);
+  box-sizing: border-box;
 }
 
 .posting-secondary-button,
@@ -1445,7 +1457,7 @@
 }
 
 .convenience-content {
-  padding: 0 20px 26px;
+  padding: 0 0 26px;
 }
 
 .convenience-search {

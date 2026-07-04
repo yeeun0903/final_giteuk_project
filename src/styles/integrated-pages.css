@@ -239,7 +239,7 @@
   height: 58px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: normal;
   gap: 15px;
   padding: 5px 20px;
   border-width: 0.6px 0;
@@ -802,6 +802,7 @@
 .posting-category-wrap {
   top: 78px !important;
   width: min(var(--prototype-width), 100vw) !important;
+  max-width: 100% !important;
 }
 
 .posting-category-row,
@@ -810,6 +811,7 @@
 .posting-body-input,
 .posting-action-bar {
   width: min(var(--prototype-width), 100vw) !important;
+  max-width: 100% !important;
 }
 
 .posting-title-input {
@@ -859,7 +861,8 @@
 .convenience-tabs-row,
 .convenience-product-grid,
 .convenience-status {
-  width: min(362px, calc(100vw - 40px)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* NOTE: broad width:100vw overrides are removed. The shared AppShell
@@ -1424,8 +1427,8 @@
   position: fixed !important;
   left: max(8px, calc((100vw - var(--prototype-width)) / 2 + 12px)) !important;
   bottom: var(--mobile-nav-bottom) !important;
-  width: var(--prototype-nav-width) !important;
-  max-width: var(--prototype-nav-width) !important;
+  width: calc(min(var(--prototype-width), 100vw) - (var(--app-side-pad) * 2)) !important;
+  max-width: calc(min(var(--prototype-width), 100vw) - (var(--app-side-pad) * 2)) !important;
   z-index: 7000 !important;
 }
 
@@ -1643,24 +1646,47 @@
   margin-top: 48px !important;
 }
 
+/* Home cards used to be pinned with hard-coded `top` offsets that assumed a
+   fixed card height. When a card's content grows (e.g. a long nickname
+   wrapping to 2 lines), its neighbors didn't move, so content spilled out
+   and overlapped the next card. Flow + margin-top lets each card push the
+   next one down instead. */
+.figma-mypage:not(.mypage-detail-page) .mypage-level-card,
+.figma-mypage:not(.mypage-detail-page) .mypage-custom-card,
+.figma-mypage:not(.mypage-detail-page) .mypage-auth-lock-card,
+.figma-mypage:not(.mypage-detail-page) .mypage-saving-card,
+.figma-mypage:not(.mypage-detail-page) .mypage-list-card,
+.figma-mypage:not(.mypage-detail-page) .mypage-shortcuts {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 .figma-mypage:not(.mypage-detail-page) .mypage-level-card {
-  top: 135px !important;
+  margin-top: 9px !important;
 }
 
 .figma-mypage:not(.mypage-detail-page) .mypage-custom-card {
-  top: 252px !important;
+  margin-top: 7px !important;
+}
+
+.figma-mypage:not(.mypage-detail-page) .mypage-auth-lock-card {
+  margin-top: 34px !important;
 }
 
 .figma-mypage:not(.mypage-detail-page) .mypage-saving-card {
-  top: 345px !important;
+  margin-top: 7px !important;
 }
 
 .figma-mypage:not(.mypage-detail-page) .mypage-list-card {
-  top: 563px !important;
+  margin-top: 7px !important;
 }
 
 .figma-mypage:not(.mypage-detail-page) .mypage-shortcuts {
-  top: 733px !important;
+  margin-top: 7px !important;
 }
 
 /* Map floating course controls are positioned inside the map frame, not the viewport. */
@@ -1868,7 +1894,7 @@
 }
 
 .auth-form-page .auth-form-panel {
-  margin-top: 16px !important;
+  margin-top: 34px !important;
 }
 
 .inform-page .inform-header {
@@ -2060,7 +2086,7 @@
   width: auto !important;
   height: auto !important;
   min-height: 0 !important;
-  margin: 14px 20px 0 !important;
+  margin: 14px 16px 0 !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 14px !important;
@@ -2257,22 +2283,24 @@
 /* Settings page: center cards to the same content rail and give the banner breathing room. */
 .figma-mypage.settings-page .settings-profile-card,
 .figma-mypage.mypage-detail-page.settings-page .settings-profile-card {
-  width: var(--app-content-width) !important;
-  max-width: var(--app-content-width) !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin-top: 12px !important;
   margin-left: auto !important;
   margin-right: auto !important;
+  box-sizing: border-box !important;
 }
 
 .figma-mypage.settings-page .settings-content,
 .figma-mypage.mypage-detail-page.settings-page .settings-content {
-  width: var(--app-content-width) !important;
-  max-width: var(--app-content-width) !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin-top: 12px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   padding: 0 0 calc(var(--mobile-nav-height) + var(--mobile-nav-bottom) + 24px) !important;
   gap: 12px !important;
+  box-sizing: border-box !important;
 }
 
 .figma-mypage.settings-page .settings-content .settings-group,
@@ -2355,8 +2383,10 @@
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-version-card {
   position: relative !important;
   top: auto !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
+  left: auto !important;
+  transform: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   overflow: visible !important;
 }
 
@@ -2402,8 +2432,8 @@
   bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  width: min(380px, calc(100dvw - 24px)) !important;
-  max-width: min(380px, calc(100dvw - 24px)) !important;
+  width: calc(min(var(--prototype-width), 100dvw) - (var(--app-side-pad) * 2)) !important;
+  max-width: calc(min(var(--prototype-width), 100dvw) - (var(--app-side-pad) * 2)) !important;
   min-width: 0 !important;
   height: 60px !important;
   min-height: 60px !important;
@@ -2489,8 +2519,9 @@
 
 .auth-login-page .auth-login-logo-top,
 .auth-login-page .auth-login-logo-bottom {
-  left: 127px !important;
+  left: 50% !important;
   width: 148px !important;
+  transform: translateX(-50%) !important;
 }
 
 .auth-login-page .auth-login-logo-top {
@@ -2509,16 +2540,18 @@
 
 .auth-login-page .auth-login-character {
   top: 304px !important;
-  left: 131px !important;
+  left: 50% !important;
   width: 150px !important;
   height: 178px !important;
+  transform: translateX(-50%) !important;
 }
 
 .auth-login-page .auth-login-character-shadow {
   top: 460px !important;
-  left: 131px !important;
+  left: 50% !important;
   width: 146px !important;
   height: 22px !important;
+  transform: translateX(-50%) !important;
 }
 
 .auth-login-page .auth-login-ground {
@@ -2528,9 +2561,10 @@
 
 .auth-login-page .auth-login-actions {
   top: 526px !important;
-  left: 47px !important;
-  width: 308px !important;
+  left: 50% !important;
+  width: min(308px, calc(100% - 48px)) !important;
   gap: 6px !important;
+  transform: translateX(-50%) !important;
 }
 
 .auth-login-page .auth-social-button {
@@ -2852,10 +2886,6 @@
 .settings-section,
 .settings-profile-card,
 .groupbuy-detail-content,
-.groupbuy-detail-hero,
-.groupbuy-detail-summary,
-.groupbuy-detail-info,
-.groupbuy-detail-participation,
 .posting-form,
 .pdp-content,
 .pdp-actions,
@@ -2865,6 +2895,21 @@
   min-width: 0 !important;
   margin-left: auto !important;
   margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* These already live inside .groupbuy-detail-content, which is itself inset
+   by --app-content-width - applying that variable again would double the
+   side padding. Just fill the (already correctly sized) parent instead. */
+.groupbuy-detail-hero,
+.groupbuy-detail-summary,
+.groupbuy-detail-info,
+.groupbuy-detail-participation {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
   box-sizing: border-box !important;
 }
 
@@ -2919,8 +2964,8 @@
   bottom: calc(var(--bottom-nav-gap) + env(safe-area-inset-bottom, 0px)) !important;
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  width: min(380px, calc(100vw - 24px)) !important;
-  max-width: min(380px, calc(100vw - 24px)) !important;
+  width: calc(min(var(--prototype-width), 100vw) - (var(--app-side-pad) * 2)) !important;
+  max-width: calc(min(var(--prototype-width), 100vw) - (var(--app-side-pad) * 2)) !important;
   min-width: 0 !important;
   height: var(--bottom-nav-height) !important;
   min-height: var(--bottom-nav-height) !important;
@@ -3034,7 +3079,6 @@
 .convenience-tabs-row,
 .convenience-filter-row,
 .mypage-like-tabs,
-.post-toolbar,
 .groupbuy-popular-list {
   overflow-x: auto !important;
   overflow-y: hidden !important;
@@ -3135,6 +3179,15 @@
   word-break: keep-all;
 }
 
+.post-card p {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
 .post-card img,
 .promo-card img,
 .groupbuy-product-card img,
@@ -3148,29 +3201,71 @@
 
 .map-pdp-sheet,
 .figma-map-page .map-pdp-sheet {
-  left: 50% !important;
-  right: auto !important;
-  width: min(372px, var(--app-content-width)) !important;
-  max-width: min(372px, var(--app-content-width)) !important;
-  transform: translateX(-50%) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  transform: none !important;
   overflow-x: hidden !important;
   box-sizing: border-box !important;
 }
 
-.map-pdp-sheet .pdp-actions,
-.pdp-frame .pdp-actions {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+.map-pdp-sheet .pdp-actions {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
 }
 
-.map-pdp-sheet .pdp-actions button,
-.pdp-frame .pdp-actions button {
+.map-pdp-sheet .pdp-actions button {
   width: 100% !important;
   min-width: 0 !important;
   max-width: 100% !important;
+}
+
+/* The rest of the place-detail sheet (title, quick actions, address/phone,
+   menu list) was still stuck at the old fixed 355px canvas width while
+   .pdp-actions below it had already been made responsive - so on a narrow
+   screen everything above the visit-complete row ran off the right edge. */
+.map-pdp-sheet .pdp-title-row,
+.map-pdp-sheet .pdp-title-row > div,
+.map-pdp-sheet .pdp-quick-actions,
+.map-pdp-sheet .pdp-benefit,
+.map-pdp-sheet .pdp-info,
+.map-pdp-sheet .pdp-info div,
+.map-pdp-sheet .pdp-menu,
+.map-pdp-sheet .pdp-menu ul,
+.map-pdp-sheet .pdp-menu li {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.map-pdp-sheet .pdp-title-row strong,
+.map-pdp-sheet .pdp-title-row p {
+  max-width: 100% !important;
+}
+
+.map-pdp-sheet .pdp-quick-actions button,
+.map-pdp-sheet .pdp-quick-actions a {
+  flex: 1 1 0 !important;
+  width: auto !important;
+}
+
+.map-pdp-sheet .pdp-menu li {
+  overflow: hidden !important;
+}
+
+.map-pdp-sheet .pdp-menu li span {
+  overflow: hidden !important;
+  min-width: 0 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.map-pdp-sheet .pdp-menu li b {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
 }
 
 .map-member-popup,
@@ -3179,16 +3274,39 @@
   top: auto !important;
   width: min(316px, calc(100% - 48px)) !important;
   max-width: 316px !important;
-  max-height: calc(100dvh - 148px) !important;
-  transform: none !important;
+  flex: 0 0 auto !important;
+  transform: scale(0.9) !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
-.payment-completed-popup,
+/* Width/height stay at the original fixed 303x346 design size - the
+   transform:scale() on .visited-place-popup (in styles.css) uniformly
+   shrinks the whole card (and keeps every child's relative layout intact)
+   instead of reflowing it, so nothing here should re-introduce a responsive
+   width/height that would fight with that scale. */
 .visited-place-popup {
-  width: min(324px, calc(100% - 48px)) !important;
-  max-width: 324px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Popup overlays should scroll as a whole on short screens so the card's
+   top controls, including the close button, can be reached. The card itself
+   should not become an inner scroll area. */
+.payment-completed-overlay,
+.visited-popup-backdrop {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.payment-completed-popup {
+  width: min(303px, 100%) !important;
+  max-width: 303px !important;
+  max-height: none !important;
+  overflow: visible !important;
   box-sizing: border-box !important;
 }
 
@@ -3197,17 +3315,18 @@
 }
 
 .groupbuy-detail-action-bar {
-  position: fixed !important;
-  left: 50% !important;
+  position: static !important;
+  left: auto !important;
   right: auto !important;
-  bottom: calc(var(--bottom-nav-total) + 8px) !important;
-  width: min(372px, var(--app-content-width)) !important;
-  max-width: min(372px, var(--app-content-width)) !important;
+  bottom: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
   min-width: 0 !important;
-  margin: 0 !important;
-  transform: translateX(-50%) !important;
+  margin: 24px 0 0 !important;
+  transform: none !important;
+  -webkit-transform: none !important;
   box-sizing: border-box !important;
-  z-index: 6990 !important;
+  z-index: auto !important;
 }
 
 .community-frame .write-button {
@@ -3261,4 +3380,229 @@ img,
 svg,
 video {
   max-width: 100%;
+}
+
+/* Final correction: the 좋아요/저장하기/공유하기 action bar must render as
+   3 equal-width columns with each button's icon+label centered inside its
+   own column, not clustered around the middle button. */
+.pdp-frame .pdp-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  justify-content: normal !important;
+  justify-items: stretch !important;
+  column-gap: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.pdp-frame .pdp-actions button {
+  display: grid !important;
+  grid-template-columns: 28px minmax(44px, auto) !important;
+  grid-template-rows: 18px 16px !important;
+  column-gap: 6px !important;
+  align-content: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  justify-self: stretch !important;
+  padding: 0 !important;
+}
+
+.pdp-frame .pdp-actions img {
+  grid-column: 1 !important;
+  grid-row: 1 / 3 !important;
+  justify-self: end !important;
+  align-self: center !important;
+}
+
+.pdp-frame .pdp-actions span,
+.pdp-frame .pdp-actions strong {
+  grid-column: 2 !important;
+  justify-self: start !important;
+  text-align: left !important;
+}
+
+.pdp-frame .pdp-actions span {
+  grid-row: 1 !important;
+}
+
+.pdp-frame .pdp-actions strong {
+  grid-row: 2 !important;
+}
+
+/* Character customize profile: keep nickname on one line; on narrow frames,
+   move the edit/save actions below the subtitle instead. */
+.customize-page .user-strip {
+  grid-template-columns: 57px minmax(0, 1fr) auto !important;
+  height: auto !important;
+  min-height: 80px !important;
+  align-items: center !important;
+}
+
+.customize-page .customize-user-copy {
+  display: grid !important;
+  justify-items: start !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+.customize-page .user-strip strong {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  line-height: 1.22 !important;
+}
+
+.customize-page .customize-user-copy p {
+  display: block !important;
+  justify-self: start !important;
+  width: calc(100% - 2px) !important;
+  margin: 4px 0 0 !important;
+  padding: 0 0 0 2px !important;
+  text-align: left !important;
+}
+
+.customize-page .user-strip strong .customize-nickname {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #252334 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1.22 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.customize-page .user-strip strong .customize-level-pill {
+  flex: 0 0 auto !important;
+}
+
+.customize-page .customize-user-actions {
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 380px) {
+  .customize-page .user-strip {
+    grid-template-columns: 57px minmax(0, 1fr) !important;
+    grid-template-areas:
+      "avatar copy"
+      "avatar actions" !important;
+    column-gap: 10px !important;
+    row-gap: 5px !important;
+    align-items: start !important;
+    min-height: 118px !important;
+    padding: 10px 13px 12px 16px !important;
+  }
+
+  .customize-page .user-strip > img {
+    grid-area: avatar !important;
+    align-self: start !important;
+    margin-top: 2px !important;
+  }
+
+  .customize-page .customize-user-copy {
+    grid-area: copy !important;
+    align-self: end !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+  }
+
+  .customize-page .customize-user-actions {
+    grid-area: actions !important;
+    justify-self: stretch !important;
+    align-self: start !important;
+    justify-content: flex-start !important;
+    width: calc(100% - 2px) !important;
+    padding-left: 2px !important;
+    margin-top: 2px !important;
+  }
+
+  .customize-page .customize-user-actions button {
+    flex: 0 0 75px !important;
+  }
+}
+
+/* Map PDP sheet: let the description area own its natural height so the
+   more/collapse toggle never overlaps the quick-action row. */
+.map-pdp-sheet .pdp-title-row {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: auto !important;
+  padding-bottom: 0 !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  max-width: 355px !important;
+}
+
+.map-pdp-sheet .pdp-title-row.expanded {
+  min-height: auto !important;
+  padding-bottom: 0 !important;
+}
+
+.map-pdp-sheet .pdp-title-row > div {
+  flex: 0 0 auto !important;
+}
+
+.map-pdp-sheet .pdp-title-row strong {
+  flex: 0 0 auto !important;
+}
+
+.map-pdp-sheet .pdp-title-row p {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 18px !important;
+}
+
+.map-pdp-sheet .pdp-title-row.expanded p {
+  overflow: visible !important;
+}
+
+.map-pdp-sheet .pdp-description-toggle,
+.map-pdp-sheet .pdp-benefit,
+.map-pdp-sheet .pdp-quick-actions,
+.map-pdp-sheet .pdp-info,
+.map-pdp-sheet .pdp-menu,
+.map-pdp-sheet .pdp-actions {
+  flex: 0 0 auto !important;
+}
+
+.map-pdp-sheet .pdp-benefit {
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-height: 70px !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.map-pdp-sheet .pdp-benefit img {
+  flex: 0 0 52px !important;
+  width: 52px !important;
+  height: 52px !important;
+  object-fit: contain !important;
+}
+
+.map-pdp-sheet .pdp-benefit b {
+  min-height: 0 !important;
+  padding-right: 0 !important;
+  align-items: center !important;
+  align-content: center !important;
+  flex-wrap: wrap !important;
+  row-gap: 2px !important;
+  column-gap: 5px !important;
+  line-height: 1.22 !important;
+  white-space: normal !important;
+}
+
+.map-pdp-sheet .pdp-title-row + .pdp-benefit,
+.map-pdp-sheet .pdp-title-row + .pdp-quick-actions,
+.map-pdp-sheet .pdp-benefit + .pdp-quick-actions {
+  margin-top: 24px !important;
 }

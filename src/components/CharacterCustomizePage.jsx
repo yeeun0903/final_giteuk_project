@@ -80,8 +80,11 @@ export default function CharacterCustomizePage({
 
       <section className="user-strip">
         <img src={figmaAssets.myLevel01Character} alt={nickname} />
-        <div>
-          <strong>{nickname} <span>LV.{level}</span></strong>
+        <div className="customize-user-copy">
+          <strong>
+            <span className="customize-nickname">{nickname}</span>
+            <span className="customize-level-pill">LV.{level}</span>
+          </strong>
           <p>
             새싹 절약러
             <img className="inline-chevron" src={figmaAssets.characterChevron} alt="" />
