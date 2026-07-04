@@ -133,6 +133,7 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
   const currentLocationOverlayRef = useRef(null);
   const searchFocusOverlayRef = useRef(null);
   const polylineRef = useRef(null);
+  const routeSvgOverlayRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const zoomChangedHandlerRef = useRef(null);
   const clickHandlerRef = useRef(null);
@@ -235,6 +236,10 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
         if (currentLocationOverlayRef.current) currentLocationOverlayRef.current.setMap(null);
         if (searchFocusOverlayRef.current) searchFocusOverlayRef.current.setMap(null);
         if (polylineRef.current) polylineRef.current.setMap(null);
+        if (routeSvgOverlayRef.current) {
+          routeSvgOverlayRef.current.remove();
+          routeSvgOverlayRef.current = null;
+        }
 
         const bounds = new kakao.maps.LatLngBounds();
         const currentPosition = new kakao.maps.LatLng(currentLocation.latitude, currentLocation.longitude);
@@ -354,7 +359,40 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
         const shouldSkipAutoFit = skipAutoFitRef.current;
         skipAutoFitRef.current = false;
 
+        const drawRouteSvgOverlay = () => {
+          if (cancelled || !mapRef.current || routePlaces.length < 2 || !map.getProjection) return;
+
+          routeSvgOverlayRef.current?.remove();
+          const projection = map.getProjection();
+          const points = routePlaces
+            .map((place) => {
+              const coords = new kakao.maps.LatLng(place.latitude, place.longitude);
+              const point = projection.containerPointFromCoords(coords);
+              return `${point.x},${point.y}`;
+            })
+            .join(" ");
+
+          const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute("class", "figma-kakao-route-overlay");
+          svg.setAttribute("viewBox", `0 0 ${mapRef.current.clientWidth} ${mapRef.current.clientHeight}`);
+          svg.setAttribute("aria-hidden", "true");
+
+          const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+          polyline.setAttribute("points", points);
+          svg.appendChild(polyline);
+          mapRef.current.appendChild(svg);
+          routeSvgOverlayRef.current = svg;
+        };
+
+        const scheduleRouteSvgOverlay = () => {
+          if (routePlaces.length < 2) return;
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(drawRouteSvgOverlay);
+          });
+        };
+
         if (shouldSkipAutoFit) {
+          scheduleRouteSvgOverlay();
           return;
         }
 
@@ -378,6 +416,8 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
         } else {
           map.setBounds(bounds, 70, 42, 140, 42);
         }
+
+        scheduleRouteSvgOverlay();
       })
       .catch((nextError) => setError(nextError.message));
 
@@ -386,6 +426,10 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
       overlaysRef.current.forEach((overlay) => overlay.setMap(null));
       overlaysRef.current = [];
       if (currentLocationOverlayRef.current) currentLocationOverlayRef.current.setMap(null);
+      if (routeSvgOverlayRef.current) {
+        routeSvgOverlayRef.current.remove();
+        routeSvgOverlayRef.current = null;
+      }
       if (mapInstanceRef.current && window.kakao?.maps && clickHandlerRef.current) {
         window.kakao.maps.event.removeListener(mapInstanceRef.current, "click", clickHandlerRef.current);
         clickHandlerRef.current = null;
