@@ -6,7 +6,8 @@
 .app-shell:has(.groupbuy-detail-frame) {
   min-height: 100vh;
   background: #f4efff;
-  place-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: start stretch;
 }
 
 .page-shell,
@@ -14,7 +15,8 @@
   width: 100%;
   min-height: 100vh;
   display: grid;
-  place-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: start stretch;
   padding: 0;
   background: transparent;
   overflow: visible;
@@ -719,7 +721,7 @@
 }
 
 .figma-map-page .figma-category-row {
-  width: min(var(--prototype-width), 100vw) !important;
+  width: calc(min(var(--prototype-width), 100vw) - 16px) !important;
   margin-top: 10px !important;
 }
 
@@ -860,24 +862,10 @@
   width: min(362px, calc(100vw - 40px)) !important;
 }
 
-@media (max-width: 404px) {
-  .phone-page,
-  .figma-map-page.phone-page,
-  .figma-mypage.phone-page,
-  .customer-page.phone-page,
-  .customize-page.phone-page,
-  .terms-page.phone-page,
-  .inquiry-page.phone-page,
-  .community-frame,
-  .groupbuy-frame,
-  .pdp-frame,
-  .posting-frame,
-  .convenience-frame,
-  .groupbuy-detail-frame {
-    width: 100vw !important;
-    max-width: 100vw !important;
-  }
-}
+/* NOTE: broad width:100vw overrides are removed. The shared AppShell
+   contract at the end of this file owns the frame width; overflowing chip
+   and button rows use internal horizontal scroll instead. */
+
 
 /* Posting and map place PDP scroll fixes */
 .posting-bottom-actions {
@@ -1051,14 +1039,7 @@
   z-index: 7000 !important;
 }
 
-@media (max-width: 404px) {
-  .inform-page.phone-page,
-  .auth-login-page.phone-page,
-  .auth-form-page.phone-page {
-    width: 100vw !important;
-    max-width: 100vw !important;
-  }
-}
+/* Width override removed here too; AppShell contract owns page width. */
 
 /* Corrections after mobile QA screenshots */
 /* Keep only the icon/login GNB row fixed on community/groupbuy; let titles scroll. */
@@ -2273,10 +2254,11 @@
   top: 558px !important;
 }
 
-/* Settings page: center cards to the same 368px rail and give the banner breathing room. */
+/* Settings page: center cards to the same content rail and give the banner breathing room. */
 .figma-mypage.settings-page .settings-profile-card,
 .figma-mypage.mypage-detail-page.settings-page .settings-profile-card {
-  width: 368px !important;
+  width: var(--app-content-width) !important;
+  max-width: var(--app-content-width) !important;
   margin-top: 12px !important;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -2284,15 +2266,19 @@
 
 .figma-mypage.settings-page .settings-content,
 .figma-mypage.mypage-detail-page.settings-page .settings-content {
-  width: 368px !important;
+  width: var(--app-content-width) !important;
+  max-width: var(--app-content-width) !important;
   margin-top: 12px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   padding: 0 0 calc(var(--mobile-nav-height) + var(--mobile-nav-bottom) + 24px) !important;
   gap: 12px !important;
 }
 
 .figma-mypage.settings-page .settings-content .settings-group,
 .figma-mypage.mypage-detail-page.settings-page .settings-content .settings-group {
-  width: 368px !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
@@ -2804,122 +2790,28 @@
   opacity: 0.96 !important;
 }
 
-@media (max-width: 390px) {
-  .figma-category-row button,
-  .community-tabs button,
-  .community-tab-row button,
-  .groupbuy-tabs button,
-  .convenience-filter-row button {
-    height: 31px !important;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-    font-size: 12px !important;
-    line-height: 1.05 !important;
-    white-space: nowrap !important;
-  }
-
-  .community-frame .community-body,
-  .community-frame .post-section,
-  .community-frame .post-list,
-  .groupbuy-frame .groupbuy-content,
-  .groupbuy-frame .groupbuy-search,
-  .groupbuy-frame .groupbuy-feed-section,
-  .convenience-frame .convenience-content,
-  .convenience-frame .convenience-search,
-  .convenience-frame .convenience-tabs-row,
-  .figma-mypage .mypage-level-card,
-  .figma-mypage .mypage-custom-card,
-  .figma-mypage .mypage-saving-card,
-  .figma-mypage .mypage-list-card,
-  .figma-mypage .guest-auth-card {
-    width: calc(100dvw - 32px) !important;
-    max-width: 370px !important;
-  }
-
-  .community-frame .promo-card {
-    width: calc(100dvw - 32px) !important;
-    max-width: 370px !important;
-    height: 178px !important;
-    padding-left: 14px !important;
-    overflow: hidden !important;
-  }
-
-  .community-frame .promo-copy {
-    width: 160px !important;
-  }
-
-  .community-frame .promo-copy h2 {
-    font-size: 22px !important;
-    line-height: 1.05 !important;
-  }
-
-  .community-frame .promo-brands,
-  .community-frame .promo-description {
-    font-size: 9px !important;
-  }
-
-  .community-frame .promo-visual {
-    right: -4px !important;
-    top: 8px !important;
-    transform: scale(0.88) !important;
-    transform-origin: top right !important;
-  }
-
-  .community-frame .post-card,
-  .groupbuy-frame .groupbuy-product-card,
-  .convenience-frame .convenience-product-card {
-    width: calc(100dvw - 32px) !important;
-    max-width: 370px !important;
-  }
-
-  .community-frame .post-card h2,
-  .community-frame .post-card p,
-  .groupbuy-frame .groupbuy-product-card h3,
-  .convenience-frame .convenience-product-card h2 {
-    overflow-wrap: anywhere !important;
-  }
-
-  .groupbuy-frame .groupbuy-popular-list {
-    overflow-x: auto !important;
-    padding-bottom: 2px !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  .groupbuy-frame .groupbuy-best-card {
-    flex: 0 0 112px !important;
-    width: 112px !important;
-  }
-
-  .figma-map-page .figma-search-results {
-    max-height: min(252px, calc(100dvh - 360px)) !important;
-    padding: 10px !important;
-  }
-}
-
-/* Final mobile map/search state and responsive containment fixes */
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100%;
-  margin: 0;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
+/* Stability fixes: scoped only to responsive layout and overflow containment. */
+:root {
+  --prototype-width: 404px;
+  --app-side-pad: 16px;
+  --app-content-width: calc(100% - (var(--app-side-pad) * 2));
+  --bottom-nav-height: 60px;
+  --bottom-nav-gap: 10px;
+  --bottom-nav-total: calc(var(--bottom-nav-height) + var(--bottom-nav-gap) + env(safe-area-inset-bottom, 0px));
 }
 
 .app-shell,
+.page-shell,
+.groupbuy-page-shell {
+  width: 100% !important;
+  max-width: var(--prototype-width) !important;
+  min-width: 0 !important;
+  min-height: 100dvh !important;
+  margin: 0 auto !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
 .phone-page,
 .figma-map-page.phone-page,
 .figma-mypage.phone-page,
@@ -2927,216 +2819,446 @@ select {
 .customize-page.phone-page,
 .terms-page.phone-page,
 .inquiry-page.phone-page,
+.inform-page.phone-page,
+.auth-login-page.phone-page,
+.auth-form-page.phone-page,
 .community-frame,
 .groupbuy-frame,
 .pdp-frame,
 .posting-frame,
 .convenience-frame,
 .groupbuy-detail-frame {
-  width: min(404px, 100dvw) !important;
-  max-width: 404px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.community-body,
+.groupbuy-content,
+.convenience-content,
+.customer-page .customer-title,
+.customer-page .customer-menu-card,
+.customer-page .customer-hours-card,
+.customer-page .customer-version-card,
+.figma-mypage .mypage-level-card,
+.figma-mypage .mypage-custom-card,
+.figma-mypage .mypage-saving-card,
+.figma-mypage .mypage-list-card,
+.figma-mypage .guest-auth-card,
+.settings-content,
+.settings-section,
+.settings-profile-card,
+.groupbuy-detail-content,
+.groupbuy-detail-hero,
+.groupbuy-detail-summary,
+.groupbuy-detail-info,
+.groupbuy-detail-participation,
+.posting-form,
+.pdp-content,
+.pdp-actions,
+.pdp-comments {
+  width: var(--app-content-width) !important;
+  max-width: var(--app-content-width) !important;
   min-width: 0 !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.groupbuy-product-list,
+.groupbuy-empty-message,
+.groupbuy-popular-list,
+.groupbuy-search,
+.groupbuy-toolbar {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .figma-map-page .figma-map-header,
-.figma-map-page .figma-kakao-map,
-.figma-map-page .figma-map-fallback,
 .community-frame .community-header,
 .groupbuy-frame .groupbuy-header,
+.convenience-frame .convenience-header,
 .figma-mypage .mypage-header,
-.customer-page .customer-header {
+.customer-page .customer-header,
+.customize-page .customize-top,
+.inform-page .inform-header,
+.posting-frame .posting-header,
+.pdp-frame .pdp-header,
+.groupbuy-detail-frame .groupbuy-detail-header,
+.auth-login-page .auth-header,
+.auth-form-page .auth-header,
+.mypage-inner-page .mypage-detail-header {
   width: 100% !important;
-  max-width: 404px !important;
+  max-width: 100% !important;
   min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.figma-bottom-nav,
+.figma-map-page .figma-bottom-nav,
+.figma-mypage .figma-bottom-nav,
+.customer-page .figma-bottom-nav,
+.customize-page .figma-bottom-nav,
+.community-frame .figma-bottom-nav,
+.groupbuy-frame .figma-bottom-nav,
+.pdp-frame .figma-bottom-nav,
+.posting-frame .figma-bottom-nav,
+.convenience-frame .figma-bottom-nav,
+.inform-page .figma-bottom-nav,
+.figma-mypage .mypage-bottom-nav,
+.customer-page .mypage-bottom-nav {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(var(--bottom-nav-gap) + env(safe-area-inset-bottom, 0px)) !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  width: min(380px, calc(100vw - 24px)) !important;
+  max-width: min(380px, calc(100vw - 24px)) !important;
+  min-width: 0 !important;
+  height: var(--bottom-nav-height) !important;
+  min-height: var(--bottom-nav-height) !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 7000 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.figma-bottom-nav button,
+.figma-mypage .mypage-bottom-nav button,
+.customer-page .mypage-bottom-nav button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.community-frame,
+.groupbuy-frame,
+.convenience-frame,
+.figma-mypage.phone-page,
+.customer-page.phone-page,
+.customize-page.phone-page,
+.terms-page.phone-page,
+.inquiry-page.phone-page,
+.inform-page.phone-page,
+.pdp-frame,
+.posting-frame,
+.groupbuy-detail-frame {
+  padding-bottom: calc(var(--bottom-nav-total) + 18px) !important;
+  scroll-padding-bottom: calc(var(--bottom-nav-total) + 18px) !important;
+}
+
+.figma-map-page.phone-page {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+.figma-map-page .figma-map-header {
+  width: 100% !important;
+  max-width: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
   box-sizing: border-box !important;
 }
 
 .figma-map-page .figma-gnb,
-.figma-map-page .figma-search,
-.figma-map-page .figma-category-row,
-.figma-map-page .figma-search-results,
-.figma-map-page .lightning-course-button,
-.figma-map-page .lightning-course-sheet,
+.figma-map-page .figma-search {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  left: auto !important;
+  right: auto !important;
+  box-sizing: border-box !important;
+}
+
+.figma-map-page .figma-category-row {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: var(--app-side-pad) !important;
+  padding-right: var(--app-side-pad) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.figma-map-page .figma-kakao-map,
+.figma-map-page .figma-map-fallback {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  bottom: 0 !important;
+}
+
+.figma-map-page .figma-search-results {
+  left: var(--app-side-pad) !important;
+  right: var(--app-side-pad) !important;
+  width: auto !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+.figma-map-page .figma-search-sort-options {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.figma-map-page .figma-search-sort-options button {
+  width: 100% !important;
+  min-width: 0 !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+.figma-category-row,
+.community-tab-row,
+.community-frame .community-tabs,
+.groupbuy-tabs,
+.groupbuy-category-tabs,
+.groupbuy-frame .groupbuy-tabs,
+.groupbuy-frame .groupbuy-category-tabs,
+.convenience-tabs-row,
+.convenience-filter-row,
+.mypage-like-tabs,
+.post-toolbar,
+.groupbuy-popular-list {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  flex-wrap: nowrap !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.figma-category-row::-webkit-scrollbar,
+.community-tab-row::-webkit-scrollbar,
+.community-frame .community-tabs::-webkit-scrollbar,
+.groupbuy-tabs::-webkit-scrollbar,
+.groupbuy-category-tabs::-webkit-scrollbar,
+.convenience-tabs-row::-webkit-scrollbar,
+.convenience-filter-row::-webkit-scrollbar,
+.mypage-like-tabs::-webkit-scrollbar,
+.post-toolbar::-webkit-scrollbar,
+.groupbuy-popular-list::-webkit-scrollbar {
+  display: none;
+}
+
+.figma-category-row > *,
+.community-tab-row > *,
+.community-frame .community-tabs > *,
+.groupbuy-tabs > *,
+.groupbuy-category-tabs > *,
+.convenience-tabs-row > *,
+.convenience-filter-row > *,
+.mypage-like-tabs > *,
+.post-toolbar > *,
+.groupbuy-popular-list > * {
+  flex: 0 0 auto !important;
+}
+
+.promo-card,
+.post-card,
+.groupbuy-product-card,
+.convenience-product-card,
+.customer-menu-card,
+.customer-hours-card,
+.customer-version-card,
+.mypage-level-card,
+.mypage-custom-card,
+.mypage-saving-card,
+.mypage-list-card,
 .map-pdp-sheet,
-.community-frame .post-card,
-.groupbuy-frame .groupbuy-product-card,
-.convenience-frame .convenience-product-card,
-.customer-page .customer-menu-card,
-.customer-page .customer-info-card,
-.posting-frame .posting-form,
-.posting-frame .posting-bottom-actions {
-  max-width: calc(100% - 32px) !important;
+.map-member-popup,
+.payment-completed-popup,
+.visited-place-popup {
+  max-width: 100% !important;
   min-width: 0 !important;
   box-sizing: border-box !important;
 }
 
-.figma-map-page .figma-search-results.is-collapsed {
-  display: none !important;
-}
-
-.figma-map-page .figma-search-results {
-  left: 16px !important;
-  right: 16px !important;
-  top: 122px !important;
-  width: auto !important;
-  max-width: calc(100% - 32px) !important;
-  max-height: min(390px, calc(100dvh - 260px)) !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-.figma-map-page .figma-search-results-head,
-.figma-map-page .figma-search-sort-options,
-.figma-map-page .figma-search-result-metrics {
+.post-card,
+.groupbuy-product-card,
+.convenience-product-card {
   width: 100% !important;
-  min-width: 0 !important;
 }
 
-.figma-map-page .figma-search-results button {
-  width: 100% !important;
-  min-width: 0 !important;
+.post-card *,
+.promo-card *,
+.groupbuy-product-card *,
+.convenience-product-card *,
+.groupbuy-detail-content *,
+.pdp-content *,
+.map-pdp-sheet *,
+.mypage-list-card *,
+.customer-menu-card * {
+  min-width: 0;
+}
+
+.post-card h2,
+.post-card h3,
+.groupbuy-product-card h3,
+.convenience-product-card h2,
+.groupbuy-detail-summary h2,
+.groupbuy-detail-title,
+.pdp-content h2,
+.map-pdp-sheet h2,
+.map-pdp-sheet h3 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  white-space: normal !important;
+  line-height: 1.35 !important;
 }
 
-.figma-map-page .figma-search-results button span,
-.figma-map-page .figma-search-results button small,
-.figma-map-page .figma-search-results button b,
-.figma-map-page .figma-category-row button,
-.figma-map-page .figma-search input,
-.community-frame .post-card h2,
-.community-frame .post-card p,
-.groupbuy-frame .groupbuy-product-card h3,
-.convenience-frame .convenience-product-card h2 {
-  overflow-wrap: anywhere !important;
-  word-break: keep-all !important;
+.post-card p,
+.groupbuy-product-card p,
+.convenience-product-card p,
+.promo-description,
+.groupbuy-detail-summary p,
+.map-pdp-sheet p,
+.pdp-content p {
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.post-card img,
+.promo-card img,
+.groupbuy-product-card img,
+.convenience-product-card img,
+.groupbuy-detail-frame img,
+.map-pdp-sheet img,
+.pdp-frame img {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.map-pdp-sheet,
+.figma-map-page .map-pdp-sheet {
+  left: 50% !important;
+  right: auto !important;
+  width: min(372px, var(--app-content-width)) !important;
+  max-width: min(372px, var(--app-content-width)) !important;
+  transform: translateX(-50%) !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.map-pdp-sheet .pdp-actions,
+.pdp-frame .pdp-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
   min-width: 0 !important;
 }
 
-.figma-map-page .figma-search input {
-  font-size: clamp(12px, 3.4vw, 14px) !important;
+.map-pdp-sheet .pdp-actions button,
+.pdp-frame .pdp-actions button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
 }
 
-.figma-map-page .figma-category-row button,
-.figma-map-page .figma-search-results button,
-.figma-map-page .lightning-course-button strong,
-.figma-map-page .lightning-course-button small,
-.figma-map-page .lightning-course-sheet p,
-.figma-map-page .lightning-course-sheet b,
-.community-frame .post-card,
-.groupbuy-frame .groupbuy-product-card,
-.convenience-frame .convenience-product-card {
-  font-size: clamp(11px, 3.25vw, 14px) !important;
+.map-member-popup,
+.figma-map-page .map-member-popup-layer .map-member-popup {
+  left: auto !important;
+  top: auto !important;
+  width: min(316px, calc(100% - 48px)) !important;
+  max-width: 316px !important;
+  max-height: calc(100dvh - 148px) !important;
+  transform: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-.figma-map-page .lightning-course-button {
-  left: max(16px, calc((100vw - 404px) / 2 + 16px)) !important;
+.payment-completed-popup,
+.visited-place-popup {
+  width: min(324px, calc(100% - 48px)) !important;
+  max-width: 324px !important;
+  box-sizing: border-box !important;
+}
+
+.groupbuy-detail-frame {
+  padding-bottom: calc(var(--bottom-nav-total) + 80px) !important;
+}
+
+.groupbuy-detail-action-bar {
+  position: fixed !important;
+  left: 50% !important;
   right: auto !important;
-  bottom: calc(var(--mobile-nav-bottom) + 78px) !important;
-  width: min(218px, calc(100% - 32px)) !important;
-  height: 58px !important;
-  border-radius: 18px !important;
+  bottom: calc(var(--bottom-nav-total) + 8px) !important;
+  width: min(372px, var(--app-content-width)) !important;
+  max-width: min(372px, var(--app-content-width)) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
   z-index: 6990 !important;
 }
 
-.figma-map-page .lightning-course-button span {
-  width: 42px !important;
-  height: 42px !important;
-  flex: 0 0 42px !important;
+.community-frame .write-button {
+  position: fixed !important;
+  left: auto !important;
+  right: max(16px, calc((100vw - var(--prototype-width)) / 2 + 16px)) !important;
+  bottom: calc(var(--bottom-nav-total) + 8px) !important;
+  transform: none !important;
+  z-index: 7010 !important;
 }
 
-.figma-map-page .lightning-course-sheet {
-  left: max(16px, calc((100vw - 404px) / 2 + 16px)) !important;
-  right: max(16px, calc((100vw - 404px) / 2 + 16px)) !important;
-  bottom: calc(var(--mobile-nav-bottom) + 78px) !important;
-  width: auto !important;
-  max-width: calc(404px - 32px) !important;
-  z-index: 6990 !important;
+.convenience-product-grid,
+.convenience-grid,
+.item-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
 }
 
-.figma-map-page .figma-current-location {
-  right: max(14px, calc((100vw - 404px) / 2 + 14px)) !important;
-  bottom: calc(var(--mobile-nav-bottom) + 204px) !important;
-  z-index: 6980 !important;
+.convenience-product-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
-.figma-map-page .figma-map-zoom-controls {
-  right: max(14px, calc((100vw - 404px) / 2 + 14px)) !important;
-  bottom: calc(var(--mobile-nav-bottom) + 92px) !important;
-  z-index: 6975 !important;
+.auth-login-page.phone-page,
+.auth-form-page.phone-page {
+  min-height: 100dvh !important;
+  max-height: none !important;
 }
 
-.figma-map-marker {
-  width: clamp(26px, 7.6vw, 30px) !important;
-  height: clamp(26px, 7.6vw, 30px) !important;
-  min-width: clamp(26px, 7.6vw, 30px) !important;
-  min-height: clamp(26px, 7.6vw, 30px) !important;
-  max-width: 30px !important;
-  max-height: 30px !important;
-  aspect-ratio: 1 / 1 !important;
-  transform: translate(-50%, -50%) rotate(-45deg) !important;
-  transform-origin: center center !important;
-  border-radius: 50% 50% 50% 8px !important;
-  padding: 0 !important;
+/* Global overflow safety net: text should wrap/break instead of
+   spilling past its container on narrow screens, and media should
+   never render wider than its box. */
+p,
+span,
+strong,
+b,
+small,
+li,
+dd,
+dt,
+h1,
+h2,
+h3,
+label {
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
-.figma-map-marker.active,
-.figma-map-marker.route {
-  width: clamp(30px, 8.4vw, 34px) !important;
-  height: clamp(30px, 8.4vw, 34px) !important;
-  min-width: clamp(30px, 8.4vw, 34px) !important;
-  min-height: clamp(30px, 8.4vw, 34px) !important;
-  max-width: 34px !important;
-  max-height: 34px !important;
-}
-
-.figma-map-marker-icon {
-  width: clamp(14px, 4vw, 16px) !important;
-  height: clamp(14px, 4vw, 16px) !important;
-  max-width: 16px !important;
-  max-height: 16px !important;
-  object-fit: contain !important;
-  transform: translate(-50%, -50%) rotate(45deg) !important;
-}
-
-.figma-map-marker span {
-  font-size: clamp(10px, 3vw, 12px) !important;
-  line-height: 1 !important;
-  transform: rotate(45deg) !important;
-}
-
-@media (max-width: 404px) {
-  :root {
-    --prototype-width: 100dvw;
-    --prototype-nav-width: calc(100dvw - 20px);
-  }
-
-  .figma-map-page .figma-map-header {
-    padding-left: clamp(14px, 4vw, 16px) !important;
-    padding-right: clamp(14px, 4vw, 16px) !important;
-  }
-
-  .figma-map-page .figma-search,
-  .figma-map-page .figma-category-row {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  .figma-map-page .figma-category-row {
-    gap: 8px !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  .figma-map-page .figma-category-row button {
-    flex: 0 0 auto !important;
-    height: 38px !important;
-    padding: 0 14px !important;
-    white-space: nowrap !important;
-  }
+img,
+svg,
+video {
+  max-width: 100%;
 }

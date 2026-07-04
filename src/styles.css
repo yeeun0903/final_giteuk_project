@@ -1532,7 +1532,7 @@ button {
 }
 
 .character-stack:hover {
-  transform: scale(1.035);
+  transform: translateY(-2px);
 }
 
 .compact .character-stack {
@@ -4934,11 +4934,12 @@ button {
   padding: 48px 16px 0;
   grid-template-columns: 24px 1fr auto;
   gap: 18px;
-  width: 402px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   display: grid;
   align-items: center;
   background: #f8f8f8;
-  box-sizing: border-box;
 }
 
 .customize-page .customize-top h1 {
@@ -4992,7 +4993,8 @@ button {
   height: 80px;
   padding: 7px 13px 15px 16px;
   background: #f8f8f8;
-  width: 402px;
+  width: 100%;
+  max-width: 100%;
   display: grid;
   align-items: center;
   box-sizing: border-box;
@@ -5072,7 +5074,9 @@ button {
 .customize-page .hero-preview {
   height: 330px;
   min-height: 330px;
-  width: 402px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   position: relative;
   display: grid;
   place-items: center;
@@ -5118,7 +5122,9 @@ button {
   padding: 0;
   grid-template-columns: repeat(4, 50px);
   border-bottom: 1px solid #ece8f8;
-  width: 402px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   display: grid;
   justify-content: center;
   column-gap: 14px;
@@ -5176,7 +5182,8 @@ button {
 .customize-page .item-section {
   min-height: 296px;
   padding: 23px 26px 0;
-  width: 402px;
+  width: 100%;
+  max-width: 100%;
   background: #ffffff;
   box-sizing: border-box;
 }
@@ -8082,13 +8089,14 @@ video {
   width: 100% !important;
   min-width: 0 !important;
   max-width: var(--prototype-width) !important;
-  min-height: 100dvh !important;
-  height: auto !important;
+  min-height: 0 !important;
+  height: 100dvh !important;
   margin: 0 auto !important;
   padding: 0 !important;
   overflow-x: hidden !important;
   display: grid !important;
-  place-items: start center !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  place-items: start stretch !important;
   background: #f4efff !important;
 }
 
@@ -8112,16 +8120,15 @@ video {
   width: 100% !important;
   min-width: 0 !important;
   max-width: var(--prototype-width) !important;
-  min-height: 100dvh !important;
-  height: auto !important;
-  max-height: none !important;
+  min-height: 0 !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
   margin: 0 auto !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   transform: none !important;
-  zoom: 1 !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
