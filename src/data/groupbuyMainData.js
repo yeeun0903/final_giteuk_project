@@ -1,15 +1,15 @@
 import detergentBestImage from "../assets/GroupBuy_Main/detergent-2.png";
-import tissueBestImage from "../assets/GroupBuy_Main/롤휴지-1.png";
-import riceBestImage from "../assets/GroupBuy_Main/햇반-1.png";
+import tissueBestImage from "../assets/GroupBuy_Main/롤휴지-1.png";
+import riceBestImage from "../assets/GroupBuy_Main/햇반-1.png";
 import detergentImage from "../assets/GroupBuy_Main/detergent-2.png";
-import sunBbImage from "../assets/GroupBuy_Main/썬비비.png";
-import iceCreamImage from "../assets/GroupBuy_Main/아이스크림.png";
-import glassesImage from "../assets/GroupBuy_Main/안경.png";
-import tissueImage from "../assets/GroupBuy_Main/롤휴지.png";
-import nikeImage from "../assets/GroupBuy_Main/나이키.png";
-import riceImage from "../assets/GroupBuy_Main/햇반.png";
-import kanuImage from "../assets/GroupBuy_Main/카누.png";
-import shampooImage from "../assets/GroupBuy_Main/샴푸.png";
+import sunBbImage from "../assets/GroupBuy_Main/썬비비.png";
+import iceCreamImage from "../assets/GroupBuy_Main/아이스크림.png";
+import glassesImage from "../assets/GroupBuy_Main/안경.png";
+import tissueImage from "../assets/GroupBuy_Main/롤휴지.png";
+import nikeImage from "../assets/GroupBuy_Main/나이키.png";
+import riceImage from "../assets/GroupBuy_Main/햇반.png";
+import kanuImage from "../assets/GroupBuy_Main/카누.png";
+import shampooImage from "../assets/GroupBuy_Main/샴푸.png";
 
 export const groupbuyPopularProducts = [
   {
