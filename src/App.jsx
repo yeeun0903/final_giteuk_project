@@ -250,7 +250,7 @@ export default function App() {
     listCommunityPosts()
       .then((rows) => {
         if (cancelled || !rows.length) return;
-        const savedPosts = rows.map((row) => mapDatabaseCommunityPost(row, nickname, user?.id));
+        const savedPosts = rows.map((row) => mapDatabaseCommunityPost(row, user?.id, nickname));
         setCommunityPosts([...savedPosts, ...initialCommunityPosts]);
       })
       .catch((error) => console.error("커뮤니티 게시글 목록 불러오기 실패", error));
@@ -592,7 +592,7 @@ export default function App() {
           setCommunityPosts((currentPosts) =>
             currentPosts.map((post) => {
               if (post.id !== optimisticId) return post;
-              const mappedPost = mapDatabaseCommunityPost(savedPost, nickname, user.id);
+              const mappedPost = mapDatabaseCommunityPost(savedPost, user.id, nickname);
               return {
                 ...mappedPost,
                 photoUrl: mappedPost.photoUrl || photoUrl,
@@ -960,9 +960,11 @@ function createUserPostDetail(post, fallbackNickname = "기특한진희") {
   };
 }
 
-function mapDatabaseCommunityPost(row, fallbackNickname = "기특한진희", currentUserId = null) {
+function mapDatabaseCommunityPost(row, currentUserId = null, currentNickname = "게스트") {
   const category = row.category || "이용후기";
   const meta = communityCategoryMeta[category] || communityCategoryMeta["이용후기"];
+  const isOwner = Boolean(currentUserId && row.user_id === currentUserId);
+  const authorName = row.author_name || (isOwner ? currentNickname : "게스트");
   return {
     id: `db-user-${row.id}`,
     dbId: row.id,
@@ -973,7 +975,7 @@ function mapDatabaseCommunityPost(row, fallbackNickname = "기특한진희", cur
     detailPageClassName: meta.detailPageClassName,
     title: row.title,
     body: row.content,
-    authorName: row.author_name || fallbackNickname,
+    authorName,
     authorLevel: "LV.1",
     location: row.location_label || meta.location,
     locationData: row.location_lat && row.location_lng
@@ -982,7 +984,7 @@ function mapDatabaseCommunityPost(row, fallbackNickname = "기특한진희", cur
     time: formatRelativeTime(row.created_at),
     likes: 0,
     photoUrl: row.photo_url || "",
-    canManage: Boolean(currentUserId && row.user_id === currentUserId),
+    canManage: isOwner,
   };
 }
 

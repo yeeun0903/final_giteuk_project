@@ -2819,9 +2819,9 @@
 }
 
 .figma-route-svg polyline {
-  stroke-width: 4.5 !important;
+  stroke-width: 2.5 !important;
   stroke: #5b25eb !important;
-  opacity: 0.96 !important;
+  opacity: 0.9 !important;
 }
 
 /* Stability fixes: scoped only to responsive layout and overflow containment. */

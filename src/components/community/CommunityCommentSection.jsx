@@ -37,7 +37,7 @@ export default function CommunityCommentSection({
       body,
       likes: 0,
       likedUserIds: [],
-      canManage: false,
+      canManage: isAuthenticated,
     };
 
     setComments((prevComments) => [optimisticComment, ...prevComments]);
@@ -53,6 +53,10 @@ export default function CommunityCommentSection({
       );
     } catch (error) {
       console.error("댓글 저장 실패", error);
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== optimisticComment.id),
+      );
+      window.alert("댓글 저장에 실패했어요. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -61,6 +65,7 @@ export default function CommunityCommentSection({
     const trimmedBody = nextBody?.trim();
     if (!trimmedBody || trimmedBody === comment.body) return;
 
+    const previousComments = comments;
     setComments((prevComments) =>
       prevComments.map((item) =>
         item.id === comment.id ? { ...item, body: trimmedBody } : item,
@@ -71,6 +76,8 @@ export default function CommunityCommentSection({
       await onUpdateComment?.(comment.id, trimmedBody);
     } catch (error) {
       console.error("댓글 수정 실패", error);
+      setComments(previousComments);
+      window.alert("본인이 작성한 댓글만 수정할 수 있어요.");
     }
   };
 
@@ -85,6 +92,7 @@ export default function CommunityCommentSection({
     } catch (error) {
       console.error("댓글 삭제 실패", error);
       setComments(previousComments);
+      window.alert("본인이 작성한 댓글만 삭제할 수 있어요.");
     }
   };
 

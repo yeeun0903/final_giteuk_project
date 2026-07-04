@@ -260,9 +260,9 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
         if (routePath.length > 1) {
           polylineRef.current = new kakao.maps.Polyline({
             path: routePath,
-            strokeWeight: 7,
+            strokeWeight: 3,
             strokeColor: "#5B25EB",
-            strokeOpacity: 0.96,
+            strokeOpacity: 0.9,
             strokeStyle: "solid",
             zIndex: 10
           });

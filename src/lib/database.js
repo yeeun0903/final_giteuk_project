@@ -216,19 +216,23 @@ export async function updateComment({ userId, commentId, content }) {
     .single();
 
   if (error) throw error;
+  if (!data) throw new Error("댓글 수정 권한이 없거나 댓글을 찾지 못했어요.");
   return data;
 }
 
 export async function deleteComment({ userId, commentId }) {
   if (!supabaseWritesEnabled || !userId) return false;
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("comments")
     .delete()
     .eq("id", commentId)
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .select("id")
+    .single();
 
   if (error) throw error;
+  if (!data) throw new Error("댓글 삭제 권한이 없거나 댓글을 찾지 못했어요.");
   return true;
 }
 

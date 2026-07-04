@@ -26,6 +26,25 @@ on public.community_posts for select
 to anon, authenticated
 using (true);
 
+drop policy if exists "users can create their own community posts" on public.community_posts;
+create policy "users can create their own community posts"
+on public.community_posts for insert
+to authenticated
+with check ((select auth.uid()) = user_id);
+
+drop policy if exists "users can update their own community posts" on public.community_posts;
+create policy "users can update their own community posts"
+on public.community_posts for update
+to authenticated
+using ((select auth.uid()) = user_id)
+with check ((select auth.uid()) = user_id);
+
+drop policy if exists "users can delete their own community posts" on public.community_posts;
+create policy "users can delete their own community posts"
+on public.community_posts for delete
+to authenticated
+using ((select auth.uid()) = user_id);
+
 drop policy if exists "comments are readable by authenticated users" on public.comments;
 drop policy if exists "comments are readable by everyone" on public.comments;
 create policy "comments are readable by everyone"
@@ -58,7 +77,8 @@ on public.comments for delete
 to authenticated
 using ((select auth.uid()) = user_id);
 
-grant select on public.community_posts to anon, authenticated;
+grant select on public.community_posts to anon;
+grant select, insert, update, delete on public.community_posts to authenticated;
 grant select, insert on public.comments to anon;
 grant select, insert, update, delete on public.comments to authenticated;
 grant usage, select on all sequences in schema public to anon, authenticated;
