@@ -153,7 +153,7 @@ const pageLabels = {
 };
 
 export default function App() {
-  const { user, loading, isAuthenticated, nickname, signOut } = useAuth();
+  const { user, loading, isAuthenticated, nickname, profile, signOut } = useAuth();
   const [page, setPage] = useState("splash");
   const [openSongpaAfterAuth, setOpenSongpaAfterAuth] = useState(false);
   const [authInitialStep, setAuthInitialStep] = useState("login");
@@ -250,7 +250,7 @@ export default function App() {
     listCommunityPosts()
       .then((rows) => {
         if (cancelled || !rows.length) return;
-        const savedPosts = rows.map((row) => mapDatabaseCommunityPost(row, user?.id, nickname));
+        const savedPosts = rows.map((row) => mapDatabaseCommunityPost(row, user?.id, nickname, profile?.photoUrl));
         setCommunityPosts([...savedPosts, ...initialCommunityPosts]);
       })
       .catch((error) => console.error("커뮤니티 게시글 목록 불러오기 실패", error));
@@ -258,7 +258,7 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, [nickname, user?.id]);
+  }, [nickname, user?.id, profile?.photoUrl]);
 
   useEffect(() => {
     if (loading || !user?.id) return;
@@ -563,6 +563,7 @@ export default function App() {
       title: nextTitle,
       body: nextBody,
       authorName: nickname,
+      authorPhotoUrl: profile?.photoUrl || null,
       location: locationLabel,
       locationData: location || null,
       time: "방금 전",
@@ -592,11 +593,12 @@ export default function App() {
           setCommunityPosts((currentPosts) =>
             currentPosts.map((post) => {
               if (post.id !== optimisticId) return post;
-              const mappedPost = mapDatabaseCommunityPost(savedPost, user.id, nickname);
+              const mappedPost = mapDatabaseCommunityPost(savedPost, user.id, nickname, profile?.photoUrl);
               return {
                 ...mappedPost,
                 photoUrl: mappedPost.photoUrl || photoUrl,
                 authorName: mappedPost.authorName || nickname,
+                authorPhotoUrl: mappedPost.authorPhotoUrl || profile?.photoUrl || null,
               };
             }),
           );
@@ -933,7 +935,7 @@ function createUserPostDetail(post, fallbackNickname = "기특한진희") {
     category: post.badge,
     title: post.title,
     author: {
-      avatar: pdpWriterCharacter,
+      avatar: post.authorPhotoUrl || pdpWriterCharacter,
       name: post.authorName || fallbackNickname,
       level: post.authorLevel || "LV.1",
       time: post.time,
@@ -954,18 +956,19 @@ function createUserPostDetail(post, fallbackNickname = "기특한진희") {
       inputIcon: pdpCommentIcon,
       sortIcon: pdpSortIcon,
       newCommentAuthor: {
-        avatar: pdpWriterCharacter,
+        avatar: post.authorPhotoUrl || pdpWriterCharacter,
         name: post.authorName || fallbackNickname,
       },
     },
   };
 }
 
-function mapDatabaseCommunityPost(row, currentUserId = null, currentNickname = "게스트") {
+function mapDatabaseCommunityPost(row, currentUserId = null, currentNickname = "게스트", currentPhotoUrl = null) {
   const category = row.category || "이용후기";
   const meta = communityCategoryMeta[category] || communityCategoryMeta["이용후기"];
   const isOwner = Boolean(currentUserId && row.user_id === currentUserId);
   const authorName = row.author_name || (isOwner ? currentNickname : "게스트");
+  const authorPhotoUrl = isOwner ? currentPhotoUrl || null : null;
   return {
     id: `db-user-${row.id}`,
     dbId: row.id,
@@ -977,6 +980,7 @@ function mapDatabaseCommunityPost(row, currentUserId = null, currentNickname = "
     title: row.title,
     body: row.content,
     authorName,
+    authorPhotoUrl,
     authorLevel: "LV.1",
     location: row.location_label || meta.location,
     locationData: row.location_lat && row.location_lng

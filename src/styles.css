@@ -8541,6 +8541,14 @@ video {
   z-index: 7580 !important;
 }
 
+/* 가게 상세 시트, 송파 술집 리스트가 열려 있을 때는 확대/축소·내 위치 버튼이 뒤로 가도록 함 */
+.figma-map-page:has(.map-pdp-sheet) .figma-current-location,
+.figma-map-page:has(.songpa-popup-sheet) .figma-current-location,
+.figma-map-page:has(.map-pdp-sheet) .figma-map-zoom-controls,
+.figma-map-page:has(.songpa-popup-sheet) .figma-map-zoom-controls {
+  z-index: 90 !important;
+}
+
 .figma-map-marker {
   width: 34px !important;
   height: 34px !important;

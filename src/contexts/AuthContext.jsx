@@ -41,16 +41,25 @@ function isEmailConfirmationError(error) {
   return message.includes("email not confirmed") || message.includes("not confirmed") || message.includes("confirm");
 }
 
+function getUserPhotoUrl(user) {
+  const metadata = user?.user_metadata || {};
+  return metadata.avatar_url || metadata.picture || null;
+}
+
 function createProfileFromUser(user) {
   if (!user) return { nickname: "게스트", provider: "guest" };
   const provider = user.app_metadata?.provider || user.identities?.[0]?.provider || "email";
   const storedProfile = getStoredProfile(user.id);
+  const photoUrl = getUserPhotoUrl(user);
 
   if (storedProfile?.nickname) {
-    return {
+    const profile = {
       ...storedProfile,
       provider,
+      photoUrl,
     };
+    saveStoredProfile(user.id, profile);
+    return profile;
   }
 
   const nickname = ["google", "kakao"].includes(provider) ? getOAuthNickname(user) : createRandomNickname();
@@ -58,6 +67,7 @@ function createProfileFromUser(user) {
     nickname,
     provider,
     level: 1,
+    photoUrl,
   };
   saveStoredProfile(user.id, profile);
   return profile;
@@ -67,8 +77,7 @@ async function ensureProfile(user) {
   if (!user || !supabaseWritesEnabled) return;
 
   const profile = createProfileFromUser(user);
-  const metadata = user.user_metadata || {};
-  const photoUrl = metadata.avatar_url || metadata.picture || null;
+  const photoUrl = getUserPhotoUrl(user);
 
   const { error } = await supabase
     .from("profiles")
