@@ -93,6 +93,11 @@ export default function CommunityPosting({
 
     if (!nextCategory || !nextTitle || !nextBody) return;
 
+    if (photoUrl && dataUrlLength(photoUrl) > MAX_PHOTO_DATA_URL_LENGTH) {
+      window.alert("사진 용량이 너무 커요. 900KB 이하 사진으로 다시 선택해주세요.");
+      return;
+    }
+
     onSubmit?.({
       category: nextCategory,
       title: nextTitle,

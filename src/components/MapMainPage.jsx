@@ -737,14 +737,16 @@ export default function MapMainPage({
   }, [distanceSortAnchor, filteredPlaces, searchSort]);
 
   const hasSearchQuery = Boolean(searchText.trim());
-  const showSearchPanel = hasSearchQuery || showSortOptions;
+  const hasSearchPanelIntent = hasSearchQuery || showSortOptions;
+  const showSearchPanel = hasSearchPanelIntent && !isSearchResultsCollapsed;
   const searchResults = orderedFilteredPlaces;
   const lightningCourse = useMemo(() => buildLightningCourse(places), [places]);
   const activeSearchPlaces = hasSearchQuery ? orderedFilteredPlaces : [];
+  const baseMapPlaces = showLightningCourse && lightningCourse.places.length ? lightningCourse.places : orderedFilteredPlaces;
   const mapPlaces = selectedPlace
-    ? orderedFilteredPlaces.some((place) => getPlaceKey(place) === getPlaceKey(selectedPlace))
-      ? orderedFilteredPlaces
-      : [...orderedFilteredPlaces, selectedPlace]
+    ? baseMapPlaces.some((place) => getPlaceKey(place) === getPlaceKey(selectedPlace))
+      ? baseMapPlaces
+      : [...baseMapPlaces, selectedPlace]
     : searchSelectedPlace
       ? activeSearchPlaces.some((place) => getPlaceKey(place) === getPlaceKey(searchSelectedPlace))
         ? activeSearchPlaces
@@ -753,9 +755,7 @@ export default function MapMainPage({
       ? activeSearchPlaces.length
         ? activeSearchPlaces
         : [focusedPlace]
-      : showLightningCourse && lightningCourse.places.length
-      ? lightningCourse.places
-      : orderedFilteredPlaces;
+      : baseMapPlaces;
   const showSongpaPopup = selectedCategory === "송파술집" && !selectedPlace && !focusedPlace && !searchSelectedPlace && songpaPubs.length > 0;
   const selectedPlaceLiked = selectedPlace
     ? likedPlaces.some((place) => getPlaceKey(place) === getPlaceKey(selectedPlace))
@@ -794,16 +794,14 @@ export default function MapMainPage({
   }, [searchText, showSortOptions]);
 
   const closeSearchPanel = useCallback(() => {
-    if (!searchText.trim() && !showSortOptions) return;
-    setSearchText("");
     setShowSortOptions(false);
-    setIsSearchResultsCollapsed(false);
-  }, [searchText, showSortOptions]);
+    setIsSearchResultsCollapsed(true);
+  }, []);
 
   const handleSearchResultSelect = useCallback((place) => {
-    setSearchSelectedPlace(place);
-    setFocusedPlace(place);
-    setSelectedPlace(null);
+    setSelectedPlace(place);
+    setFocusedPlace(null);
+    setSearchSelectedPlace(null);
     setShowLightningCourse(false);
     setShowLightningList(false);
     setShowSortOptions(false);
@@ -812,27 +810,11 @@ export default function MapMainPage({
 
   const handleMapPlaceSelect = useCallback((place) => {
     collapseSearchPanel();
-    if (showLightningCourse) {
-      const focusedKey = searchSelectedPlace || focusedPlace;
-      if (focusedKey && getPlaceKey(focusedKey) === getPlaceKey(place)) {
-        setSelectedPlace(place);
-        return;
-      }
-
-      setFocusedPlace(place);
-      setSelectedPlace(null);
-      setShowLightningList(false);
-      return;
-    }
-
-    const focusedKey = searchSelectedPlace || focusedPlace;
-    if (focusedKey && getPlaceKey(focusedKey) === getPlaceKey(place)) {
-      setSelectedPlace(place);
-      return;
-    }
-
+    setSearchSelectedPlace(null);
+    setFocusedPlace(null);
     setSelectedPlace(place);
-  }, [collapseSearchPanel, focusedPlace, getPlaceKey, searchSelectedPlace, showLightningCourse]);
+    setShowLightningList(false);
+  }, [collapseSearchPanel]);
 
   const openSongpaFromMemberPopup = useCallback(() => {
     setShowMemberPopup(false);
@@ -873,7 +855,7 @@ export default function MapMainPage({
 
       <KakaoPlacesMap
         places={mapPlaces}
-        routePlaces={showLightningCourse && !focusedPlace && !searchSelectedPlace ? lightningCourse.places : []}
+        routePlaces={showLightningCourse ? lightningCourse.places : []}
         selectedPlace={selectedPlace || searchSelectedPlace || focusedPlace}
         onSelectPlace={handleMapPlaceSelect}
         onMapClick={collapseSearchPanel}
@@ -939,7 +921,7 @@ export default function MapMainPage({
         </div>
 
         {showSearchPanel && (
-          <section className={isSearchResultsCollapsed ? "figma-search-results is-collapsed" : "figma-search-results"} onMouseDown={(event) => event.stopPropagation()} onClick={(event) => event.stopPropagation()}>
+          <section className="figma-search-results" onMouseDown={(event) => event.stopPropagation()} onClick={(event) => event.stopPropagation()}>
             <div className="figma-search-results-head">
               <button
                 id="btn-map-search-results-toggle"
@@ -948,14 +930,14 @@ export default function MapMainPage({
                 data-event="click_search_results_toggle"
                 data-page="map"
                 data-section="search_results"
-                data-action={isSearchResultsCollapsed ? "expand" : "collapse"}
-                data-label="search_results_toggle"
-                onClick={() => setIsSearchResultsCollapsed((collapsed) => !collapsed)}
+                data-action="collapse"
+                data-label="search_results_collapse"
+                onClick={closeSearchPanel}
               >
                 <strong>검색 결과 {orderedFilteredPlaces.length.toLocaleString("ko-KR")}개</strong>
-                <span>{isSearchResultsCollapsed ? "펼치기" : "접기"}<img src={searchToggleIcon} alt="" /></span>
+                <span>접기<img src={searchToggleIcon} alt="" /></span>
               </button>
-              {!isSearchResultsCollapsed && <div className="figma-search-sort-options" aria-label="검색 결과 정렬">
+              <div className="figma-search-sort-options" aria-label="검색 결과 정렬">
                 <button
                   id="btn-map-search-sort_distance"
                   type="button"
@@ -988,9 +970,9 @@ export default function MapMainPage({
                   <img className="figma-search-sort-icon" src={figmaAssets.sortValueIcon[searchSort === "value" ? "white" : "purple"]} alt="" />
                   <span>가성비순</span>
                 </button>
-              </div>}
+              </div>
             </div>
-            {!isSearchResultsCollapsed && (searchResults.length ? (
+            {searchResults.length ? (
               searchResults.map((place) => (
                 <button
                   key={place.id}
@@ -1020,7 +1002,7 @@ export default function MapMainPage({
               ))
             ) : (
               <p>검색 결과가 없어요</p>
-            ))}
+            )}
           </section>
         )}
 
@@ -1067,6 +1049,7 @@ export default function MapMainPage({
           setSelectedPlace(null);
           setFocusedPlace(null);
           setSearchSelectedPlace(null);
+          setSearchText("");
           setShowSortOptions(false);
           setIsSearchResultsCollapsed(true);
           setSelectedCategory("전체");

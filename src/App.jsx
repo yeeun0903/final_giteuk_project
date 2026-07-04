@@ -588,17 +588,28 @@ export default function App() {
         });
 
         if (savedPost) {
+          const remotePhotoSaved = Boolean(savedPost.photo_url);
           setCommunityPosts((currentPosts) =>
-            currentPosts.map((post) =>
-              post.id === optimisticId ? mapDatabaseCommunityPost(savedPost, nickname, user.id) : post,
-            ),
+            currentPosts.map((post) => {
+              if (post.id !== optimisticId) return post;
+              const mappedPost = mapDatabaseCommunityPost(savedPost, nickname, user.id);
+              return {
+                ...mappedPost,
+                photoUrl: mappedPost.photoUrl || photoUrl,
+                authorName: mappedPost.authorName || nickname,
+              };
+            }),
           );
+
+          if (photoUrl && !remotePhotoSaved) {
+            window.alert("사진 용량이 커서 서버에는 사진 없이 저장됐어요. 계속 남기려면 900KB 이하 사진으로 다시 올려주세요.");
+          }
         }
       } catch (error) {
-        console.error("커뮤니티 게시글 저장 실패", error);
-        setCommunityPosts((currentPosts) => currentPosts.filter((post) => post.id !== optimisticId));
-        window.alert("게시글 저장에 실패했어요. 사진을 다시 선택해서 등록해주세요.");
-        return;
+        console.error("커뮤니티 게시글 원격 저장 실패 - 로컬 글은 유지합니다", error);
+        window.alert(photoUrl
+          ? "사진 용량 또는 네트워크 문제로 서버 저장에 실패했어요. 900KB 이하 사진으로 다시 시도해주세요."
+          : "네트워크 문제로 서버 저장에 실패했어요. 화면에는 임시로 표시됩니다.");
       }
     }
 

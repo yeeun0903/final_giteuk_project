@@ -2895,3 +2895,248 @@
     padding: 10px !important;
   }
 }
+
+/* Final mobile map/search state and responsive containment fixes */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.app-shell,
+.phone-page,
+.figma-map-page.phone-page,
+.figma-mypage.phone-page,
+.customer-page.phone-page,
+.customize-page.phone-page,
+.terms-page.phone-page,
+.inquiry-page.phone-page,
+.community-frame,
+.groupbuy-frame,
+.pdp-frame,
+.posting-frame,
+.convenience-frame,
+.groupbuy-detail-frame {
+  width: min(404px, 100dvw) !important;
+  max-width: 404px !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  overflow-x: hidden !important;
+}
+
+.figma-map-page .figma-map-header,
+.figma-map-page .figma-kakao-map,
+.figma-map-page .figma-map-fallback,
+.community-frame .community-header,
+.groupbuy-frame .groupbuy-header,
+.figma-mypage .mypage-header,
+.customer-page .customer-header {
+  width: 100% !important;
+  max-width: 404px !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.figma-map-page .figma-gnb,
+.figma-map-page .figma-search,
+.figma-map-page .figma-category-row,
+.figma-map-page .figma-search-results,
+.figma-map-page .lightning-course-button,
+.figma-map-page .lightning-course-sheet,
+.map-pdp-sheet,
+.community-frame .post-card,
+.groupbuy-frame .groupbuy-product-card,
+.convenience-frame .convenience-product-card,
+.customer-page .customer-menu-card,
+.customer-page .customer-info-card,
+.posting-frame .posting-form,
+.posting-frame .posting-bottom-actions {
+  max-width: calc(100% - 32px) !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.figma-map-page .figma-search-results.is-collapsed {
+  display: none !important;
+}
+
+.figma-map-page .figma-search-results {
+  left: 16px !important;
+  right: 16px !important;
+  top: 122px !important;
+  width: auto !important;
+  max-width: calc(100% - 32px) !important;
+  max-height: min(390px, calc(100dvh - 260px)) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.figma-map-page .figma-search-results-head,
+.figma-map-page .figma-search-sort-options,
+.figma-map-page .figma-search-result-metrics {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.figma-map-page .figma-search-results button {
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.figma-map-page .figma-search-results button span,
+.figma-map-page .figma-search-results button small,
+.figma-map-page .figma-search-results button b,
+.figma-map-page .figma-category-row button,
+.figma-map-page .figma-search input,
+.community-frame .post-card h2,
+.community-frame .post-card p,
+.groupbuy-frame .groupbuy-product-card h3,
+.convenience-frame .convenience-product-card h2 {
+  overflow-wrap: anywhere !important;
+  word-break: keep-all !important;
+  min-width: 0 !important;
+}
+
+.figma-map-page .figma-search input {
+  font-size: clamp(12px, 3.4vw, 14px) !important;
+}
+
+.figma-map-page .figma-category-row button,
+.figma-map-page .figma-search-results button,
+.figma-map-page .lightning-course-button strong,
+.figma-map-page .lightning-course-button small,
+.figma-map-page .lightning-course-sheet p,
+.figma-map-page .lightning-course-sheet b,
+.community-frame .post-card,
+.groupbuy-frame .groupbuy-product-card,
+.convenience-frame .convenience-product-card {
+  font-size: clamp(11px, 3.25vw, 14px) !important;
+}
+
+.figma-map-page .lightning-course-button {
+  left: max(16px, calc((100vw - 404px) / 2 + 16px)) !important;
+  right: auto !important;
+  bottom: calc(var(--mobile-nav-bottom) + 78px) !important;
+  width: min(218px, calc(100% - 32px)) !important;
+  height: 58px !important;
+  border-radius: 18px !important;
+  z-index: 6990 !important;
+}
+
+.figma-map-page .lightning-course-button span {
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+}
+
+.figma-map-page .lightning-course-sheet {
+  left: max(16px, calc((100vw - 404px) / 2 + 16px)) !important;
+  right: max(16px, calc((100vw - 404px) / 2 + 16px)) !important;
+  bottom: calc(var(--mobile-nav-bottom) + 78px) !important;
+  width: auto !important;
+  max-width: calc(404px - 32px) !important;
+  z-index: 6990 !important;
+}
+
+.figma-map-page .figma-current-location {
+  right: max(14px, calc((100vw - 404px) / 2 + 14px)) !important;
+  bottom: calc(var(--mobile-nav-bottom) + 204px) !important;
+  z-index: 6980 !important;
+}
+
+.figma-map-page .figma-map-zoom-controls {
+  right: max(14px, calc((100vw - 404px) / 2 + 14px)) !important;
+  bottom: calc(var(--mobile-nav-bottom) + 92px) !important;
+  z-index: 6975 !important;
+}
+
+.figma-map-marker {
+  width: clamp(26px, 7.6vw, 30px) !important;
+  height: clamp(26px, 7.6vw, 30px) !important;
+  min-width: clamp(26px, 7.6vw, 30px) !important;
+  min-height: clamp(26px, 7.6vw, 30px) !important;
+  max-width: 30px !important;
+  max-height: 30px !important;
+  aspect-ratio: 1 / 1 !important;
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
+  transform-origin: center center !important;
+  border-radius: 50% 50% 50% 8px !important;
+  padding: 0 !important;
+}
+
+.figma-map-marker.active,
+.figma-map-marker.route {
+  width: clamp(30px, 8.4vw, 34px) !important;
+  height: clamp(30px, 8.4vw, 34px) !important;
+  min-width: clamp(30px, 8.4vw, 34px) !important;
+  min-height: clamp(30px, 8.4vw, 34px) !important;
+  max-width: 34px !important;
+  max-height: 34px !important;
+}
+
+.figma-map-marker-icon {
+  width: clamp(14px, 4vw, 16px) !important;
+  height: clamp(14px, 4vw, 16px) !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  object-fit: contain !important;
+  transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+
+.figma-map-marker span {
+  font-size: clamp(10px, 3vw, 12px) !important;
+  line-height: 1 !important;
+  transform: rotate(45deg) !important;
+}
+
+@media (max-width: 404px) {
+  :root {
+    --prototype-width: 100dvw;
+    --prototype-nav-width: calc(100dvw - 20px);
+  }
+
+  .figma-map-page .figma-map-header {
+    padding-left: clamp(14px, 4vw, 16px) !important;
+    padding-right: clamp(14px, 4vw, 16px) !important;
+  }
+
+  .figma-map-page .figma-search,
+  .figma-map-page .figma-category-row {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .figma-map-page .figma-category-row {
+    gap: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .figma-map-page .figma-category-row button {
+    flex: 0 0 auto !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    white-space: nowrap !important;
+  }
+}

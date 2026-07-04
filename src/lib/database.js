@@ -79,16 +79,41 @@ export async function createCommunityPost({ userId, title, content, category, au
 
   if (!error) return data;
 
-  if (photoUrl) throw error;
+  if (photoUrl) {
+    const noPhotoPayload = { ...payload, photo_url: null };
+    const { data: noPhotoData, error: noPhotoError } = await supabase
+      .from("community_posts")
+      .insert(noPhotoPayload)
+      .select()
+      .single();
+
+    if (!noPhotoError) return noPhotoData;
+  }
+
+  const minimalPayload = {
+    user_id: userId,
+    title,
+    content,
+    category: category || "이용후기",
+    author_name: authorName || null,
+  };
 
   const { data: fallbackData, error: fallbackError } = await supabase
+    .from("community_posts")
+    .insert(minimalPayload)
+    .select()
+    .single();
+
+  if (!fallbackError) return fallbackData;
+
+  const { data: legacyData, error: legacyError } = await supabase
     .from("community_posts")
     .insert({ user_id: userId, title, content })
     .select()
     .single();
 
-  if (fallbackError) throw error;
-  return fallbackData;
+  if (legacyError) throw error;
+  return legacyData;
 }
 
 export async function listCommunityPosts() {
