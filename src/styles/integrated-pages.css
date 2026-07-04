@@ -1727,11 +1727,6 @@
   margin-top: 12px !important;
 }
 
-/* Customer home: tighten the gap between the intro copy and the first menu card. */
-.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
-  height: 112px !important;
-}
-
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
   margin-top: 42px !important;
 }
@@ -2018,11 +2013,6 @@
   padding-top: 8px !important;
 }
 
-/* Customer/settings/small MyPage pages: remove the extra dead space below title rows. */
-.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
-  height: 104px !important;
-}
-
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
   margin-top: 40px !important;
 }
@@ -2267,11 +2257,6 @@
   margin-top: 10px !important;
 }
 
-/* Customer center home: keep the first card visible and restore comfortable card spacing. */
-.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
-  height: 138px !important;
-}
-
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
   margin-top: 44px !important;
 }
@@ -2333,10 +2318,6 @@
   font-weight: 900 !important;
 }
 
-/* Customer center: reduce the large gap above the inquiry card without clipping it. */
-.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
-  height: 118px !important;
-}
 
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
   margin-top: 38px !important;
@@ -2379,12 +2360,6 @@
   letter-spacing: 0 !important;
 }
 
-.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
-  height: auto !important;
-  min-height: 118px !important;
-  padding-bottom: 10px !important;
-}
-
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
   margin-top: 38px !important;
 }
@@ -2412,4 +2387,371 @@
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-title strong {
   font-size: 16px !important;
   line-height: 1.3 !important;
+}
+/* Consolidated final overrides: keep this as the single current mobile/page fix layer. */
+:root {
+  --bottom-nav-gap: 10px;
+  --bottom-nav-height: 60px;
+}
+
+.figma-bottom-nav,
+.figma-map-page .figma-bottom-nav,
+.figma-mypage .figma-bottom-nav,
+.customer-page .figma-bottom-nav,
+.customize-page .figma-bottom-nav,
+.community-frame .figma-bottom-nav,
+.groupbuy-frame .figma-bottom-nav,
+.pdp-frame .figma-bottom-nav,
+.posting-frame .figma-bottom-nav,
+.convenience-frame .figma-bottom-nav,
+.inform-page .figma-bottom-nav,
+.figma-mypage .mypage-bottom-nav,
+.customer-page .mypage-bottom-nav,
+.groupbuy-detail-frame + .figma-bottom-nav,
+.groupbuy-page-shell + .figma-bottom-nav {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  width: min(380px, calc(100dvw - 24px)) !important;
+  max-width: min(380px, calc(100dvw - 24px)) !important;
+  min-width: 0 !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  overflow: hidden !important;
+  z-index: 7000 !important;
+}
+
+.figma-bottom-nav button,
+.figma-map-page .figma-bottom-nav button,
+.figma-mypage .figma-bottom-nav button,
+.customer-page .figma-bottom-nav button,
+.customize-page .figma-bottom-nav button,
+.community-frame .figma-bottom-nav button,
+.groupbuy-frame .figma-bottom-nav button,
+.pdp-frame .figma-bottom-nav button,
+.posting-frame .figma-bottom-nav button,
+.convenience-frame .figma-bottom-nav button,
+.inform-page .figma-bottom-nav button,
+.figma-mypage .mypage-bottom-nav button,
+.customer-page .mypage-bottom-nav button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.figma-map-page .lightning-course-button {
+  left: max(12px, calc(50dvw - 190px)) !important;
+  right: auto !important;
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  width: min(198px, calc(100dvw - 24px)) !important;
+  min-width: 176px !important;
+  max-width: 198px !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  column-gap: 8px !important;
+  padding: 9px 12px !important;
+  border-radius: 19px !important;
+  transform: none !important;
+  z-index: 7010 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.figma-map-page .lightning-course-button span {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 11px !important;
+}
+
+.figma-map-page .lightning-course-button span img {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+.figma-map-page .lightning-course-button strong {
+  font-size: 14px !important;
+  line-height: 1.1 !important;
+}
+
+.figma-map-page .lightning-course-button small {
+  font-size: 10px !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
+}
+
+.community-frame .write-button {
+  left: auto !important;
+  right: max(12px, calc((100dvw - var(--prototype-width)) / 2 + 12px)) !important;
+  bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+  transform: none !important;
+  z-index: 6990 !important;
+}
+
+.auth-login-page.phone-page {
+  min-height: min(100dvh, 722px) !important;
+}
+
+.auth-login-page .auth-login-back {
+  top: 40px !important;
+}
+
+.auth-login-page .auth-login-logo-top,
+.auth-login-page .auth-login-logo-bottom {
+  left: 127px !important;
+  width: 148px !important;
+}
+
+.auth-login-page .auth-login-logo-top {
+  top: 70px !important;
+}
+
+.auth-login-page .auth-login-logo-bottom {
+  top: 145px !important;
+}
+
+.auth-login-page .auth-login-slogan {
+  top: 240px !important;
+  font-size: 18px !important;
+  line-height: 22px !important;
+}
+
+.auth-login-page .auth-login-character {
+  top: 304px !important;
+  left: 131px !important;
+  width: 150px !important;
+  height: 178px !important;
+}
+
+.auth-login-page .auth-login-character-shadow {
+  top: 460px !important;
+  left: 131px !important;
+  width: 146px !important;
+  height: 22px !important;
+}
+
+.auth-login-page .auth-login-ground {
+  top: 390px !important;
+  height: 346px !important;
+}
+
+.auth-login-page .auth-login-actions {
+  top: 526px !important;
+  left: 47px !important;
+  width: 308px !important;
+  gap: 6px !important;
+}
+
+.auth-login-page .auth-social-button {
+  height: 42px !important;
+  border-radius: 12px !important;
+  font-size: 15px !important;
+}
+
+.auth-login-page .auth-signup-link {
+  height: 36px !important;
+  font-size: 15px !important;
+}
+
+.posting-frame .posting-body-input,
+.posting-body-input {
+  height: 400px !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
+}
+
+.posting-frame .posting-body-input.has-photo,
+.posting-body-input.has-photo {
+  padding-bottom: 184px !important;
+}
+
+.posting-frame .posting-photo-preview,
+.posting-photo-preview {
+  top: 428px !important;
+  width: 132px !important;
+  height: 132px !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+.posting-frame .posting-photo-preview img,
+.posting-photo-preview img {
+  pointer-events: none !important;
+}
+
+.posting-photo-remove {
+  position: absolute !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  top: -9px !important;
+  right: -9px !important;
+  z-index: 2 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 26px !important;
+  height: 26px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #F3EEFF !important;
+  color: #5B25EB !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  box-shadow: 0 4px 10px rgba(37, 35, 52, 0.18) !important;
+}
+
+.posting-frame .posting-bottom-actions,
+.posting-bottom-actions {
+  top: 594px !important;
+  height: 30px !important;
+}
+
+.posting-frame .posting-form,
+.posting-form {
+  min-height: 710px !important;
+}
+
+.terms-confirm-bar {
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+  width: min(380px, calc(100dvw - 24px)) !important;
+  max-width: min(380px, calc(100dvw - 24px)) !important;
+  min-height: 58px !important;
+  height: 58px !important;
+  padding: 8px 12px !important;
+  gap: 10px !important;
+  grid-template-columns: minmax(0, 1fr) 112px !important;
+  border-radius: 16px !important;
+  transform: translateX(-50%) !important;
+}
+
+.terms-confirm-bar label {
+  gap: 8px !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+
+.terms-confirm-bar label span {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 7px !important;
+  font-size: 16px !important;
+}
+
+.terms-confirm-bar button {
+  height: 42px !important;
+  border-radius: 13px !important;
+  font-size: 15px !important;
+}
+
+.terms-page.phone-page {
+  padding-bottom: calc(146px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.community-frame .community-header,
+.groupbuy-frame .groupbuy-header {
+  position: relative !important;
+  top: auto !important;
+  z-index: 120 !important;
+  height: 126px !important;
+  min-height: 126px !important;
+  padding: var(--mobile-top-pad) 16px 0 !important;
+  background: #f8f8f8 !important;
+}
+
+.community-frame .community-header::before,
+.groupbuy-frame .groupbuy-header::before {
+  content: "" !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: max(0px, calc((100vw - var(--prototype-width)) / 2)) !important;
+  width: min(var(--prototype-width), 100vw) !important;
+  height: calc(var(--mobile-top-pad) + 40px) !important;
+  z-index: 7280 !important;
+  background: rgba(248, 248, 248, 0.98) !important;
+  pointer-events: none !important;
+}
+
+.community-frame .community-gnb,
+.community-frame .gnb,
+.groupbuy-frame .groupbuy-gnb {
+  position: fixed !important;
+  top: var(--mobile-top-pad) !important;
+  left: max(16px, calc((100vw - var(--prototype-width)) / 2 + 16px)) !important;
+  width: min(372px, calc(100vw - 32px)) !important;
+  height: 36px !important;
+  z-index: 7290 !important;
+  background: transparent !important;
+  transform: none !important;
+}
+
+.community-frame .page-title,
+.groupbuy-frame .groupbuy-page-title,
+.groupbuy-frame .groupbuy-content,
+.community-frame .community-body {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.community-frame .page-title,
+.groupbuy-frame .groupbuy-page-title {
+  margin-top: 50px !important;
+}
+
+.customize-page .customize-top {
+  height: 70px !important;
+  min-height: 70px !important;
+  padding: var(--mobile-top-pad) 16px 8px !important;
+}
+
+.customize-page .hero-preview {
+  margin-top: 0 !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-header {
+  min-height: 108px !important;
+  height: auto !important;
+  padding-bottom: 8px !important;
+  overflow: visible !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title {
+  position: relative !important;
+  z-index: 2 !important;
+  margin-top: 42px !important;
+  margin-bottom: 0 !important;
+  color: #252334 !important;
+  overflow: visible !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title strong,
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title p {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title strong {
+  color: #252334 !important;
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-title p {
+  margin-top: 2px !important;
+  color: #6f6a7c !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+}
+
+.customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card {
+  margin-top: 8px !important;
 }

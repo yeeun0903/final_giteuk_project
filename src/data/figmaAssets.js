@@ -109,6 +109,7 @@ export const figmaAssets = {
   myMegaphone: "/assets/figma/mypage/announcement-02.svg",
   mySettings: "/assets/figma/mypage/icon_setting.svg",
   myChevron: "/assets/figma/mypage/Chevron.svg",
+  myWhiteChevron: "/assets/figma/mypage/whtie_Chevron.svg",
   mySaving: "/assets/figma/mypage/Icon_saving.svg",
   mySale: "/assets/figma/mypage/sale-02.svg",
   myAward: "/assets/figma/mypage/award-02.svg",

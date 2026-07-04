@@ -127,7 +127,7 @@ function buildDistrictClusters(places) {
   }));
 }
 
-export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace, onSelectPlace, locateSignal = 0, searchFocus = null, onLocationChange }) {
+export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace, onSelectPlace, onMapClick, locateSignal = 0, searchFocus = null, onLocationChange }) {
   const mapRef = useRef(null);
   const overlaysRef = useRef([]);
   const currentLocationOverlayRef = useRef(null);
@@ -135,6 +135,7 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
   const polylineRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const zoomChangedHandlerRef = useRef(null);
+  const clickHandlerRef = useRef(null);
   const skipAutoFitRef = useRef(false);
   const initialLocationFitDoneRef = useRef(false);
   const locationRequestIdRef = useRef(0);
@@ -222,6 +223,12 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
           };
           kakao.maps.event.addListener(map, "zoom_changed", zoomChangedHandlerRef.current);
         }
+
+        if (clickHandlerRef.current) {
+          kakao.maps.event.removeListener(map, "click", clickHandlerRef.current);
+        }
+        clickHandlerRef.current = () => onMapClick?.();
+        kakao.maps.event.addListener(map, "click", clickHandlerRef.current);
 
         overlaysRef.current.forEach((overlay) => overlay.setMap(null));
         overlaysRef.current = [];
@@ -327,7 +334,11 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
               routeIndex >= 0
                 ? `<span>${routeIndex + 1}</span>`
                 : `<img class="figma-map-marker-icon" src="${getCategoryIcon(place, selectedPlace?.id === place.id ? "purple" : "white")}" alt="" />`;
-            marker.addEventListener("click", () => onSelectPlace(place));
+            marker.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              onSelectPlace(place);
+            });
 
             const overlay = new kakao.maps.CustomOverlay({
               position,
@@ -374,12 +385,16 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
       overlaysRef.current.forEach((overlay) => overlay.setMap(null));
       overlaysRef.current = [];
       if (currentLocationOverlayRef.current) currentLocationOverlayRef.current.setMap(null);
+      if (mapInstanceRef.current && window.kakao?.maps && clickHandlerRef.current) {
+        window.kakao.maps.event.removeListener(mapInstanceRef.current, "click", clickHandlerRef.current);
+        clickHandlerRef.current = null;
+      }
       if (mapInstanceRef.current && window.kakao?.maps && zoomChangedHandlerRef.current) {
         window.kakao.maps.event.removeListener(mapInstanceRef.current, "zoom_changed", zoomChangedHandlerRef.current);
         zoomChangedHandlerRef.current = null;
       }
     };
-  }, [appKey, visiblePlaces, showDistrictClusters, routePlaces, selectedPlace, onSelectPlace, currentLocation, isLocating, searchFocus, locationReady]);
+  }, [appKey, visiblePlaces, showDistrictClusters, routePlaces, selectedPlace, onSelectPlace, onMapClick, currentLocation, isLocating, searchFocus, locationReady]);
 
   useEffect(() => {
     if (searchFocus) setIsLocating(false);
@@ -462,7 +477,11 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
               data-section="map_marker"
               data-action="open_detail"
               data-label={String(place.id)}
-              onClick={() => onSelectPlace(place)}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onSelectPlace(place);
+              }}
               title={place.place_name}
             >
               <MarkerContent

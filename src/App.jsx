@@ -596,6 +596,9 @@ export default function App() {
         }
       } catch (error) {
         console.error("커뮤니티 게시글 저장 실패", error);
+        setCommunityPosts((currentPosts) => currentPosts.filter((post) => post.id !== optimisticId));
+        window.alert("게시글 저장에 실패했어요. 사진을 다시 선택해서 등록해주세요.");
+        return;
       }
     }
 

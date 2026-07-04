@@ -785,6 +785,13 @@ export default function MapMainPage({
     setShowLightningList(false);
   }, []);
 
+  const closeSearchPanel = useCallback(() => {
+    if (!searchText.trim() && !showSortOptions) return;
+    setSearchText("");
+    setShowSortOptions(false);
+    setIsSearchResultsCollapsed(false);
+  }, [searchText, showSortOptions]);
+
   const handleSearchResultSelect = useCallback((place) => {
     setSearchSelectedPlace(place);
     setFocusedPlace(place);
@@ -795,6 +802,7 @@ export default function MapMainPage({
   }, []);
 
   const handleMapPlaceSelect = useCallback((place) => {
+    closeSearchPanel();
     if (showLightningCourse) {
       const focusedKey = searchSelectedPlace || focusedPlace;
       if (focusedKey && getPlaceKey(focusedKey) === getPlaceKey(place)) {
@@ -815,7 +823,7 @@ export default function MapMainPage({
     }
 
     setSelectedPlace(place);
-  }, [focusedPlace, getPlaceKey, searchSelectedPlace, showLightningCourse]);
+  }, [closeSearchPanel, focusedPlace, getPlaceKey, searchSelectedPlace, showLightningCourse]);
 
   const openSongpaFromMemberPopup = useCallback(() => {
     setShowMemberPopup(false);
@@ -859,6 +867,7 @@ export default function MapMainPage({
         routePlaces={showLightningCourse && !focusedPlace && !searchSelectedPlace ? lightningCourse.places : []}
         selectedPlace={selectedPlace || searchSelectedPlace || focusedPlace}
         onSelectPlace={handleMapPlaceSelect}
+        onMapClick={closeSearchPanel}
         locateSignal={locateSignal}
         searchFocus={hasSearchQuery ? searchAnchor : null}
         onLocationChange={setUserLocation}
@@ -1023,7 +1032,10 @@ export default function MapMainPage({
                 data-section="category_filter"
                 data-action={`category_${getCategoryTrackingLabel(category.value)}`}
                 data-label={getCategoryTrackingLabel(category.value)}
-                onClick={() => handleSelectCategory(category.value)}
+                onClick={() => {
+                  closeSearchPanel();
+                  handleSelectCategory(category.value);
+                }}
               >
                 {icon && <img className="category-filter-icon" src={icon} alt="" />}
                 {category.label}

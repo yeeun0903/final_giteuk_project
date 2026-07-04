@@ -449,7 +449,7 @@ export default function MyPage({
           <small>{isAuthenticated ? <>다음 등급까지 <b>2,000P</b> 남았어요</> : "로그인하면 절약 기록과 레벨이 저장돼요"}</small>
           <span className="mypage-progress"><i /></span>
         </div>
-        <img className="mypage-chevron" src={figmaAssets.myChevron} alt="" />
+        <img className="mypage-chevron" src={figmaAssets.myWhiteChevron} alt="" />
       </button>
 
       <button

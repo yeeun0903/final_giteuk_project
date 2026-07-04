@@ -37,7 +37,12 @@ function LoginScreen({ onBack, onGoogleLogin, onKakaoLogin, onIdLogin, onSignUp 
       <img className="auth-login-bg" src={figmaAssets.authBg} alt="" />
       <img className="auth-login-logo-top" src={figmaAssets.authLogoTop} alt="" />
       <img className="auth-login-logo-bottom" src={figmaAssets.authLogoBottom} alt="기특기특" />
-      <p className="auth-login-slogan">기특한 가격 기특한 소비</p>
+      <p className="auth-login-slogan">
+        <span>기특한 </span>
+        <span className="auth-login-slogan-muted">가격</span>
+        <span> 기특한 </span>
+        <span className="auth-login-slogan-muted">소비</span>
+      </p>
       <div className="auth-login-ground" aria-hidden="true" />
       <div className="auth-login-character-shadow" aria-hidden="true" />
       <img className="auth-login-character" src={figmaAssets.authCharacter} alt="기특이 캐릭터" />

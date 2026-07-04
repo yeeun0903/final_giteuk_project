@@ -8,6 +8,63 @@ import chevronDownIcon from "../assets/Community_posting/chevron-down.png";
 import BottomNavigation from "./BottomNavigation.jsx";
 
 const categories = ["이용후기", "할인정보", "제보하기"];
+const MAX_PHOTO_DATA_URL_LENGTH = 900_000;
+const MAX_PHOTO_SIDE = 960;
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error || new Error("사진을 읽지 못했어요."));
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImage(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("사진을 불러오지 못했어요."));
+    image.src = dataUrl;
+  });
+}
+
+function dataUrlLength(dataUrl) {
+  return typeof dataUrl === "string" ? dataUrl.length : 0;
+}
+
+async function normalizePhotoDataUrl(file) {
+  const originalDataUrl = await readFileAsDataUrl(file);
+  const image = await loadImage(originalDataUrl);
+  const sourceWidth = image.naturalWidth || image.width;
+  const sourceHeight = image.naturalHeight || image.height;
+
+  if (!sourceWidth || !sourceHeight) throw new Error("사진 크기를 확인하지 못했어요.");
+
+  const scale = Math.min(1, MAX_PHOTO_SIDE / Math.max(sourceWidth, sourceHeight));
+  const width = Math.max(1, Math.round(sourceWidth * scale));
+  const height = Math.max(1, Math.round(sourceHeight * scale));
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  canvas.width = width;
+  canvas.height = height;
+  context.drawImage(image, 0, 0, width, height);
+
+  let quality = 0.78;
+  let nextDataUrl = canvas.toDataURL("image/jpeg", quality);
+
+  while (dataUrlLength(nextDataUrl) > MAX_PHOTO_DATA_URL_LENGTH && quality > 0.5) {
+    quality -= 0.08;
+    nextDataUrl = canvas.toDataURL("image/jpeg", quality);
+  }
+
+  if (dataUrlLength(nextDataUrl) > MAX_PHOTO_DATA_URL_LENGTH) {
+    throw new Error("사진 용량이 너무 커요. 더 작은 사진으로 다시 선택해주세요.");
+  }
+
+  return nextDataUrl;
+}
 
 export default function CommunityPosting({
   onBack,
@@ -24,6 +81,7 @@ export default function CommunityPosting({
   const [photoUrl, setPhotoUrl] = useState("");
   const [location, setLocation] = useState(null);
   const [isLocating, setIsLocating] = useState(false);
+  const [isPhotoProcessing, setIsPhotoProcessing] = useState(false);
   const photoInputRef = useRef(null);
 
   const handleSubmit = (event) => {
@@ -65,19 +123,33 @@ export default function CommunityPosting({
     );
   };
 
-  const handlePhotoChange = (event) => {
+  const handlePhotoChange = async (event) => {
     const file = event.target.files?.[0];
+    event.target.value = "";
 
     if (!file) return;
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/")) {
+      window.alert("이미지 파일만 추가할 수 있어요.");
+      return;
+    }
 
-    const reader = new FileReader();
+    setIsPhotoProcessing(true);
 
-    reader.onload = () => {
-      setPhotoUrl(reader.result);
-    };
+    try {
+      setPhotoUrl(await normalizePhotoDataUrl(file));
+    } catch (error) {
+      console.error("커뮤니티 사진 처리 실패", error);
+      window.alert(error.message || "사진을 추가하지 못했어요. 다른 사진으로 다시 시도해주세요.");
+    } finally {
+      setIsPhotoProcessing(false);
+    }
+  };
 
-    reader.readAsDataURL(file);
+  const handleRemovePhoto = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setPhotoUrl("");
+    if (photoInputRef.current) photoInputRef.current.value = "";
   };
 
   return (
@@ -164,6 +236,20 @@ export default function CommunityPosting({
           {photoUrl && (
             <div className="posting-photo-preview">
               <img src={photoUrl} alt="선택한 사진 미리보기" />
+              <button
+                id="btn-community-posting-photo-remove"
+                className="posting-photo-remove"
+                type="button"
+                aria-label="사진 삭제"
+                data-event="click_remove_photo"
+                data-page="community_posting"
+                data-section="photo_preview"
+                data-action="remove_photo"
+                data-label="remove_photo"
+                onClick={handleRemovePhoto}
+              >
+                ×
+              </button>
             </div>
           )}
 
@@ -193,9 +279,9 @@ export default function CommunityPosting({
               <img src={addressIcon} alt="" />
               {isLocating ? "확인중" : location ? "추가됨" : "위치"}
             </button>
-            <button className="posting-submit-button" type="submit">
+            <button className="posting-submit-button" type="submit" disabled={isPhotoProcessing}>
               <img src={editIcon} alt="" />
-              게시
+              {isPhotoProcessing ? "처리중" : "게시"}
             </button>
           </div>
 

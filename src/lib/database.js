@@ -79,6 +79,8 @@ export async function createCommunityPost({ userId, title, content, category, au
 
   if (!error) return data;
 
+  if (photoUrl) throw error;
+
   const { data: fallbackData, error: fallbackError } = await supabase
     .from("community_posts")
     .insert({ user_id: userId, title, content })
