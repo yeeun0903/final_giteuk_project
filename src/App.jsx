@@ -822,6 +822,7 @@ export default function App() {
           onOpenInform={() => setPage("inform")}
           onOpenAuth={openAuth}
           onConfirmVisited={handleConfirmVisited}
+          currentUserId={user?.id || null}
           isAuthenticated={isAuthenticated}
           likedPlaces={likedPlaces}
           onToggleLike={handleToggleLike}

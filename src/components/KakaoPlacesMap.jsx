@@ -338,7 +338,7 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
             marker.addEventListener("click", (event) => {
               event.preventDefault();
               event.stopPropagation();
-              onSelectPlace(place);
+              onSelectPlace(place, { source: "kakao_marker" });
             });
 
             const overlay = new kakao.maps.CustomOverlay({
@@ -481,7 +481,7 @@ export default function KakaoPlacesMap({ places, routePlaces = [], selectedPlace
               onClick={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                onSelectPlace(place);
+                onSelectPlace(place, { source: "fallback_marker" });
               }}
               title={place.place_name}
             >

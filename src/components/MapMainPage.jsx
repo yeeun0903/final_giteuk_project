@@ -4,6 +4,7 @@ import { formatWon, getMapLink, loadPlaces, loadSongpaPubs, placeImagePlaceholde
 import KakaoPlacesMap from "./KakaoPlacesMap.jsx";
 import searchToggleIcon from "../assets/common/more.png";
 import MapPdpSheet from "./MapPdpSheet.jsx";
+import { createPlaceMarkerEvent } from "../lib/database.js";
 
 const categories = [
   { label: "전체", value: "전체" },
@@ -617,6 +618,7 @@ export default function MapMainPage({
   onOpenInform,
   onOpenAuth,
   onConfirmVisited,
+  currentUserId = null,
   isAuthenticated = false,
   likedPlaces = [],
   onToggleLike
@@ -808,13 +810,18 @@ export default function MapMainPage({
     setIsSearchResultsCollapsed(true);
   }, []);
 
-  const handleMapPlaceSelect = useCallback((place) => {
+  const handleMapPlaceSelect = useCallback((place, meta = {}) => {
     collapseSearchPanel();
     setSearchSelectedPlace(null);
     setFocusedPlace(null);
     setSelectedPlace(place);
     setShowLightningList(false);
-  }, [collapseSearchPanel]);
+    createPlaceMarkerEvent({
+      userId: currentUserId,
+      place,
+      source: meta.source || "map_marker",
+    }).catch((error) => console.error("지도 마커 클릭 저장 실패", error));
+  }, [collapseSearchPanel, currentUserId]);
 
   const openSongpaFromMemberPopup = useCallback(() => {
     setShowMemberPopup(false);

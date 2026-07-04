@@ -56,6 +56,26 @@ export async function createPlaceRequest({ userId, category, placeName, address,
   return data;
 }
 
+export async function createPlaceMarkerEvent({ userId, place, source = "map_marker" }) {
+  if (!supabaseWritesEnabled || !place) return null;
+
+  const { error } = await supabase
+    .from("place_marker_events")
+    .insert({
+      user_id: userId || null,
+      place_id: String(place.place_id || place.id || place.place_name || "local-place"),
+      place_name: place.place_name || null,
+      category: place.category || null,
+      address: place.address || null,
+      latitude: Number.isFinite(place.latitude) ? place.latitude : null,
+      longitude: Number.isFinite(place.longitude) ? place.longitude : null,
+      source,
+    });
+
+  if (error) throw error;
+  return true;
+}
+
 export async function createCommunityPost({ userId, title, content, category, authorName, photoUrl, locationLabel, locationLat, locationLng }) {
   if (!supabaseWritesEnabled) return null;
 

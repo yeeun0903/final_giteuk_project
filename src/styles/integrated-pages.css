@@ -3432,10 +3432,11 @@ video {
 /* Character customize profile: keep nickname on one line; on narrow frames,
    move the edit/save actions below the subtitle instead. */
 .customize-page .user-strip {
-  grid-template-columns: 57px minmax(0, 1fr) auto !important;
+  grid-template-columns: 57px minmax(0, 1fr) 82px !important;
   height: auto !important;
   min-height: 80px !important;
   align-items: center !important;
+  column-gap: 10px !important;
 }
 
 .customize-page .customize-user-copy {
@@ -3487,6 +3488,16 @@ video {
 
 .customize-page .customize-user-actions {
   flex: 0 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  width: 82px !important;
+}
+
+.customize-page .customize-user-actions button {
+  width: 82px !important;
 }
 
 @media (max-width: 380px) {
@@ -3519,14 +3530,18 @@ video {
     grid-area: actions !important;
     justify-self: stretch !important;
     align-self: start !important;
+    display: flex !important;
+    flex-direction: row !important;
     justify-content: flex-start !important;
     width: calc(100% - 2px) !important;
     padding-left: 2px !important;
     margin-top: 2px !important;
+    gap: 4px !important;
   }
 
   .customize-page .customize-user-actions button {
     flex: 0 0 75px !important;
+    width: 75px !important;
   }
 }
 
