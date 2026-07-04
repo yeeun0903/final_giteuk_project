@@ -2755,3 +2755,143 @@
 .customer-page:not(.terms-page):not(.inquiry-page) .customer-menu-card {
   margin-top: 8px !important;
 }
+
+/* iPhone mini content fixes: keep inner cards/tabs proportional inside the scaled frame. */
+.figma-map-marker {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
+  rotate: none !important;
+}
+
+.figma-map-marker-icon {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  object-fit: contain !important;
+  transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+
+.figma-map-marker.active {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+}
+
+.figma-map-marker.route {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+}
+
+.figma-map-marker span {
+  rotate: none !important;
+  transform: rotate(45deg) !important;
+}
+
+.figma-route-svg polyline {
+  stroke-width: 4.5 !important;
+  stroke: #5b25eb !important;
+  opacity: 0.96 !important;
+}
+
+@media (max-width: 390px) {
+  .figma-category-row button,
+  .community-tabs button,
+  .community-tab-row button,
+  .groupbuy-tabs button,
+  .convenience-filter-row button {
+    height: 31px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: 12px !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+
+  .community-frame .community-body,
+  .community-frame .post-section,
+  .community-frame .post-list,
+  .groupbuy-frame .groupbuy-content,
+  .groupbuy-frame .groupbuy-search,
+  .groupbuy-frame .groupbuy-feed-section,
+  .convenience-frame .convenience-content,
+  .convenience-frame .convenience-search,
+  .convenience-frame .convenience-tabs-row,
+  .figma-mypage .mypage-level-card,
+  .figma-mypage .mypage-custom-card,
+  .figma-mypage .mypage-saving-card,
+  .figma-mypage .mypage-list-card,
+  .figma-mypage .guest-auth-card {
+    width: calc(100dvw - 32px) !important;
+    max-width: 370px !important;
+  }
+
+  .community-frame .promo-card {
+    width: calc(100dvw - 32px) !important;
+    max-width: 370px !important;
+    height: 178px !important;
+    padding-left: 14px !important;
+    overflow: hidden !important;
+  }
+
+  .community-frame .promo-copy {
+    width: 160px !important;
+  }
+
+  .community-frame .promo-copy h2 {
+    font-size: 22px !important;
+    line-height: 1.05 !important;
+  }
+
+  .community-frame .promo-brands,
+  .community-frame .promo-description {
+    font-size: 9px !important;
+  }
+
+  .community-frame .promo-visual {
+    right: -4px !important;
+    top: 8px !important;
+    transform: scale(0.88) !important;
+    transform-origin: top right !important;
+  }
+
+  .community-frame .post-card,
+  .groupbuy-frame .groupbuy-product-card,
+  .convenience-frame .convenience-product-card {
+    width: calc(100dvw - 32px) !important;
+    max-width: 370px !important;
+  }
+
+  .community-frame .post-card h2,
+  .community-frame .post-card p,
+  .groupbuy-frame .groupbuy-product-card h3,
+  .convenience-frame .convenience-product-card h2 {
+    overflow-wrap: anywhere !important;
+  }
+
+  .groupbuy-frame .groupbuy-popular-list {
+    overflow-x: auto !important;
+    padding-bottom: 2px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .groupbuy-frame .groupbuy-best-card {
+    flex: 0 0 112px !important;
+    width: 112px !important;
+  }
+
+  .figma-map-page .figma-search-results {
+    max-height: min(252px, calc(100dvh - 360px)) !important;
+    padding: 10px !important;
+  }
+}

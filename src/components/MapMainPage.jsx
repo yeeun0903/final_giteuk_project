@@ -767,7 +767,9 @@ export default function MapMainPage({
     setFocusedPlace(null);
     setSearchSelectedPlace(null);
     setShowLightningCourse(false);
-              setShowLightningList(false);
+    setShowLightningList(false);
+    setShowSortOptions(false);
+    setIsSearchResultsCollapsed(true);
   }, []);
 
   const focusSongpaPlace = useCallback((place) => {
@@ -785,6 +787,12 @@ export default function MapMainPage({
     setShowLightningList(false);
   }, []);
 
+  const collapseSearchPanel = useCallback(() => {
+    if (!searchText.trim() && !showSortOptions) return;
+    setShowSortOptions(false);
+    setIsSearchResultsCollapsed(true);
+  }, [searchText, showSortOptions]);
+
   const closeSearchPanel = useCallback(() => {
     if (!searchText.trim() && !showSortOptions) return;
     setSearchText("");
@@ -799,10 +807,11 @@ export default function MapMainPage({
     setShowLightningCourse(false);
     setShowLightningList(false);
     setShowSortOptions(false);
+    setIsSearchResultsCollapsed(true);
   }, []);
 
   const handleMapPlaceSelect = useCallback((place) => {
-    closeSearchPanel();
+    collapseSearchPanel();
     if (showLightningCourse) {
       const focusedKey = searchSelectedPlace || focusedPlace;
       if (focusedKey && getPlaceKey(focusedKey) === getPlaceKey(place)) {
@@ -823,7 +832,7 @@ export default function MapMainPage({
     }
 
     setSelectedPlace(place);
-  }, [closeSearchPanel, focusedPlace, getPlaceKey, searchSelectedPlace, showLightningCourse]);
+  }, [collapseSearchPanel, focusedPlace, getPlaceKey, searchSelectedPlace, showLightningCourse]);
 
   const openSongpaFromMemberPopup = useCallback(() => {
     setShowMemberPopup(false);
@@ -867,7 +876,7 @@ export default function MapMainPage({
         routePlaces={showLightningCourse && !focusedPlace && !searchSelectedPlace ? lightningCourse.places : []}
         selectedPlace={selectedPlace || searchSelectedPlace || focusedPlace}
         onSelectPlace={handleMapPlaceSelect}
-        onMapClick={closeSearchPanel}
+        onMapClick={collapseSearchPanel}
         locateSignal={locateSignal}
         searchFocus={hasSearchQuery ? searchAnchor : null}
         onLocationChange={setUserLocation}
@@ -1033,7 +1042,7 @@ export default function MapMainPage({
                 data-action={`category_${getCategoryTrackingLabel(category.value)}`}
                 data-label={getCategoryTrackingLabel(category.value)}
                 onClick={() => {
-                  closeSearchPanel();
+                  collapseSearchPanel();
                   handleSelectCategory(category.value);
                 }}
               >
@@ -1081,6 +1090,12 @@ export default function MapMainPage({
           data-action="lightning_course"
           data-label="lightning_course"
           onClick={() => {
+            setSearchText("");
+            setShowSortOptions(false);
+            setIsSearchResultsCollapsed(false);
+            setFocusedPlace(null);
+            setSearchSelectedPlace(null);
+            setSelectedPlace(null);
             setShowLightningCourse(true);
             setShowLightningList(false);
           }}
