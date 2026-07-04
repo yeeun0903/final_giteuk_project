@@ -3606,3 +3606,14 @@ video {
 .map-pdp-sheet .pdp-benefit + .pdp-quick-actions {
   margin-top: 24px !important;
 }
+
+/* Lightning course preview should share the same side rail as the bottom nav. */
+.figma-map-page .lightning-course-sheet {
+  left: 50% !important;
+  right: auto !important;
+  width: calc(100% - (var(--bottom-nav-side) * 2)) !important;
+  max-width: calc(var(--prototype-width) - (var(--bottom-nav-side) * 2)) !important;
+  bottom: calc(var(--bottom-nav-total) + 8px) !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
+}
