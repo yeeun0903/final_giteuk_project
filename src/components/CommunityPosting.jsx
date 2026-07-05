@@ -162,8 +162,14 @@ export default function CommunityPosting({
       <section className="posting-frame" aria-label="글쓰기">
         <header className="posting-header">
           <button
+            id="btn-community_posting-header-back"
             className="posting-icon-button posting-back-button"
             type="button"
+            data-event="click_back"
+            data-page="community_posting"
+            data-section="header"
+            data-action="back"
+            data-label="back"
             onClick={onBack}
             aria-label="뒤로가기"
           >
@@ -175,8 +181,14 @@ export default function CommunityPosting({
         <form className="posting-form" onSubmit={handleSubmit}>
           <div className="posting-category-wrap">
             <button
+              id="btn-community_posting-category-toggle"
               className="posting-category-row"
               type="button"
+              data-event="click_category_toggle"
+              data-page="community_posting"
+              data-section="category"
+              data-action="toggle_category"
+              data-label={category || "empty"}
               onClick={() => setIsCategoryOpen((prev) => !prev)}
               aria-expanded={isCategoryOpen}
             >
@@ -196,9 +208,15 @@ export default function CommunityPosting({
               <div className="posting-category-menu">
                 {categories.map((item) => (
                   <button
+                    id={`btn-community_posting-category-${getCategoryTrackingLabel(item)}`}
                     key={item}
                     className="posting-category-option"
                     type="button"
+                    data-event="click_category"
+                    data-page="community_posting"
+                    data-section="category"
+                    data-action="select_category"
+                    data-label={getCategoryTrackingLabel(item)}
                     onClick={() => {
                       setCategory(item);
                       setIsCategoryOpen(false);
@@ -268,23 +286,35 @@ export default function CommunityPosting({
             />
 
             <button
+              id="btn-community_posting-photo-add"
               className="posting-secondary-button"
               type="button"
+              data-event="click_add_photo"
+              data-page="community_posting"
+              data-section="bottom_actions"
+              data-action="add_photo"
+              data-label="photo"
               onClick={() => photoInputRef.current?.click()}
             >
               <img src={imageAddIcon} alt="" />
               사진
             </button>
             <button
+              id="btn-community_posting-location-add"
               className={location ? "posting-secondary-button active" : "posting-secondary-button"}
               type="button"
+              data-event="click_add_location"
+              data-page="community_posting"
+              data-section="bottom_actions"
+              data-action="add_location"
+              data-label={location ? "added" : "location"}
               onClick={handleLocationClick}
               disabled={isLocating}
             >
               <img src={addressIcon} alt="" />
               {isLocating ? "확인중" : location ? "추가됨" : "위치"}
             </button>
-            <button className="posting-submit-button" type="submit" disabled={isPhotoProcessing}>
+            <button id="btn-community_posting-submit" className="posting-submit-button" type="submit" data-event="click_publish_post" data-page="community_posting" data-section="bottom_actions" data-action="publish_post" data-label="post" disabled={isPhotoProcessing}>
               <img src={editIcon} alt="" />
               {isPhotoProcessing ? "처리중" : "게시"}
             </button>
@@ -307,4 +337,14 @@ export default function CommunityPosting({
       </section>
     </main>
   );
+}
+
+function getCategoryTrackingLabel(value) {
+  const categoryMap = {
+    이용후기: "review",
+    할인정보: "sale",
+    제보하기: "report",
+  };
+
+  return categoryMap[value] || "category";
 }

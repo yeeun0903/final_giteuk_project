@@ -155,15 +155,27 @@ function LikeDetail({ places, products, onBack, navigationProps }) {
       <DetailHeader title="찜 목록" onBack={onBack} />
       <div className="mypage-like-tabs" role="tablist" aria-label="찜 목록 카테고리">
         <button
+          id="btn-mypage-likes-tabs-places"
           type="button"
           className={isPlaceTab ? "active" : ""}
+          data-event="click_likes_tab"
+          data-page="mypage"
+          data-section="likes_tabs"
+          data-action="places"
+          data-label="places"
           onClick={() => setActiveTab("places")}
         >
           기특 가게
         </button>
         <button
+          id="btn-mypage-likes-tabs-groupbuy"
           type="button"
           className={!isPlaceTab ? "active" : ""}
+          data-event="click_likes_tab"
+          data-page="mypage"
+          data-section="likes_tabs"
+          data-action="groupbuy"
+          data-label="groupbuy"
           onClick={() => setActiveTab("groupbuy")}
         >
           공동구매
@@ -505,8 +517,14 @@ export default function MyPage({
               </div>
               <img className="mypage-auth-lock-character" src={figmaAssets.myGuestPopupCharacter} alt="게스트 기특이" />
               <button
+                id="btn-mypage-auth_lock-cta"
                 type="button"
                 className="mypage-auth-lock-cta"
+                data-event="click_login"
+                data-page="mypage"
+                data-section="auth_lock"
+                data-action="login"
+                data-label="mypage_lock"
                 onClick={() => onOpenAuth?.("login", "mypage", "mypage-lock")}
               >
                 회원가입/로그인하고 이용하기
@@ -523,13 +541,13 @@ export default function MyPage({
       <section className="mypage-saving-card">
         <div>
           <h2>절약 금액</h2>
-          <button type="button">전체기간</button>
+          <button id="btn-mypage-saving-period_all" type="button" data-event="click_saving_period" data-page="mypage" data-section="saving_card" data-action="period_all" data-label="all">전체기간</button>
         </div>
         <p>총 절약 금액</p>
         <strong>{formatWon(totalSaving)}</strong>
         <ul>
           <li className="saving-clickable">
-            <button type="button" className="mypage-saving-item-button" onClick={() => setView("savings")}>
+            <button id="btn-mypage-saving-monthly_savings" type="button" className="mypage-saving-item-button" data-event="click_savings_check" data-page="mypage" data-section="saving_card" data-action="monthly_savings" data-label="monthly_savings" onClick={() => setView("savings")}>
               <span className="saving-mini-icon"><img src={figmaAssets.mySaving} alt="" /></span>
               <span>
                 <small>이번 달 절약</small>
@@ -538,7 +556,7 @@ export default function MyPage({
             </button>
           </li>
           <li className="saving-clickable">
-            <button type="button" className="mypage-saving-item-button" onClick={() => setView("orders")}>
+            <button id="btn-mypage-saving-monthly_orders" type="button" className="mypage-saving-item-button" data-event="click_monthly_orders" data-page="mypage" data-section="saving_card" data-action="monthly_orders" data-label="monthly_orders" onClick={() => setView("orders")}>
               <span className="saving-mini-icon purple"><img src={figmaAssets.mySale} alt="" /></span>
               <span>
                 <small>이번 달 구매</small>

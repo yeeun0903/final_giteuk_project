@@ -22,6 +22,7 @@ export default function CommunityPostDetailLayout({
   onDeletePost,
 }) {
   const postKey = useMemo(() => getPostStorageKey(post), [post]);
+  const trackingPostId = useMemo(() => toTrackingSlug(post.id || post.dbId || postKey), [post.dbId, post.id, postKey]);
   const [actions, setActions] = useState(() => createActionStates(post.actions));
   const [remoteComments, setRemoteComments] = useState([]);
   const canManagePost = Boolean(post.canManage);
@@ -145,8 +146,14 @@ export default function CommunityPostDetailLayout({
       >
         <header className="pdp-header">
           <button
+            id={`btn-community_post_detail-back_${trackingPostId}`}
             className="pdp-icon-button pdp-back-button"
             type="button"
+            data-event="click_back"
+            data-page="community_post_detail"
+            data-section="header"
+            data-action="back"
+            data-label={trackingPostId}
             onClick={onBack}
             aria-label="뒤로가기"
           >
@@ -163,8 +170,8 @@ export default function CommunityPostDetailLayout({
           manageActions={
             canManagePost ? (
               <div className="pdp-post-manage">
-                <button type="button" onClick={handleEditPost}>수정</button>
-                <button type="button" onClick={handleDeletePost}>삭제</button>
+                <button id={`btn-community_post_detail-edit_${trackingPostId}`} type="button" data-event="click_edit_post" data-page="community_post_detail" data-section="post_manage" data-action="edit" data-label={trackingPostId} onClick={handleEditPost}>수정</button>
+                <button id={`btn-community_post_detail-delete_${trackingPostId}`} type="button" data-event="click_delete_post" data-page="community_post_detail" data-section="post_manage" data-action="delete" data-label={trackingPostId} onClick={handleDeletePost}>삭제</button>
               </div>
             ) : null
           }
@@ -173,13 +180,20 @@ export default function CommunityPostDetailLayout({
         <section className="pdp-actions" aria-label="게시글 액션">
           {actions.map((action) => {
             const hasClicked = action.clickedUserIds.includes(CURRENT_USER_ID);
+            const actionId = getCommunityActionTracking(action.label);
 
             return (
               <button
+                id={`btn-community_post_detail-action_${actionId}_${trackingPostId}`}
                 key={action.label}
                 className={hasClicked ? "is-active" : undefined}
                 type="button"
                 aria-pressed={hasClicked}
+                data-event={`click_${actionId}`}
+                data-page="community_post_detail"
+                data-section="post_actions"
+                data-action={actionId}
+                data-label={trackingPostId}
                 onClick={() => handleActionClick(action.label)}
               >
                 <img src={action.icon} alt="" />
@@ -221,6 +235,23 @@ function createActionStates(actions) {
 
 function getPostStorageKey(post) {
   return post.storageKey || (post.dbId ? `community-post-${post.dbId}` : `seed-${post.category}-${post.title}`);
+}
+
+function getCommunityActionTracking(label) {
+  const actionMap = {
+    좋아요: "like",
+    저장하기: "save",
+    공유하기: "share",
+  };
+
+  return actionMap[label] || toTrackingSlug(label);
+}
+
+function toTrackingSlug(value) {
+  return String(value || "item")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "") || "item";
 }
 
 function mapCommentRow(row, currentUserId, fallbackNickname = "게스트", isAuthenticated = false) {

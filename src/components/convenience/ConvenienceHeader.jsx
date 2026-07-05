@@ -5,8 +5,14 @@ export default function ConvenienceHeader({ onBack, onOpenAuth }) {
   return (
     <header className="convenience-header">
       <button
+        id="btn-convenience-header-back"
         className="convenience-icon-button convenience-back-button"
         type="button"
+        data-event="click_back"
+        data-page="convenience"
+        data-section="header"
+        data-action="back"
+        data-label="back"
         onClick={onBack}
         aria-label="뒤로가기"
       >

@@ -120,7 +120,7 @@ export default function InformNewPlacePage({
     <section className="phone-page inform-page">
       <header className="inform-header">
         <div className="inform-title-row">
-          <button type="button" className="inform-back" onClick={onBack} aria-label="뒤로가기">
+          <button id="btn-inform-header-back" type="button" className="inform-back" data-event="click_back" data-page="inform" data-section="header" data-action="back" data-label="back" onClick={onBack} aria-label="뒤로가기">
             <img src={figmaAssets.informBack} alt="" />
           </button>
           <h1>제보하기</h1>
@@ -137,9 +137,15 @@ export default function InformNewPlacePage({
           <div className="inform-category-row" aria-label="업소 카테고리">
             {informCategories.map((category) => (
               <button
+                id={`btn-inform-category-${getInformCategoryTrackingLabel(category)}`}
                 key={category}
                 type="button"
                 className={selectedCategory === category ? "active" : ""}
+                data-event="click_category"
+                data-page="inform"
+                data-section="category"
+                data-action="select_category"
+                data-label={getInformCategoryTrackingLabel(category)}
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -171,7 +177,7 @@ export default function InformNewPlacePage({
               </div>
             ))}
           </div>
-          <button type="button" className="inform-add-menu" onClick={addMenuRow}>
+          <button id="btn-inform-menu-add" type="button" className="inform-add-menu" data-event="click_add_menu" data-page="inform" data-section="menu" data-action="add_menu" data-label="menu" onClick={addMenuRow}>
             <img src={figmaAssets.informPlus} alt="" />
             메뉴 추가 ({menuRows.length - 1}/4)
           </button>
@@ -180,15 +186,21 @@ export default function InformNewPlacePage({
         <section className="inform-field">
           <h2>업체를 확인할 수 있는 사진을 등록해주세요.</h2>
           <div className="inform-photo-list">
-            <button type="button" className="inform-photo-button" onClick={addPhoto}>
+            <button id="btn-inform-photo-add" type="button" className="inform-photo-button" data-event="click_add_photo" data-page="inform" data-section="photo" data-action="add_photo" data-label="photo" onClick={addPhoto}>
               <img src={figmaAssets.informImageAdd} alt="" />
               <span>( {photos.length} / 6 )</span>
             </button>
             {photos.map((photo) => (
               <button
+                id={`btn-inform-photo-remove_${photo.id}`}
                 key={photo.id}
                 type="button"
                 className="inform-photo-preview"
+                data-event="click_remove_photo"
+                data-page="inform"
+                data-section="photo"
+                data-action="remove_photo"
+                data-label={String(photo.id)}
                 onClick={() => removePhoto(photo.id)}
                 aria-label="등록한 사진 삭제"
               >
@@ -208,23 +220,23 @@ export default function InformNewPlacePage({
       </form>
 
       <div className="inform-submit-bar">
-        <button type="submit" form="inform-place-request-form">등록 신청</button>
+        <button id="btn-inform-submit" type="submit" form="inform-place-request-form" data-event="click_submit_inform" data-page="inform" data-section="submit_bar" data-action="submit_inform" data-label="inform">등록 신청</button>
       </div>
 
       <nav className="figma-bottom-nav">
-        <button type="button" className="active" onClick={onOpenMap}>
+        <button id="btn-inform-bottom_nav-map" type="button" className="active" data-event="click_nav_map" data-page="inform" data-section="bottom_nav" data-action="nav_map" data-label="map" onClick={onOpenMap}>
           <img src={figmaAssets.informNavMap} alt="" />
           <span>지도</span>
         </button>
-        <button type="button" onClick={onOpenCommunity}>
+        <button id="btn-inform-bottom_nav-community" type="button" data-event="click_nav_community" data-page="inform" data-section="bottom_nav" data-action="nav_community" data-label="community" onClick={onOpenCommunity}>
           <img src={figmaAssets.informNavCommunity} alt="" />
           <span>커뮤니티</span>
         </button>
-        <button type="button" onClick={onOpenGroupbuy}>
+        <button id="btn-inform-bottom_nav-groupbuy" type="button" data-event="click_nav_groupbuy" data-page="inform" data-section="bottom_nav" data-action="nav_groupbuy" data-label="groupbuy" onClick={onOpenGroupbuy}>
           <img src={figmaAssets.informNavBuy} alt="" />
           <span>공동구매</span>
         </button>
-        <button type="button" onClick={onOpenMyPage}>
+        <button id="btn-inform-bottom_nav-mypage" type="button" data-event="click_nav_mypage" data-page="inform" data-section="bottom_nav" data-action="nav_mypage" data-label="mypage" onClick={onOpenMyPage}>
           <img src={figmaAssets.informNavMy} alt="" />
           <span>마이페이지</span>
         </button>
@@ -233,4 +245,18 @@ export default function InformNewPlacePage({
       {toast && <div className="inform-toast">{toast}</div>}
     </section>
   );
+}
+
+function getInformCategoryTrackingLabel(value) {
+  const categoryMap = {
+    식당: "restaurant",
+    카페: "cafe",
+    주점: "bar",
+    문화생활: "culture",
+    미용: "beauty",
+    "세탁&목욕": "laundry",
+    기타: "etc",
+  };
+
+  return categoryMap[value] || "etc";
 }

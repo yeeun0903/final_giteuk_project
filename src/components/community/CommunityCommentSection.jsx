@@ -118,7 +118,7 @@ export default function CommunityCommentSection({
     <section className="pdp-comments" aria-label="댓글">
       <div className="pdp-comment-head">
         <h3>댓글</h3>
-        <button type="button">
+        <button id="btn-community_post_detail-comments-sort" type="button" data-event="click_sort" data-page="community_post_detail" data-section="comments" data-action="sort" data-label="latest">
           최신순
           <img src={commentConfig.sortIcon} alt="" />
         </button>
@@ -127,6 +127,7 @@ export default function CommunityCommentSection({
       <div className="pdp-comment-list">
         {comments.map((comment) => {
           const hasLiked = comment.likedUserIds.includes(CURRENT_USER_ID);
+          const trackingCommentId = toTrackingSlug(comment.id);
 
           return (
             <article
@@ -145,17 +146,23 @@ export default function CommunityCommentSection({
                   <p>{renderTextLines(comment.body)}</p>
                   {comment.canManage && (
                     <div className="pdp-comment-manage">
-                      <button type="button" onClick={() => handleCommentEditClick(comment)}>수정</button>
-                      <button type="button" onClick={() => handleCommentDeleteClick(comment.id)}>삭제</button>
+                      <button id={`btn-community_post_detail-comment_edit_${trackingCommentId}`} type="button" data-event="click_edit_comment" data-page="community_post_detail" data-section="comments" data-action="edit_comment" data-label={trackingCommentId} onClick={() => handleCommentEditClick(comment)}>수정</button>
+                      <button id={`btn-community_post_detail-comment_delete_${trackingCommentId}`} type="button" data-event="click_delete_comment" data-page="community_post_detail" data-section="comments" data-action="delete_comment" data-label={trackingCommentId} onClick={() => handleCommentDeleteClick(comment.id)}>삭제</button>
                     </div>
                   )}
                 </div>
               </div>
               <button
+                id={`btn-community_post_detail-comment_like_${trackingCommentId}`}
                 className={hasLiked ? "pdp-comment-like is-active" : "pdp-comment-like"}
                 type="button"
                 aria-pressed={hasLiked}
                 aria-label={`${comment.name} 댓글 좋아요`}
+                data-event="click_comment_like"
+                data-page="community_post_detail"
+                data-section="comments"
+                data-action="like_comment"
+                data-label={trackingCommentId}
                 onClick={() => handleCommentLikeClick(comment.id)}
               >
                 <img src={commentConfig.thumbIcon} alt="" />
@@ -180,10 +187,17 @@ export default function CommunityCommentSection({
           />
           <img src={commentConfig.inputIcon} alt="" />
         </div>
-        <button type="submit">등록</button>
+        <button id="btn-community_post_detail-comment_submit" type="submit" data-event="click_comment_submit" data-page="community_post_detail" data-section="comments" data-action="submit_comment" data-label="comment">등록</button>
       </form>
     </section>
   );
+}
+
+function toTrackingSlug(value) {
+  return String(value || "comment")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "") || "comment";
 }
 
 function renderTextLines(text) {
