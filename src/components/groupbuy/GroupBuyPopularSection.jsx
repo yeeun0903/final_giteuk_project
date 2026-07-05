@@ -26,9 +26,15 @@ export default function GroupBuyPopularSection({ onOpenProductDetail }) {
             >
               {isClickable && (
                 <button
+                  id={`btn-groupbuy-best_card-open_${detailProductId}`}
                   className="groupbuy-best-card-open-button"
                   type="button"
                   aria-label={`${product.name} 상세 보기`}
+                  data-event="click_groupbuy_product"
+                  data-page="groupbuy"
+                  data-section="popular_card"
+                  data-action="open_detail"
+                  data-label={detailProductId}
                   onClick={() => onOpenProductDetail({ id: detailProductId })}
                 />
               )}
