@@ -14,10 +14,10 @@ export default function ConvenienceHeader({ onBack, onOpenAuth }) {
       </button>
       <h1>이달의 행사</h1>
       <div className="convenience-header-actions">
-        <button className="convenience-icon-button" type="button" aria-label="회원가입" onClick={() => onOpenAuth?.("login")}>
+        <button id="btn-convenience-header-login_social" className="convenience-icon-button" type="button" aria-label="회원가입" data-event="click_login" data-page="convenience" data-section="header" data-action="login_social" data-label="social_login" onClick={() => onOpenAuth?.("login")}>
           <img src={figmaAssets.signUpIcon} alt="" />
         </button>
-        <button className="convenience-icon-button" type="button" aria-label="로그인" onClick={() => onOpenAuth?.("id-login")}>
+        <button id="btn-convenience-header-login_email" className="convenience-icon-button" type="button" aria-label="로그인" data-event="click_login" data-page="convenience" data-section="header" data-action="login_email" data-label="email_login" onClick={() => onOpenAuth?.("id-login")}>
           <img src={figmaAssets.loginIcon} alt="" />
         </button>
       </div>

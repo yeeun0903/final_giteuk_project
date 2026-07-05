@@ -126,8 +126,8 @@ export default function InformNewPlacePage({
           <h1>제보하기</h1>
         </div>
         <div className="inform-header-icons">
-          <button type="button" aria-label="회원가입" onClick={() => onOpenAuth?.("login")}><img src={figmaAssets.signUpIcon} alt="" /></button>
-          <button type="button" aria-label="로그인" onClick={() => onOpenAuth?.("id-login")}><img src={figmaAssets.loginIcon} alt="" /></button>
+          <button id="btn-inform-header-login_social" type="button" aria-label="회원가입" data-event="click_login" data-page="inform" data-section="header" data-action="login_social" data-label="social_login" onClick={() => onOpenAuth?.("login")}><img src={figmaAssets.signUpIcon} alt="" /></button>
+          <button id="btn-inform-header-login_email" type="button" aria-label="로그인" data-event="click_login" data-page="inform" data-section="header" data-action="login_email" data-label="email_login" onClick={() => onOpenAuth?.("id-login")}><img src={figmaAssets.loginIcon} alt="" /></button>
         </div>
       </header>
 
