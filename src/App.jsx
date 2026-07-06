@@ -152,11 +152,45 @@ const pageLabels = {
   customize: "customize",
 };
 
+const communityPageLabels = {
+  main: "community",
+  "post-pdp": "community_post",
+  "user-post-detail": "community_post",
+  Community_post_sale: "community_post",
+  Community_post_sale2: "community_post",
+  Community_post_report: "community_post",
+  Community_convenience_pdp_all: "community_convenience_pdp",
+  Community_convenience_pdp_1plus1: "community_convenience_pdp",
+  Community_convenience_pdp_2plus1: "community_convenience_pdp",
+  Community_convenience_pdp_3plus1: "community_convenience_pdp",
+};
+
+const authPageLabels = {
+  login: "auth_login",
+  signup: "auth_signup",
+  "id-login": "auth_email_login",
+  complete: "auth_complete",
+};
+
+const groupbuyPageLabels = {
+  main: "groupbuy",
+  groupbuy_product_detail_01: "groupbuy_detail",
+  groupbuy_product_detail_02: "groupbuy_detail",
+  groupbuy_product_detail_03: "groupbuy_detail",
+  groupbuy_product_detail_04: "groupbuy_detail",
+  groupbuy_product_detail_05: "groupbuy_detail",
+  groupbuy_product_detail_06: "groupbuy_detail",
+  groupbuy_product_detail_07: "groupbuy_detail",
+  groupbuy_product_detail_08: "groupbuy_detail",
+  groupbuy_product_detail_09: "groupbuy_detail",
+};
+
 export default function App() {
   const { user, loading, isAuthenticated, nickname, profile, signOut } = useAuth();
   const [page, setPage] = useState("splash");
   const [openSongpaAfterAuth, setOpenSongpaAfterAuth] = useState(false);
   const [authInitialStep, setAuthInitialStep] = useState("login");
+  const [authPageStep, setAuthPageStep] = useState("login");
   const [authReturnPage, setAuthReturnPage] = useState("course");
   const [authEntrySource, setAuthEntrySource] = useState("default");
   const [memberPopupSeen, setMemberPopupSeen] = useState(false);
@@ -197,9 +231,30 @@ export default function App() {
     });
   }, [groupbuyPurchaseRecords]);
 
+  const currentPageMeta = useMemo(() => {
+    if (page === "community") {
+      const pageName = communityPageLabels[communityPage] || communityPage;
+      return { id: pageName, name: pageName };
+    }
+
+    if (page === "auth") {
+      const pageName = authPageLabels[authPageStep] || "auth";
+      return { id: pageName, name: pageName };
+    }
+
+    if (page === "groupbuy") {
+      if (isPaymentCompletedOpen) return { id: "groupbuy_payment", name: "groupbuy_payment" };
+      const pageName = groupbuyPageLabels[groupbuyPage] || groupbuyPage;
+      return { id: pageName, name: pageName };
+    }
+
+    const pageName = pageLabels[page] || page;
+    return { id: pageName, name: pageName };
+  }, [authPageStep, communityPage, groupbuyPage, isPaymentCompletedOpen, page]);
+
   useEffect(() => {
     if (page !== "splash") return undefined;
-    const timer = window.setTimeout(() => setPage("course"), 3200);
+    const timer = window.setTimeout(() => setPage("course"), 1500);
     return () => window.clearTimeout(timer);
   }, [page]);
 
@@ -210,8 +265,8 @@ export default function App() {
   useEffect(() => installGtmClickIds(page), [page]);
 
   useEffect(() => {
-    trackPageView(page, pageLabels[page] || page);
-  }, [page]);
+    trackPageView(currentPageMeta.id, currentPageMeta.name);
+  }, [currentPageMeta.id, currentPageMeta.name]);
 
   useEffect(() => {
     const handleTrackedClick = (event) => {
@@ -220,8 +275,8 @@ export default function App() {
       trackClick({
         id: target.id,
         eventName: target.dataset.event || "gtgt_click",
-        page: target.dataset.page || pageLabels[page] || page,
-        pageId: page,
+        page: target.dataset.page || currentPageMeta.name,
+        pageId: currentPageMeta.id,
         section: target.dataset.section || "unknown",
         action: target.dataset.action || "click",
         label: target.dataset.label || target.dataset.action || target.id,
@@ -230,7 +285,7 @@ export default function App() {
 
     document.addEventListener("click", handleTrackedClick);
     return () => document.removeEventListener("click", handleTrackedClick);
-  }, [page]);
+  }, [currentPageMeta.id, currentPageMeta.name]);
 
 
   useEffect(() => {
@@ -274,6 +329,7 @@ export default function App() {
     window.localStorage.removeItem("gtgt-auth-entry-source");
     setAuthEntrySource(pendingSource);
     setAuthInitialStep("complete");
+    setAuthPageStep("complete");
     setPage("auth");
   }, [loading, user?.id]);
 
@@ -281,6 +337,7 @@ export default function App() {
 
   const openAuth = (step = "login", returnPage = page, source = "default") => {
     setAuthInitialStep(step);
+    setAuthPageStep(step);
     setAuthReturnPage(returnPage === "auth" ? "course" : returnPage);
     setAuthEntrySource(source);
     window.localStorage.setItem("gtgt-auth-entry-source", source);
@@ -806,9 +863,9 @@ export default function App() {
   };
 
   return (
-    <main id={`page-${page}`} className="app-shell" data-page-id={page} data-page-name={pageLabels[page] || page}>
+    <main id={`page-${page}`} className="app-shell" data-page-id={currentPageMeta.id} data-page-name={currentPageMeta.name}>
       <span id="gtm-current-page-name" className="gtm-page-name-marker">
-        {pageLabels[page] || page}
+        {currentPageMeta.name}
       </span>
       {page === "splash" && !loading && <SplashPage />}
       {page === "course" && (
@@ -833,6 +890,7 @@ export default function App() {
       {page === "auth" && (
         <LoginSignupFlow
           initialStep={authInitialStep}
+          onStepChange={setAuthPageStep}
           onAuthenticated={() => {
             createAuthEvent({
               userId: user?.id,

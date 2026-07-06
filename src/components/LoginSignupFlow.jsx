@@ -196,7 +196,7 @@ function IdLoginScreen({ onBack, onLogin, onSignUp }) {
   );
 }
 
-export default function LoginSignupFlow({ initialStep = "login", onAuthenticated, onSkipToMap, onOpenMyPage, onBack }) {
+export default function LoginSignupFlow({ initialStep = "login", onStepChange, onAuthenticated, onSkipToMap, onOpenMyPage, onBack }) {
   const { signInWithGoogle, signInWithKakao, signInWithEmail, signUpWithEmail } = useAuth();
   const [step, setStep] = useState(initialStep);
   const [toast, setToast] = useState("");
@@ -209,6 +209,10 @@ export default function LoginSignupFlow({ initialStep = "login", onAuthenticated
   useEffect(() => {
     setStep(initialStep);
   }, [initialStep]);
+
+  useEffect(() => {
+    onStepChange?.(step);
+  }, [onStepChange, step]);
 
   const getAuthErrorMessage = (error, fallback) => {
     if (error?.message === "EMAIL_CONFIRMATION_REQUIRED") {

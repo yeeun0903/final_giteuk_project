@@ -5,6 +5,7 @@ import KakaoPlacesMap from "./KakaoPlacesMap.jsx";
 import searchToggleIcon from "../assets/common/more.png";
 import MapPdpSheet from "./MapPdpSheet.jsx";
 import { createPlaceMarkerEvent } from "../lib/database.js";
+import { trackPageView } from "../lib/analytics.js";
 
 const categories = [
   { label: "전체", value: "전체" },
@@ -762,6 +763,12 @@ export default function MapMainPage({
   const selectedPlaceLiked = selectedPlace
     ? likedPlaces.some((place) => getPlaceKey(place) === getPlaceKey(selectedPlace))
     : false;
+  const selectedPlacePageKey = selectedPlace ? getPlaceKey(selectedPlace) : "";
+
+  useEffect(() => {
+    if (!selectedPlacePageKey) return;
+    trackPageView("map_place_detail", "map_place_detail");
+  }, [selectedPlacePageKey]);
 
   const handleSelectCategory = useCallback((category) => {
     setSelectedCategory(category);
