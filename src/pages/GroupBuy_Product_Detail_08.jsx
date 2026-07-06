@@ -7,10 +7,7 @@ import detailHeartIcon from "../assets/GroupBuy_Product_detail/heart.png";
 import activeHeartIcon from "../assets/GroupBuy_Main/heart2.png";
 import saleIcon from "../assets/GroupBuy_Product_detail/sale-02.png";
 import { groupbuyProducts } from "../data/groupbuyMainData.js";
-import {
-  isFavoriteProduct,
-  toggleFavoriteProduct,
-} from "../utils/groupbuyFavorites.js";
+import { isFavoriteProduct } from "../utils/groupbuyFavorites.js";
 
 const product = groupbuyProducts.find((item) => item.id === "kanu");
 
@@ -23,14 +20,32 @@ const productInfoRows = [
   ["반품/교환", "수령 후 7일 이내"],
 ];
 
-export default function GroupBuyProductDetail08({ onBack }) {
+export default function GroupBuyProductDetail08({ onBack, favoriteProductIds = null, onFavoriteIdsChange }) {
   const [isFavorite, setIsFavorite] = useState(() =>
     isFavoriteProduct(product.id),
   );
 
+  const isFavoriteActive = Array.isArray(favoriteProductIds)
+    ? favoriteProductIds.includes(product.id)
+    : isFavorite;
+
   const handleToggleFavorite = () => {
-    const nextFavoriteIds = toggleFavoriteProduct(product.id);
+    const currentFavoriteIds = Array.isArray(favoriteProductIds) ? favoriteProductIds : null;
+
+    if (currentFavoriteIds) {
+      const nextFavoriteIds = currentFavoriteIds.includes(product.id)
+        ? currentFavoriteIds.filter((id) => id !== product.id)
+        : [...currentFavoriteIds, product.id];
+      setIsFavorite(nextFavoriteIds.includes(product.id));
+      onFavoriteIdsChange?.(nextFavoriteIds);
+      return;
+    }
+
+    const nextFavoriteIds = isFavorite
+      ? []
+      : [product.id];
     setIsFavorite(nextFavoriteIds.includes(product.id));
+    onFavoriteIdsChange?.(nextFavoriteIds);
   };
 
   return (
@@ -56,16 +71,16 @@ export default function GroupBuyProductDetail08({ onBack }) {
             id="btn-groupbuy_detail_08-header-favorite"
             className="groupbuy-detail-header-heart"
             type="button"
-            aria-label={isFavorite ? "찜 해제" : "찜하기"}
-            aria-pressed={isFavorite}
+            aria-label={isFavoriteActive ? "찜 해제" : "찜하기"}
+            aria-pressed={isFavoriteActive}
             data-event="click_groupbuy_favorite"
             data-page="groupbuy_detail_08"
             data-section="header"
-            data-action={isFavorite ? "unfavorite" : "favorite"}
+            data-action={isFavoriteActive ? "unfavorite" : "favorite"}
             data-label="product_08"
             onClick={handleToggleFavorite}
           >
-            <img src={isFavorite ? activeHeartIcon : detailHeartIcon} alt="" />
+            <img src={isFavoriteActive ? activeHeartIcon : detailHeartIcon} alt="" />
           </button>
         </header>
 

@@ -11,6 +11,7 @@ export default function CommunityCommentSection({
   onCreateComment,
   onUpdateComment,
   onDeleteComment,
+  onToggleCommentLike,
 }) {
   const [comments, setComments] = useState(() =>
     createCommentStates(initialComments),
@@ -96,12 +97,16 @@ export default function CommunityCommentSection({
     }
   };
 
-  const handleCommentLikeClick = (commentId) => {
+  const handleCommentLikeClick = async (commentId) => {
+    const targetComment = comments.find((comment) => comment.id === commentId);
+    if (!targetComment) return;
+
+    const hasLiked = targetComment.likedUserIds.includes(CURRENT_USER_ID);
+    const previousComments = comments;
+
     setComments((prevComments) =>
       prevComments.map((comment) => {
         if (comment.id !== commentId) return comment;
-
-        const hasLiked = comment.likedUserIds.includes(CURRENT_USER_ID);
 
         return {
           ...comment,
@@ -112,6 +117,14 @@ export default function CommunityCommentSection({
         };
       }),
     );
+
+    try {
+      await onToggleCommentLike?.(commentId, !hasLiked);
+    } catch (error) {
+      console.error("댓글 좋아요 저장 실패", error);
+      setComments(previousComments);
+      window.alert("로그인 후 댓글 좋아요를 누를 수 있어요.");
+    }
   };
 
   return (

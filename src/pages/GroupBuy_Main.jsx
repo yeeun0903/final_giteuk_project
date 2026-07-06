@@ -6,7 +6,6 @@ import GroupBuyCategoryTabs from "../components/groupbuy/GroupBuyCategoryTabs.js
 import GroupBuyProductList from "../components/groupbuy/GroupBuyProductList.jsx";
 import GroupBuyBottomNav from "../components/groupbuy/GroupBuyBottomNav.jsx";
 import { groupbuyProducts } from "../data/groupbuyMainData.js";
-import { saveFavoriteIds } from "../utils/groupbuyFavorites.js";
 
 export default function GroupBuyMain({
   onOpenProductDetail,
@@ -43,7 +42,6 @@ export default function GroupBuyMain({
       ? favoriteProductIds.filter((id) => id !== productId)
       : [...favoriteProductIds, productId];
 
-    saveFavoriteIds(nextIds);
     onFavoriteIdsChange?.(nextIds);
   };
 

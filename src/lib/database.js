@@ -284,6 +284,70 @@ export async function deleteCommunityPost({ userId, postId }) {
   return true;
 }
 
+export async function upsertCommunityLike({ userId, postId }) {
+  if (!supabaseWritesEnabled || !userId || !postId) return null;
+
+  const { data, error } = await supabase
+    .from("community_likes")
+    .upsert(
+      {
+        user_id: userId,
+        post_id: String(postId),
+      },
+      { onConflict: "user_id,post_id" },
+    )
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function removeCommunityLike({ userId, postId }) {
+  if (!supabaseWritesEnabled || !userId || !postId) return null;
+
+  const { error } = await supabase
+    .from("community_likes")
+    .delete()
+    .eq("user_id", userId)
+    .eq("post_id", String(postId));
+
+  if (error) throw error;
+  return true;
+}
+
+export async function upsertCommentLike({ userId, commentId }) {
+  if (!supabaseWritesEnabled || !userId || !commentId) return null;
+
+  const { data, error } = await supabase
+    .from("comment_likes")
+    .upsert(
+      {
+        user_id: userId,
+        comment_id: String(commentId),
+      },
+      { onConflict: "user_id,comment_id" },
+    )
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function removeCommentLike({ userId, commentId }) {
+  if (!supabaseWritesEnabled || !userId || !commentId) return null;
+
+  const { error } = await supabase
+    .from("comment_likes")
+    .delete()
+    .eq("user_id", userId)
+    .eq("comment_id", String(commentId));
+
+  if (error) throw error;
+  return true;
+}
+
 export async function upsertPlaceFavorite({ userId, place }) {
   if (!supabaseWritesEnabled) return null;
 

@@ -33,7 +33,7 @@ import { useAuth } from "./contexts/AuthContext.jsx";
 import { initializeAnalytics, trackClick, trackPageView } from "./lib/analytics.js";
 import { installGtmClickIds } from "./utils/gtmClickIds.js";
 import { groupbuyProducts } from "./data/groupbuyMainData.js";
-import { getSavedFavoriteIds } from "./utils/groupbuyFavorites.js";
+import { getSavedFavoriteIds, saveFavoriteIds } from "./utils/groupbuyFavorites.js";
 import {
   createAuthEvent,
   createCommunityPost as createCommunityPostRecord,
@@ -584,6 +584,7 @@ export default function App() {
     const removedId = groupbuyFavoriteIds.find((id) => !normalizedNextIds.includes(id));
     const changedProduct = groupbuyProducts.find((product) => product.id === (addedId || removedId));
 
+    saveFavoriteIds(normalizedNextIds);
     setGroupbuyFavoriteIds(normalizedNextIds);
 
     if (!user?.id || !changedProduct) return;
@@ -807,25 +808,29 @@ export default function App() {
 
   const renderGroupbuyPage = () => {
     let pageContent;
+    const groupbuyDetailFavoriteProps = {
+      favoriteProductIds: groupbuyFavoriteIds,
+      onFavoriteIdsChange: handleGroupbuyFavoriteIdsChange,
+    };
 
     if (groupbuyPage === "groupbuy_product_detail_01") {
-      pageContent = <GroupBuyProductDetail01 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail01 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_02") {
-      pageContent = <GroupBuyProductDetail02 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail02 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_03") {
-      pageContent = <GroupBuyProductDetail03 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail03 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_04") {
-      pageContent = <GroupBuyProductDetail04 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail04 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_05") {
-      pageContent = <GroupBuyProductDetail05 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail05 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_06") {
-      pageContent = <GroupBuyProductDetail06 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail06 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_07") {
-      pageContent = <GroupBuyProductDetail07 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail07 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_08") {
-      pageContent = <GroupBuyProductDetail08 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail08 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else if (groupbuyPage === "groupbuy_product_detail_09") {
-      pageContent = <GroupBuyProductDetail09 onBack={() => setGroupbuyPage("main")} />;
+      pageContent = <GroupBuyProductDetail09 onBack={() => setGroupbuyPage("main")} {...groupbuyDetailFavoriteProps} />;
     } else {
       pageContent = (
         <GroupBuyMain

@@ -3,7 +3,16 @@ import BottomNavigation from "../BottomNavigation.jsx";
 import CommunityCommentSection from "./CommunityCommentSection.jsx";
 import CommunityPostContent from "./CommunityPostContent.jsx";
 import { figmaAssets } from "../../data/figmaAssets.js";
-import { createComment, deleteComment, listComments, updateComment } from "../../lib/database.js";
+import {
+  createComment,
+  deleteComment,
+  listComments,
+  removeCommentLike,
+  removeCommunityLike,
+  updateComment,
+  upsertCommentLike,
+  upsertCommunityLike,
+} from "../../lib/database.js";
 
 const CURRENT_USER_ID = "current-user";
 
@@ -18,10 +27,12 @@ export default function CommunityPostDetailLayout({
   currentNickname = "게스트",
   currentUserId = null,
   isAuthenticated = false,
+  onOpenAuth,
   onUpdatePost,
   onDeletePost,
 }) {
   const postKey = useMemo(() => getPostStorageKey(post), [post]);
+  const likePostId = useMemo(() => String(post.dbId || post.id || postKey), [post.dbId, post.id, postKey]);
   const trackingPostId = useMemo(() => toTrackingSlug(post.id || post.dbId || postKey), [post.dbId, post.id, postKey]);
   const [actions, setActions] = useState(() => createActionStates(post.actions));
   const [remoteComments, setRemoteComments] = useState([]);
@@ -77,11 +88,17 @@ export default function CommunityPostDetailLayout({
       await handleShareClick();
     }
 
+    if (label === "좋아요" && !isAuthenticated) {
+      onOpenAuth?.("login", "community", "community-like");
+      return;
+    }
+
+    const targetAction = actions.find((action) => action.label === label);
+    const hasClicked = targetAction?.clickedUserIds.includes(CURRENT_USER_ID) || false;
+
     setActions((prevActions) =>
       prevActions.map((action) => {
         if (action.label !== label) return action;
-
-        const hasClicked = action.clickedUserIds.includes(CURRENT_USER_ID);
 
         return {
           ...action,
@@ -92,6 +109,14 @@ export default function CommunityPostDetailLayout({
         };
       }),
     );
+
+    if (label !== "좋아요" || !currentUserId) return;
+
+    const action = hasClicked
+      ? removeCommunityLike({ userId: currentUserId, postId: likePostId })
+      : upsertCommunityLike({ userId: currentUserId, postId: likePostId });
+
+    action.catch((error) => console.error("커뮤니티 좋아요 저장 실패", error));
   };
 
   const handleCreateComment = async (body) => {
@@ -119,6 +144,20 @@ export default function CommunityPostDetailLayout({
   const handleDeleteComment = async (commentId) => {
     await deleteComment({ userId: currentUserId, commentId });
     setRemoteComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+  };
+
+  const handleToggleCommentLike = async (commentId, nextLiked) => {
+    if (!isAuthenticated || !currentUserId) {
+      onOpenAuth?.("login", "community", "comment-like");
+      throw new Error("로그인이 필요합니다.");
+    }
+
+    if (nextLiked) {
+      await upsertCommentLike({ userId: currentUserId, commentId });
+      return;
+    }
+
+    await removeCommentLike({ userId: currentUserId, commentId });
   };
 
   const handleEditPost = () => {
@@ -212,6 +251,7 @@ export default function CommunityPostDetailLayout({
           onCreateComment={handleCreateComment}
           onUpdateComment={handleUpdateComment}
           onDeleteComment={handleDeleteComment}
+          onToggleCommentLike={handleToggleCommentLike}
         />
 
         <BottomNavigation
