@@ -254,7 +254,7 @@ export default function App() {
 
   useEffect(() => {
     if (page !== "splash") return undefined;
-    const timer = window.setTimeout(() => setPage("course"), 1500);
+    const timer = window.setTimeout(() => setPage("course"), 1000);
     return () => window.clearTimeout(timer);
   }, [page]);
 
