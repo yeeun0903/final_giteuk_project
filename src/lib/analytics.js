@@ -106,6 +106,15 @@ export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) 
 
   if (gaInitialized) sendGaPageView({ pageId, pageName, pageTitle, path, location });
 
+  window.dataLayer?.push({
+    event: "gtgt_page_view",
+    page_id: pageId,
+    page_name: pageName || pageId,
+    page_title: pageTitle,
+    page_path: path,
+    page_location: location,
+  });
+
   if (contentsquareInitialized) {
     window._uxa = window._uxa || [];
     window._uxa.push(["trackPageview", path]);
