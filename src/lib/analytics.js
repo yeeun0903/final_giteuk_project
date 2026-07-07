@@ -43,7 +43,11 @@ export function initializeAnalytics() {
   const { gaMeasurementId, gtmId, hotjarId, hotjarVersion, contentsquareId } = getAnalyticsConfig();
 
   if (gaMeasurementId && !gaInitialized) {
-    ReactGA.initialize(gaMeasurementId);
+    ReactGA.initialize(gaMeasurementId, {
+      gtagOptions: {
+        send_page_view: false,
+      },
+    });
     gaInitialized = true;
   }
 
@@ -62,9 +66,13 @@ export function initializeAnalytics() {
 
 export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) {
   const path = `/${pageId}`;
+  const location =
+    typeof window === "undefined"
+      ? path
+      : `${window.location.origin}${window.location.pathname}#${pageId}`;
 
   if (gaInitialized) {
-    ReactGA.send({ hitType: "pageview", page: path, title: pageTitle });
+    ReactGA.send({ hitType: "pageview", page: path, title: pageTitle, location });
   }
 
   if (contentsquareInitialized) {
@@ -77,6 +85,8 @@ export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) 
     page_id: pageId,
     page_name: pageName || pageId,
     page_title: pageTitle,
+    page_path: path,
+    page_location: location,
   });
 }
 
