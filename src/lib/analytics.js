@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import TagManager from "react-gtm-module";
 import Hotjar from "@hotjar/browser";
 
@@ -38,51 +39,28 @@ function initializeContentsquare(contentsquareId) {
   contentsquareInitialized = true;
 }
 
-function initializeGa(gaMeasurementId) {
-  if (!gaMeasurementId || gaInitialized || typeof document === "undefined") return;
-
-  window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    function gtag() {
-      window.dataLayer.push(arguments);
-    };
-
-  window.gtag("js", new Date());
-  window.gtag("config", gaMeasurementId, {
-    send_page_view: false,
-  });
-
-  const selector = `script[data-ga4-measurement-id="${gaMeasurementId}"]`;
-  if (!document.querySelector(selector)) {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`;
-    script.dataset.ga4MeasurementId = gaMeasurementId;
-    document.head.appendChild(script);
-  }
-
-  gaInitialized = true;
-}
-
 function sendGaPageView({ pageId, pageName, pageTitle, path, location }) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
-
-  const payload = {
-    page_title: pageTitle,
-    page_path: path,
-    page_location: location,
+  ReactGA.send({
+    hitType: "pageview",
+    page: path,
+    title: pageTitle,
+    location,
     page_id: pageId,
     page_name: pageName || pageId,
-  };
-
-  window.gtag("event", "page_view", payload);
+  });
 }
 
 export function initializeAnalytics() {
   const { gaMeasurementId, gtmId, hotjarId, hotjarVersion, contentsquareId } = getAnalyticsConfig();
 
-  initializeGa(gaMeasurementId);
+  if (gaMeasurementId && !gaInitialized) {
+    ReactGA.initialize(gaMeasurementId, {
+      gtagOptions: {
+        send_page_view: false,
+      },
+    });
+    gaInitialized = true;
+  }
 
   if (gtmId && !gtmInitialized) {
     TagManager.initialize({ gtmId });
