@@ -185,6 +185,35 @@ const groupbuyPageLabels = {
   groupbuy_product_detail_09: "groupbuy_detail",
 };
 
+const pageTitles = {
+  splash: "기특기특 | 스플래시",
+  map: "기특기특 | 지도",
+  auth: "기특기특 | 로그인",
+  auth_login: "기특기특 | 로그인",
+  auth_signup: "기특기특 | 회원가입",
+  auth_email_login: "기특기특 | 이메일 로그인",
+  auth_complete: "기특기특 | 가입 완료",
+  inform: "기특기특 | 장소 제보",
+  community: "기특기특 | 커뮤니티",
+  community_posting: "기특기특 | 커뮤니티 글쓰기",
+  community_post: "기특기특 | 커뮤니티 게시글",
+  community_convenience_pdp: "기특기특 | 편의점 혜택",
+  groupbuy: "기특기특 | 공동구매",
+  groupbuy_detail: "기특기특 | 공동구매 상세",
+  groupbuy_payment: "기특기특 | 결제 완료",
+  mypage: "기특기특 | 마이페이지",
+  customer: "기특기특 | 고객센터",
+  customize: "기특기특 | 캐릭터 꾸미기",
+};
+
+function getAnalyticsPageMeta(pageName) {
+  return {
+    id: pageName,
+    name: pageName,
+    title: pageTitles[pageName] || `기특기특 | ${pageName}`,
+  };
+}
+
 export default function App() {
   const { user, loading, isAuthenticated, nickname, profile, signOut } = useAuth();
   const [page, setPage] = useState("splash");
@@ -234,22 +263,22 @@ export default function App() {
   const currentPageMeta = useMemo(() => {
     if (page === "community") {
       const pageName = communityPageLabels[communityPage] || communityPage;
-      return { id: pageName, name: pageName };
+      return getAnalyticsPageMeta(pageName);
     }
 
     if (page === "auth") {
       const pageName = authPageLabels[authPageStep] || "auth";
-      return { id: pageName, name: pageName };
+      return getAnalyticsPageMeta(pageName);
     }
 
     if (page === "groupbuy") {
-      if (isPaymentCompletedOpen) return { id: "groupbuy_payment", name: "groupbuy_payment" };
+      if (isPaymentCompletedOpen) return getAnalyticsPageMeta("groupbuy_payment");
       const pageName = groupbuyPageLabels[groupbuyPage] || groupbuyPage;
-      return { id: pageName, name: pageName };
+      return getAnalyticsPageMeta(pageName);
     }
 
     const pageName = pageLabels[page] || page;
-    return { id: pageName, name: pageName };
+    return getAnalyticsPageMeta(pageName);
   }, [authPageStep, communityPage, groupbuyPage, isPaymentCompletedOpen, page]);
 
   useEffect(() => {
@@ -265,8 +294,9 @@ export default function App() {
   useEffect(() => installGtmClickIds(page), [page]);
 
   useEffect(() => {
-    trackPageView(currentPageMeta.id, currentPageMeta.name);
-  }, [currentPageMeta.id, currentPageMeta.name]);
+    document.title = currentPageMeta.title;
+    trackPageView(currentPageMeta.id, currentPageMeta.name, currentPageMeta.title);
+  }, [currentPageMeta.id, currentPageMeta.name, currentPageMeta.title]);
 
   useEffect(() => {
     const handleTrackedClick = (event) => {

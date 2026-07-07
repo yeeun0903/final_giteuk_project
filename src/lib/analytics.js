@@ -60,11 +60,11 @@ export function initializeAnalytics() {
   initializeContentsquare(contentsquareId);
 }
 
-export function trackPageView(pageId, pageName) {
+export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) {
   const path = `/${pageId}`;
 
   if (gaInitialized) {
-    ReactGA.send({ hitType: "pageview", page: path, title: pageName || pageId });
+    ReactGA.send({ hitType: "pageview", page: path, title: pageTitle });
   }
 
   if (contentsquareInitialized) {
@@ -76,6 +76,7 @@ export function trackPageView(pageId, pageName) {
     event: "gtgt_page_view",
     page_id: pageId,
     page_name: pageName || pageId,
+    page_title: pageTitle,
   });
 }
 
