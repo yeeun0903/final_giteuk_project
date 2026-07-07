@@ -39,6 +39,23 @@ function initializeContentsquare(contentsquareId) {
   contentsquareInitialized = true;
 }
 
+function sendGaPageView({ pageId, pageName, pageTitle, path, location }) {
+  const payload = {
+    page_title: pageTitle,
+    page_path: path,
+    page_location: location,
+    page_id: pageId,
+    page_name: pageName || pageId,
+  };
+
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    window.gtag("event", "page_view", payload);
+    return;
+  }
+
+  ReactGA.gtag("event", "page_view", payload);
+}
+
 export function initializeAnalytics() {
   const { gaMeasurementId, gtmId, hotjarId, hotjarVersion, contentsquareId } = getAnalyticsConfig();
 
@@ -71,9 +88,7 @@ export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) 
       ? path
       : `${window.location.origin}${window.location.pathname}#${pageId}`;
 
-  if (gaInitialized) {
-    ReactGA.send({ hitType: "pageview", page: path, title: pageTitle, location });
-  }
+  if (gaInitialized) sendGaPageView({ pageId, pageName, pageTitle, path, location });
 
   if (contentsquareInitialized) {
     window._uxa = window._uxa || [];
