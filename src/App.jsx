@@ -30,7 +30,7 @@ import LoginSignupFlow from "./components/LoginSignupFlow.jsx";
 import MapMainPage from "./components/MapMainPage.jsx";
 import SplashPage from "./components/SplashPage.jsx";
 import { useAuth } from "./contexts/AuthContext.jsx";
-import { initializeAnalytics, trackClick, trackPageView } from "./lib/analytics.js";
+import { initializeAnalytics, trackCampaignLanding, trackClick, trackPageView } from "./lib/analytics.js";
 import { installGtmClickIds } from "./utils/gtmClickIds.js";
 import { groupbuyProducts } from "./data/groupbuyMainData.js";
 import { getSavedFavoriteIds, saveFavoriteIds } from "./utils/groupbuyFavorites.js";
@@ -289,6 +289,7 @@ export default function App() {
 
   useEffect(() => {
     initializeAnalytics();
+    trackCampaignLanding();
   }, []);
 
   useEffect(() => installGtmClickIds(page), [page]);

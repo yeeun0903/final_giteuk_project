@@ -10,6 +10,7 @@ let gaInitialized = false;
 let gtmInitialized = false;
 let hotjarInitialized = false;
 let contentsquareInitialized = false;
+let campaignLandingTracked = false;
 
 function getAnalyticsConfig() {
   return {
@@ -80,7 +81,7 @@ export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) 
   const location =
     typeof window === "undefined"
       ? path
-      : `${window.location.origin}${window.location.pathname}#${pageId}`;
+      : `${window.location.origin}${window.location.pathname}${window.location.search}#${pageId}`;
 
   if (gaInitialized) sendGaPageView({ pageId, pageName, pageTitle, path, location });
 
@@ -97,6 +98,83 @@ export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) 
     window._uxa = window._uxa || [];
     window._uxa.push(["trackPageview", path]);
   }
+}
+
+function normalizeParamValue(value) {
+  return value ? String(value).trim().toLowerCase() : "";
+}
+
+function getSearchParams() {
+  if (typeof window === "undefined") return new URLSearchParams();
+
+  const params = new URLSearchParams(window.location.search);
+  const hashQueryIndex = window.location.hash.indexOf("?");
+
+  if (hashQueryIndex >= 0) {
+    const hashParams = new URLSearchParams(window.location.hash.slice(hashQueryIndex + 1));
+    hashParams.forEach((value, key) => {
+      if (!params.has(key)) params.set(key, value);
+    });
+  }
+
+  return params;
+}
+
+function inferTrafficPlatform(params) {
+  const utmSource = normalizeParamValue(params.get("utm_source"));
+  const referrer = normalizeParamValue(typeof document === "undefined" ? "" : document.referrer);
+
+  if (params.has("ttclid") || utmSource.includes("tiktok") || referrer.includes("tiktok")) return "tiktok";
+  if (params.has("fbclid") || utmSource.includes("meta") || utmSource.includes("facebook") || utmSource.includes("instagram")) {
+    return "meta";
+  }
+  if (params.has("gclid") || params.has("gbraid") || params.has("wbraid") || utmSource.includes("google")) return "google";
+
+  return utmSource || "direct_or_unknown";
+}
+
+export function trackCampaignLanding() {
+  if (campaignLandingTracked || typeof window === "undefined") return;
+
+  const params = getSearchParams();
+  const attribution = {
+    traffic_platform: inferTrafficPlatform(params),
+    utm_source: normalizeParamValue(params.get("utm_source")),
+    utm_medium: normalizeParamValue(params.get("utm_medium")),
+    utm_campaign: normalizeParamValue(params.get("utm_campaign")),
+    utm_content: normalizeParamValue(params.get("utm_content")),
+    utm_term: normalizeParamValue(params.get("utm_term")),
+    click_id_type: params.has("ttclid")
+      ? "ttclid"
+      : params.has("fbclid")
+        ? "fbclid"
+        : params.has("gclid")
+          ? "gclid"
+          : params.has("gbraid")
+            ? "gbraid"
+            : params.has("wbraid")
+              ? "wbraid"
+              : "none",
+    page_location: window.location.href,
+    page_referrer: typeof document === "undefined" ? "" : document.referrer,
+  };
+
+  const storageKey = `gtgt_campaign_landing:${window.location.href}`;
+  try {
+    if (window.sessionStorage.getItem(storageKey)) return;
+    window.sessionStorage.setItem(storageKey, "1");
+  } catch {
+    // Continue without storage; private/in-app browsers may block sessionStorage.
+  }
+
+  campaignLandingTracked = true;
+
+  if (gaInitialized) ReactGA.event("gtgt_campaign_landing", attribution);
+
+  window.dataLayer?.push({
+    event: "gtgt_campaign_landing",
+    ...attribution,
+  });
 }
 
 export function trackClick({ id, eventName, page, pageId, section, action, label }) {
