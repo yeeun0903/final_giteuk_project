@@ -85,6 +85,8 @@ export function trackPageView(pageId, pageName, pageTitle = pageName || pageId) 
 
   if (gaInitialized) sendGaPageView({ pageId, pageName, pageTitle, path, location });
 
+  if (hotjarInitialized) Hotjar.stateChange(path);
+
   window.dataLayer?.push({
     event: "gtgt_page_view",
     page_id: pageId,

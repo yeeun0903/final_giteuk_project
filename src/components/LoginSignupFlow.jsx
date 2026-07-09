@@ -48,13 +48,13 @@ function LoginScreen({ onBack, onGoogleLogin, onKakaoLogin, onIdLogin, onSignUp 
       <img className="auth-login-character" src={figmaAssets.authCharacter} alt="기특이 캐릭터" />
 
       <div className="auth-login-actions">
-        <button id="btn-auth-login-google" type="button" className="auth-social-button" data-event="click_login_google" data-page="auth" data-section="login_options" data-action="login_google" data-label="google" onClick={onGoogleLogin}>
-          <img src={figmaAssets.authGoogle} alt="" />
-          구글로 시작하기
-        </button>
         <button id="btn-auth-login-kakao" type="button" className="auth-social-button" data-event="click_login_kakao" data-page="auth" data-section="login_options" data-action="login_kakao" data-label="kakao" onClick={onKakaoLogin}>
           <img src={figmaAssets.authKakao} alt="" />
           카카오톡으로 시작하기
+        </button>
+        <button id="btn-auth-login-google" type="button" className="auth-social-button" data-event="click_login_google" data-page="auth" data-section="login_options" data-action="login_google" data-label="google" onClick={onGoogleLogin}>
+          <img src={figmaAssets.authGoogle} alt="" />
+          구글로 시작하기
         </button>
         <button id="btn-auth-login-email_open" type="button" className="auth-social-button" data-event="click_login_email_open" data-page="auth" data-section="login_options" data-action="login_email_open" data-label="email" onClick={onIdLogin}>
           <img src={figmaAssets.authLoginIcon} alt="" />

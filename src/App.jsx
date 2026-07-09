@@ -911,6 +911,7 @@ export default function App() {
           onTargetPlaceHandled={() => setMapTargetPlace(null)}
           showMemberPopupOnMount={!memberPopupSeen && !isAuthenticated}
           onMemberPopupSeen={markMemberPopupSeen}
+          onInitialSongpaHandled={() => setOpenSongpaAfterAuth(false)}
           onOpenMyPage={openMyPage}
           onOpenCommunity={openCommunityPage}
           onOpenGroupbuy={openGroupbuyPage}
@@ -937,7 +938,8 @@ export default function App() {
             setAuthInitialStep("complete");
           }}
           onSkipToMap={() => {
-            setOpenSongpaAfterAuth(authEntrySource === "songpa-popup");
+            const shouldOpenSongpaAfterAuth = authEntrySource === "songpa-popup" || authEntrySource === "songpa-category";
+            setOpenSongpaAfterAuth(shouldOpenSongpaAfterAuth);
             if (authEntrySource === "songpa-popup") markMemberPopupSeen();
             setPage("course");
           }}

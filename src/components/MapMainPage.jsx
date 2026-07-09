@@ -613,6 +613,7 @@ export default function MapMainPage({
   onTargetPlaceHandled,
   showMemberPopupOnMount = true,
   onMemberPopupSeen,
+  onInitialSongpaHandled,
   onOpenMyPage,
   onOpenCommunity,
   onOpenGroupbuy,
@@ -641,6 +642,11 @@ export default function MapMainPage({
   const [locateSignal, setLocateSignal] = useState(0);
   const [userLocation, setUserLocation] = useState(null);
   const getPlaceKey = useCallback((place) => String(place?.place_id || place?.id || place?.place_name || "local-place"), []);
+
+  useEffect(() => {
+    if (!initialSongpaOpen) return;
+    onInitialSongpaHandled?.();
+  }, [initialSongpaOpen, onInitialSongpaHandled]);
 
   useEffect(() => {
     Promise.all([loadPlaces(), loadSongpaPubs()])
@@ -771,6 +777,11 @@ export default function MapMainPage({
   }, [selectedPlacePageKey]);
 
   const handleSelectCategory = useCallback((category) => {
+    if (category === "송파술집" && !isAuthenticated) {
+      onOpenAuth?.("login", "course", "songpa-category");
+      return;
+    }
+
     setSelectedCategory(category);
     setSelectedPlace(null);
     setFocusedPlace(null);
@@ -779,7 +790,7 @@ export default function MapMainPage({
     setShowLightningList(false);
     setShowSortOptions(false);
     setIsSearchResultsCollapsed(true);
-  }, []);
+  }, [isAuthenticated, onOpenAuth]);
 
   const focusSongpaPlace = useCallback((place) => {
     setFocusedPlace(place);
