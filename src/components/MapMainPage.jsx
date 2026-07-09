@@ -546,10 +546,6 @@ function MemberOnlySongpaPopup({ onClose, onOpenSongpa }) {
         onClick={(event) => event.stopPropagation()}
       >
       <header className="map-member-popup-header">
-        <span className="map-member-popup-logo" aria-hidden="true">
-          <img src={figmaAssets.mapPopupLogoTop} alt="" />
-          <img src={figmaAssets.mapPopupLogoBottom} alt="" />
-        </span>
         <button id="btn-map-songpa_popup-close" type="button" className="map-member-popup-close" data-event="click_close" data-page="map" data-section="songpa_popup" data-action="close" data-label="songpa_popup" onClick={onClose} aria-label="팝업 닫기">
           <img src={figmaAssets.mapPopupClose} alt="" />
         </button>
@@ -562,11 +558,6 @@ function MemberOnlySongpaPopup({ onClose, onOpenSongpa }) {
         </div>
         <b>소주 1,500원</b>
       </div>
-
-      <span className="map-member-popup-pill">
-        <img src={figmaAssets.mapPopupLock} alt="" />
-        회원 전용
-      </span>
 
       <p className="map-member-popup-copy">
         <strong>가성비 술집 정보</strong>
@@ -582,7 +573,10 @@ function MemberOnlySongpaPopup({ onClose, onOpenSongpa }) {
         ))}
       </ul>
 
-      <img className="map-member-popup-character" src={figmaAssets.mapPopupCharacter} alt="기특이 캐릭터" />
+      <div className="map-member-popup-gallery" aria-hidden="true">
+        <img src={figmaAssets.mapPopupPubImageOne} alt="" />
+        <img src={figmaAssets.mapPopupPubImageTwo} alt="" />
+      </div>
 
       <button
         id="btn-map-songpa_popup-login"

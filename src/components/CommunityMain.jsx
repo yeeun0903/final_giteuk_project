@@ -3,11 +3,9 @@ import CommunityTabs from "./CommunityTabs.jsx";
 import CommunityPostCard from "./CommunityPostCard.jsx";
 import BottomNavigation from "./BottomNavigation.jsx";
 import chevronRight from "../assets/Community_main/chevron-right.png";
-import mascotImage from "../assets/Community_main/image 37.png";
-import polygonImage from "../assets/Community_main/Polygon 2.png";
 import postingIcon from "../assets/Community_main/Button_Posting.png";
 import sortIcon from "../assets/Community_main/Sort order icon.png";
-import storeImage from "../assets/Community_main/Image_store.png";
+import productsImage from "../assets/Community_main/products.png";
 
 export default function CommunityMain({
   posts,
@@ -72,10 +70,10 @@ export default function CommunityMain({
             onKeyDown={handlePromoKeyDown}
           >
             <div className="promo-copy">
-              <span className="promo-label">배달앱 행사</span>
+              <span className="promo-label">이달의 행사</span>
               <div>
                 <p className="promo-brands">GS25 · CU · 7-ELEVEN · emart24</p>
-                <h2>행사모음.zip</h2>
+                <h2>편의점 행사모음</h2>
               </div>
               <p className="promo-description">
                 인기 간식부터 음료까지
@@ -83,18 +81,14 @@ export default function CommunityMain({
                 기특하게 득템하세요!
               </p>
               <span className="promo-button">
-                자세히 보기
+                <span className="promo-button-highlight">1+1</span>
+                한 번에 보기
                 <img src={chevronRight} alt="" />
               </span>
             </div>
 
             <div className="promo-visual" aria-hidden="true">
-              <img className="store-image" src={storeImage} alt="" />
-              <img className="mascot" src={mascotImage} alt="" />
-              <div className="bundle-badge">
-                <img src={polygonImage} alt="" />
-                <span>1+1</span>
-              </div>
+              <img className="promo-products" src={productsImage} alt="" />
             </div>
           </button>
 

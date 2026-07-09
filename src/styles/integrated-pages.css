@@ -3218,6 +3218,11 @@
   object-fit: cover;
 }
 
+.promo-card .promo-products {
+  max-width: none !important;
+  object-fit: contain !important;
+}
+
 .map-pdp-sheet,
 .figma-map-page .map-pdp-sheet {
   left: 0 !important;
@@ -3291,10 +3296,11 @@
 .figma-map-page .map-member-popup-layer .map-member-popup {
   left: auto !important;
   top: auto !important;
-  width: min(316px, calc(100% - 48px)) !important;
-  max-width: 316px !important;
+  width: 303px !important;
+  max-width: 303px !important;
+  height: 412px !important;
   flex: 0 0 auto !important;
-  transform: scale(0.9) !important;
+  transform: none !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
 }

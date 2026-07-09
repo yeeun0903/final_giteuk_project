@@ -84,6 +84,8 @@ export const figmaAssets = {
   mapPopupLogoBottom: "/assets/figma/map_popup/%E3%84%B1%E3%85%8C2.png",
   mapPopupClose: "/assets/figma/map_popup/Button_close.svg",
   mapPopupSoju: "/assets/figma/map_popup/Image_soju.png",
+  mapPopupPubImageOne: "/assets/figma/map_popup/place_id_P005018_image03%201.png",
+  mapPopupPubImageTwo: "/assets/figma/map_popup/place_id_P005023_image02%202.png",
   mapPopupCheck: "/assets/figma/map_popup/check-circle-broken.svg",
   mapPopupChevron: "/assets/figma/map_popup/chevron-right.svg",
   mapPopupCharacter: "/assets/figma/map_popup/giteuk_pose_search.png",
